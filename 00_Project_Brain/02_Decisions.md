@@ -6,13 +6,14 @@ This file is a concise index. It does not replace the normative RFC or ADR that 
 
 | Decision | Status | Record |
 | --- | --- | --- |
-| Project Constitution version 2.0 | Approved | [`00_Project_Constitution.md`](00_Project_Constitution.md) |
-| Project documentation and source material use English | Approved; normative record pending | Project owner decision |
+| Project Constitution version 2.1 | Approved; supersedes 2.0 | [`00_Project_Constitution.md`](00_Project_Constitution.md) |
+| Project documentation and source material use English | Approved | Project Constitution, section 16 |
 | Language design follows an RFC-first process | Approved direction; governance Proposed | [`RFC/README.md`](../03_DSL/RFC/README.md) |
-| Separate language RFCs from implementation ADRs | Proposed | [`ADR0004_DecisionGovernance.md`](../02_Architecture/ADR/ADR0004_DecisionGovernance.md) |
-| Amend Project Constitution to version 2.1 | Proposed | [`05_Constitution_Amendment_2.1.md`](05_Constitution_Amendment_2.1.md) |
-| Target generation must not bypass the canonical IR | Approved principle | Project Constitution, section 7 |
-| Published compiler phase artifacts are immutable | Approved principle; detailed contract pending | Project Constitution, section 3 |
+| Separate language RFCs from implementation ADRs | Approved by Constitution; detailed ADR Proposed | Project Constitution, section 8; [`ADR0004_DecisionGovernance.md`](../02_Architecture/ADR/ADR0004_DecisionGovernance.md) |
+| Incorporate Project Constitution version 2.1 | Approved and Incorporated | [`05_Constitution_Amendment_2.1.md`](05_Constitution_Amendment_2.1.md) |
+| Promote RFC-0000, RFC-0001, and RFC-0001A to Proposed after architectural audit | Approved | [`06_Foundational_RFC_Review_Decisions.md`](06_Foundational_RFC_Review_Decisions.md) |
+| Target generation must not bypass the canonical IR | Approved | Project Constitution, section 6 |
+| Published compiler phase artifacts are immutable | Approved | Project Constitution, section 7 |
 | Core Semantic Kernel with Industrial Profile roles | Proposed | [`RFC-0001A-Semantic-Object-Model.md`](../03_DSL/RFC/RFC-0001A-Semantic-Object-Model.md) |
 | Definition, Instance Declaration, and expanded Instance are distinct | Proposed | [`RFC-0001A-Semantic-Object-Model.md`](../03_DSL/RFC/RFC-0001A-Semantic-Object-Model.md) |
 | Domain, Application Assembly, and Deployment are separate semantic planes | Proposed | [`RFC-0001A-Semantic-Object-Model.md`](../03_DSL/RFC/RFC-0001A-Semantic-Object-Model.md) |

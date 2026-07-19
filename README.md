@@ -7,9 +7,9 @@ The project is currently establishing its language architecture and governance. 
 ## Current Status
 
 - The repository structure and Project Brain exist.
-- Project Constitution version 2.0 is approved.
-- Constitution 2.1 amendments and RFC governance are proposed for review.
-- [RFC-0000](03_DSL/RFC/RFC-0000-Language-Design-Principles.md), the canonical [RFC-0001](03_DSL/RFC/RFC-0001-Core-Language.md), and [RFC-0001A](03_DSL/RFC/RFC-0001A-Semantic-Object-Model.md) are Draft review artifacts.
+- [Project Constitution version 2.1](00_Project_Brain/00_Project_Constitution.md) is Approved and supersedes version 2.0.
+- The Constitution 2.1 amendment is Accepted and Incorporated; detailed RFC lifecycle rules remain Proposed for review.
+- [RFC-0000](03_DSL/RFC/RFC-0000-Language-Design-Principles.md), the canonical [RFC-0001](03_DSL/RFC/RFC-0001-Core-Language.md), and [RFC-0001A](03_DSL/RFC/RFC-0001A-Semantic-Object-Model.md) are Proposed review artifacts.
 - RFC-0001B and RFC-0001C are not yet drafted.
 - Compiler source code, grammar, emitters, and tests have not been implemented.
 
@@ -19,12 +19,11 @@ The authoritative status is maintained in [Project State](00_Project_Brain/04_Pr
 
 The immediate objective is to establish a consistent foundational language package before production compiler development:
 
-1. review the proposed Project Constitution 2.1 amendments;
-2. review and accept RFC governance, lifecycle, and indexing;
-3. review the Draft language-principles and lexical contracts;
-4. review the Draft core semantic model and define identifier rules;
-5. define compilation units, modules, packages, and dependencies;
-6. validate the architecture through a deliberately limited reference compiler spike.
+1. review and accept RFC lifecycle and indexing details under Approved Constitution 2.1;
+2. review the Proposed language-principles and lexical contracts;
+3. review the Proposed core semantic model and define identifier rules;
+4. define compilation units, modules, packages, and dependencies;
+5. validate the architecture through a deliberately limited reference compiler spike.
 
 ## Repository Map
 

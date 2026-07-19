@@ -6,7 +6,7 @@
 
 ## Context
 
-Project Constitution version 2.0 requires architectural decisions to be recorded as ADRs. The language-design process also needs normative documents for syntax, semantics, diagnostics, compatibility, and public extension contracts.
+Approved Project Constitution version 2.1 establishes separate authority for language and public-contract RFCs and for implementation ADRs. This ADR documents the detailed application of that constitutional boundary.
 
 Using implementation ADRs as the complete language specification would mix user-visible language contracts with replaceable compiler choices. Using RFCs for every internal library or framework choice would make the language process depend on implementation details.
 
@@ -22,7 +22,7 @@ IndustrialMDE needs a single, reviewable rule that determines:
 
 ## Decision
 
-Adopt a split governance model, subject to acceptance of the related Project Constitution amendment:
+Adopt the split governance model required by Approved Project Constitution version 2.1:
 
 - **RFCs** define language syntax, language semantics, user-visible validation behavior, compatibility guarantees, and public language or target-extension contracts.
 - **ADRs** record replaceable implementation decisions such as implementation language, parser framework, internal serialization, process topology, and concrete library selection.

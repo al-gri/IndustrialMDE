@@ -10,7 +10,7 @@
 
 This document proposes the governance process for IndustrialMDE language and public-contract RFCs and provides the canonical RFC index.
 
-While this document remains Proposed, it is a review artifact. Project Constitution version 2.0 remains authoritative. This governance document becomes normative only after the related Constitution amendment and decision-governance ADR are accepted.
+While this document remains Proposed, its detailed lifecycle rules are a review artifact. Approved Project Constitution version 2.1 is authoritative and already establishes the RFC/ADR boundary, authority hierarchy, and requirement for a canonical RFC index. This document becomes an Accepted normative lifecycle contract only through explicit project-owner approval.
 
 ## 2. Document Authority
 
@@ -158,9 +158,9 @@ An example does not establish semantics that are absent from the governing RFC.
 
 | RFC | Title | Document status | Dependencies | Implementation |
 | --- | --- | --- | --- | --- |
-| [RFC-0000](RFC-0000-Language-Design-Principles.md) | Language Design Principles | Draft | Constitution | Not Started |
-| [RFC-0001](RFC-0001-Core-Language.md) | Core Language and Lexical Structure | Draft | RFC-0000 | Not Started |
-| [RFC-0001A](RFC-0001A-Semantic-Object-Model.md) | Semantic Object Model | Draft | RFC-0000, RFC-0001 | Not Started |
+| [RFC-0000](RFC-0000-Language-Design-Principles.md) | Language Design Principles | Proposed | Constitution | Not Started |
+| [RFC-0001](RFC-0001-Core-Language.md) | Core Language and Lexical Structure | Proposed | RFC-0000 | Not Started |
+| [RFC-0001A](RFC-0001A-Semantic-Object-Model.md) | Semantic Object Model | Proposed | RFC-0000, RFC-0001 | Not Started |
 | RFC-0001B | Identifiers, Scopes, and Namespaces | Not Drafted | RFC-0000, RFC-0001, RFC-0001A | Not Started |
 | RFC-0001C | Compilation Units, Modules, Packages, and Dependencies | Not Drafted | RFC-0000, RFC-0001B | Not Started |
 | RFC-0002 | Type System | Not Drafted | RFC-0001A, RFC-0001B, RFC-0001C | Not Started |
@@ -182,13 +182,12 @@ The index records intended dependency direction, not acceptance. Dependencies mu
 
 ## 12. Initial Decision Gates
 
-The following questions remain intentionally unresolved:
+The following decision gates remain:
 
-- whether to accept the Draft Core Semantic Kernel + Industrial Profiles model;
-- whether to accept the proposed Definition, Instance Declaration, Instance, Component, Device, and Primitive distinctions;
-- whether to accept the proposed Domain Definition, Application Assembly, and Deployment boundaries;
 - the exact reference-spike subset and disposal policy;
-- whether wildcard imports are prohibited or restricted;
-- whether core identifier length is fixed or target-profile validated.
+- the RFC-0001B scope, namespace, import, and collision contracts;
+- the RFC-0001C compilation-unit, package, and dependency contracts;
+- conformance of every foundational RFC with Approved Constitution 2.1 before RFC acceptance;
+- conformance evidence required before the foundational RFCs may become Accepted.
 
 These questions must be resolved by the relevant RFCs rather than by examples or compiler implementation.

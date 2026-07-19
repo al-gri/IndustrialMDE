@@ -1,6 +1,6 @@
 # RFC-0001A: Semantic Object Model
 
-**Status:** Draft
+**Status:** Proposed
 
 **Authors:** IndustrialMDE Project
 
@@ -18,7 +18,7 @@
 
 **Implementation Status:** Not Started
 
-**Review:** TBD
+**Review:** [Foundational RFC Review Decisions](../../00_Project_Brain/06_Foundational_RFC_Review_Decisions.md)
 
 ## 1. Summary
 
@@ -28,7 +28,7 @@ The proposal adopts a small Core Semantic Kernel based on reusable `Definition` 
 
 The RFC also separates reusable domain definitions, target-neutral application assembly, and target-specific deployment mapping. Package, module, namespace, type, expression, execution, and hardware-mapping details remain owned by later RFCs.
 
-RFC-0000 and RFC-0001 are currently Draft. Under the proposed governance rules, this RFC cannot advance beyond Draft until its normative dependencies are Accepted.
+RFC-0000 and RFC-0001 are currently Proposed. This RFC may be reviewed as Proposed while its dependencies are at compatible review status. It cannot become Accepted until its normative dependencies are Accepted.
 
 ## 2. Motivation
 
@@ -141,6 +141,10 @@ The planes MAY be authored in separate files, modules, or packages. Their compil
 
 A Project is the build and orchestration boundary defined by RFC-0001C. This RFC does not make Project an instantiable Definition or an industrial hierarchy role.
 
+A Project MAY contain zero or more named Application Assemblies. An Application Assembly is a target-neutral semantic graph root and MUST NOT be treated as a synonym for Project or Definition.
+
+Each Deployment Model in the foundational model MUST reference exactly one Application Assembly. A later RFC may define coordinated multi-assembly deployment without changing their independent semantic identities.
+
 A Library is a published collection or distribution concept defined by RFC-0001C. A Project MUST reference package or library dependencies explicitly rather than pretending to contain global libraries as semantic children.
 
 ### 6.2 Core Semantic Kernel
@@ -195,7 +199,7 @@ A Definition MUST:
 
 A Definition MAY have no members. A profile MAY impose stronger requirements for a particular role.
 
-A reusable Definition MUST be named. Anonymous inline definitions are prohibited by this RFC because they complicate identity, reuse, diagnostics, and compatibility. Naming and qualification syntax are owned by RFC-0001B.
+A reusable Definition MUST be named. Anonymous semantic definitions are permanently prohibited as a core identity invariant because they break deterministic identity, reuse, diagnostics, compatibility, and incremental invalidation. Reconsidering this invariant requires a superseding RFC and the managed major-version process. Naming and qualification syntax are owned by RFC-0001B.
 
 A Definition MUST NOT:
 
@@ -293,6 +297,8 @@ Forward references between declarations MAY be supported by RFC-0001B and RFC-00
 
 Implementations MUST apply declared limits to expansion depth and total expanded entity count. Exceeding a configured limit is an error and MUST NOT produce partial generation output.
 
+A production compiler claiming baseline conformance MUST support an expansion depth of at least 64 and at least 262,144 total expanded semantic entities per Application Assembly. It MAY provide explicitly selected restricted resource profiles with lower limits, but it MUST report that those profiles do not satisfy the baseline capacity. A Reference Spike MAY use lower limits only while declaring itself non-conforming.
+
 ### 6.8 Semantic Value Categories
 
 The following categories are distinct even before their full type and execution rules exist:
@@ -300,7 +306,7 @@ The following categories are distinct even before their full type and execution 
 | Category | Established no later than | Runtime assignment by generated behavior | Storage intent |
 | --- | --- | --- | --- |
 | Constant | Compile time | Prohibited | No mutable storage required |
-| Parameter | Configuration or initialization | Prohibited by default | Target-dependent configuration storage |
+| Parameter | Configuration or initialization | Prohibited | Target-dependent configuration storage |
 | Endpoint | Runtime execution | Governed by data-flow and execution RFCs | Runtime data exchange |
 | State | Runtime execution | Permitted only to owning bounded behavior | Runtime owned storage |
 | Retention policy | Deployment or initialization | Does not create a new value category | Modifies State storage policy |
@@ -309,11 +315,11 @@ The following categories are distinct even before their full type and execution 
 
 A Constant is compile-time immutable.
 
-A Parameter configures an Instance. Generated runtime behavior MUST NOT assign to a Parameter unless a later RFC introduces an explicit, bounded configuration-transaction model. A runtime-tunable value cannot silently be treated as both Parameter and State.
+A Parameter configures an Instance. Its effective value MUST be fixed before the first execution step and MUST remain immutable during execution. A future runtime configuration facility must introduce an explicit value category and bounded transaction contract rather than silently weakening Parameter semantics. A runtime-tunable value cannot be treated as both Parameter and State.
 
-An Endpoint represents interaction with another entity or environment. Direction, sampling, quality, update timing, and type compatibility are deferred to RFC-0005.
+Endpoint is the sole neutral Core Semantic Kernel term for interaction with another entity or environment. Port, Signal, direction, sampling, quality, update timing, and type compatibility are deferred to RFC-0005.
 
-State is owned by bounded behavior. A retention or persistence declaration is a storage policy on State, not a synonym for State and not a new identity kind.
+State and Behavior remain foundational member categories so that ownership and structural identity are available before execution lowering. Their runtime semantics are owned by RFC-0004. A retention or persistence declaration is a storage policy on State, not a synonym for State and not a new identity kind.
 
 Persistence across schema changes, software upgrades, or hot swap requires stable storage identity and migration semantics. No `persistent` facility is authorized until those contracts are defined.
 
@@ -340,6 +346,8 @@ A Connection MUST relate Endpoint occurrences in one valid composition context. 
 Fan-out is represented by multiple Connection Declarations. Hyperedges, implicit broadcast, implicit conversion, and multiple-driver conflict resolution are not authorized by this RFC.
 
 Direction, type compatibility, units, quality, sampling, timing, cycle analysis, and driver-count validation are owned by RFC-0005 and RFC-0004.
+
+This RFC defines no Connection transformation semantics. RFC-0005 may introduce an explicit, source-traceable transformation contract. Target lowering MUST NOT invent a hidden transformation.
 
 ### 6.10 Typed Semantic References
 
@@ -409,13 +417,13 @@ A Definition classification role applies to every expanded Instance of that Defi
 
 An Instance Declaration MAY carry a contextual containment role. Such a role describes how the occurrence participates in its parent composition; it does not change the classification of the referenced Definition.
 
-Within one profile namespace and role category, an entity MUST NOT receive conflicting roles. Cross-profile role composition is permitted only when every involved profile declares it compatible.
+Within one profile namespace and role category, an entity MUST receive at most one role. A profile MAY define multiple distinct role categories. Cross-profile role composition is permitted only when every involved profile declares it compatible.
 
 Profiles MUST NOT infer a safety-relevant role from an identifier spelling, external tag, directory path, or target address.
 
 ### 6.13 Initial Industrial Role Vocabulary
 
-This Draft reserves the qualified profile namespace `industrial.structure` for a target-neutral industrial structure profile.
+This Proposed RFC standardizes the qualified profile namespace `industrial.structure` as the foundational target-neutral industrial structure profile.
 
 The proposed role vocabulary is:
 
@@ -440,11 +448,11 @@ These roles do not become separate AST, Semantic Model, or Canonical IR node kin
 
 An Instance Declaration may therefore be a Component occurrence of a Device Definition without semantic ambiguity.
 
-Primitive is a classification of a Definition whose structural child count is zero. It may still declare Parameters, Endpoints, State, Behavior, and Connections permitted by its profile.
+Primitive remains an `industrial.structure` classification of a Definition whose structural child count is zero, not a kernel kind. A standard library MAY apply the role. A Primitive Definition may still declare Parameters, Endpoints, State, Behavior, and Connections permitted by its profile.
 
 Atom is not a role, declaration kind, or synonym. New normative text and source syntax MUST NOT use it.
 
-This RFC does not impose one universal parent-role hierarchy for the initial vocabulary. A process, machine, building, power, or logistics profile MAY define a stricter role-containment matrix. Such a matrix is profile validation, not Core Semantic Kernel containment.
+This RFC does not impose one universal parent-role hierarchy for the initial vocabulary. Process, machine, building, power, and logistics role-containment matrices require separate versioned profile contracts. Such a matrix is profile validation, not Core Semantic Kernel containment.
 
 ### 6.14 Core Containment Matrix
 
@@ -461,6 +469,8 @@ The following matrix defines direct semantic containment in the kernel:
 | Connection Declaration | Source and destination Endpoint references and an optional explicitly authorized transformation reference |
 
 An entity not listed as an allowed child MUST NOT be inserted by a parser, profile, plugin, compiler pass, or target lowering step.
+
+An Application Assembly MAY declare explicit application-level Connections between root Instances without introducing a wrapper Definition.
 
 The exact source owner of top-level Definitions and Application Assemblies is deferred to RFC-0001C.
 
@@ -522,7 +532,7 @@ These sketches do not establish final grammar.
 
 ### 6.17 Validation and Diagnostics
 
-The following diagnostic codes are reserved by this Draft:
+The following diagnostic codes are defined by this Proposed revision:
 
 | Code | Severity | Condition | Required diagnostic facts |
 | --- | --- | --- | --- |
@@ -573,6 +583,8 @@ Instance Identity MUST NOT depend on:
 - compiler concurrency.
 
 The exact serialized identity format is deferred to RFC-0001B, RFC-0001C, and RFC-0012.
+
+Identity is preserved across physical file relocation only when package identity, namespace identity, owning declaration path, and member path remain unchanged. Changing any of those semantic identity components changes the affected Declaration or Instance Identity even if the declaration text is otherwise identical.
 
 ### 7.3 Expansion and Connection Ordering
 
@@ -878,26 +890,25 @@ Rejected because a first-class Connection needs identity, direction, validation 
 
 Rejected because a reusable Definition must be deployable to multiple compatible targets without editing its logical structure.
 
-## 13. Unresolved Questions
+## 13. Resolved and Delegated Decisions
 
-Before this RFC becomes Proposed, review must resolve:
-
-- whether Application Assembly is the correct canonical term and whether a Project may contain more than one;
-- whether the Core Semantic Kernel should expose Endpoint as the neutral term or reserve both Port and Signal immediately;
-- whether Parameter values are always fixed after initialization or may participate in a future explicit runtime configuration transaction;
-- whether State and Behavior belong in this foundational taxonomy or should be introduced only by RFC-0004;
-- whether exactly one role per profile namespace and role category is sufficiently expressive;
-- whether `industrial.structure` should be standardized by this RFC or moved to a separate Industrial Profile RFC;
-- which industrial hierarchy profiles should define strict role-containment matrices;
-- whether Primitive should remain a profile role or become a standard-library classification outside the language;
-- whether bounded static arrays or replication should be part of RFC-0006;
-- whether anonymous definitions should remain permanently prohibited;
-- whether Connection transformations are separate Definitions, expression nodes, or target-lowering constructs;
-- what minimum expansion depth and entity-count limits conforming compilers must support;
-- which source changes preserve Instance Identity across package relocation or module refactoring;
-- whether an Application Assembly may add application-level Connections between root Instances without a wrapper Definition.
-
-An unresolved question that changes normative behavior blocks promotion to Proposed.
+| Topic | Resolution | Owning contract |
+| --- | --- | --- |
+| Application Assembly | Target-neutral semantic graph root distinct from Project; zero or more per Project | This RFC and RFC-0001C |
+| Deployment selection | Exactly one Application Assembly per Deployment Model in the foundational model | This RFC and RFC-0007 |
+| Endpoint, Port, and Signal | Endpoint is the sole neutral kernel term | This RFC and RFC-0005 |
+| Parameter lifecycle | Fixed before execution and immutable during execution | This RFC |
+| State and Behavior | Retained as kernel member categories; execution semantics delegated | RFC-0004 |
+| Role multiplicity | At most one role per profile namespace and role category | This RFC |
+| `industrial.structure` | Standardized foundational Industrial Profile | This RFC |
+| Strict industrial hierarchies | Require separate profile contracts | Future Industrial Profile RFCs |
+| Primitive | `industrial.structure` Definition role, not a kernel kind | This RFC and Standard Library RFC |
+| Static arrays and replication | Not authorized here; delegated | RFC-0006 |
+| Anonymous definitions | Permanently prohibited as a core identity invariant | This RFC |
+| Connection transformations | Must be explicit and source-traceable; delegated | RFC-0005 |
+| Baseline expansion capacity | Depth 64 and 262,144 total expanded entities per Application Assembly | This RFC |
+| Identity across relocation | Preserved only when semantic package, namespace, owner, and member paths remain unchanged | This RFC, RFC-0001B, and RFC-0001C |
+| Application-level connections | Permitted explicitly between root Instances | This RFC |
 
 ## 14. Conformance Requirements
 
@@ -928,7 +939,7 @@ Planned conformance fixtures include:
 - deterministic ordering tests;
 - expansion resource-limit tests.
 
-Conformance to this Draft does not imply conformance to a released IndustrialMDE language version.
+Conformance to this Proposed RFC alone does not imply conformance to a released IndustrialMDE language version.
 
 ## 15. Non-Normative Implementation Notes
 
@@ -955,3 +966,4 @@ Canonical IR may later flatten or normalize parts of the Instance tree, but it m
 | Date | Change |
 | --- | --- |
 | 2026-07-19 | Initial Draft introducing the Core Semantic Kernel, static instance expansion, industrial profile roles, and domain/deployment separation |
+| 2026-07-19 | Promoted to Proposed after project-owner audit; resolved identity, endpoint, parameter, profile, resource, and Application Assembly decisions |
