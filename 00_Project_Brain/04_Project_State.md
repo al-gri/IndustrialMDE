@@ -16,7 +16,7 @@ Percent-complete estimates are intentionally omitted until measurable acceptance
 | RFC governance and index | Proposed, version 0.1 | Not normative until governance review is accepted |
 | RFC template | Draft | Initial review artifact present |
 | Project glossary | Draft, version 0.1 | Terms remain subordinate to Accepted RFCs |
-| Foundational language RFCs | Not Drafted | RFC-0000, RFC-0001, RFC-0001A, RFC-0001B, and RFC-0001C required |
+| Foundational language RFCs | Partially Drafted | RFC-0000 and RFC-0001 are Draft; RFC-0001A, RFC-0001B, and RFC-0001C are not drafted |
 | Architecture specifications | Placeholders only | Architecture, pipeline, and plugin documents are empty |
 | ADRs | Incomplete | ADR0001–ADR0003 are empty; ADR0004 is Proposed |
 | Language examples | Not present | Add after foundational syntax and semantics are drafted |

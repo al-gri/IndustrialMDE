@@ -9,7 +9,8 @@ The project is currently establishing its language architecture and governance. 
 - The repository structure and Project Brain exist.
 - Project Constitution version 2.0 is approved.
 - Constitution 2.1 amendments and RFC governance are proposed for review.
-- Foundational language RFCs are not yet drafted.
+- [RFC-0000](03_DSL/RFC/RFC-0000-Language-Design-Principles.md) and the canonical [RFC-0001](03_DSL/RFC/RFC-0001-Core-Language.md) are Draft review artifacts.
+- RFC-0001A, RFC-0001B, and RFC-0001C are not yet drafted.
 - Compiler source code, grammar, emitters, and tests have not been implemented.
 
 The authoritative status is maintained in [Project State](00_Project_Brain/04_Project_State.md). Current work is listed in [Current Sprint](00_Project_Brain/01_Current_Sprint.md) and [Next Tasks](00_Project_Brain/03_Next_Tasks.md).
@@ -20,9 +21,10 @@ The immediate objective is to establish a consistent foundational language packa
 
 1. review the proposed Project Constitution 2.1 amendments;
 2. review and accept RFC governance, lifecycle, and indexing;
-3. define the core lexical and semantic model;
-4. define compilation units, modules, packages, and dependencies;
-5. validate the architecture through a deliberately limited reference compiler spike.
+3. review the Draft language-principles and lexical contracts;
+4. define the core semantic model and identifier rules;
+5. define compilation units, modules, packages, and dependencies;
+6. validate the architecture through a deliberately limited reference compiler spike.
 
 ## Repository Map
 
