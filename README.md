@@ -1,0 +1,41 @@
+# IndustrialMDE
+
+IndustrialMDE is a model-driven engineering platform for declaratively describing industrial automation systems and deterministically generating target artifacts.
+
+The project is currently establishing its language architecture and governance. It is not yet a working compiler.
+
+## Current Status
+
+- The repository structure and Project Brain exist.
+- Project Constitution version 2.0 is approved.
+- Foundational language RFCs are not yet present in the repository.
+- Compiler source code, grammar, emitters, and tests have not been implemented.
+
+The authoritative status is maintained in [Project State](00_Project_Brain/04_Project_State.md). Current work is listed in [Current Sprint](00_Project_Brain/01_Current_Sprint.md) and [Next Tasks](00_Project_Brain/03_Next_Tasks.md).
+
+## Current Direction
+
+The immediate objective is to establish a consistent foundational language package before production compiler development:
+
+1. reconcile the Project Constitution with the reviewed architecture;
+2. establish RFC governance, lifecycle, and indexing;
+3. define the core lexical and semantic model;
+4. define compilation units, modules, packages, and dependencies;
+5. validate the architecture through a deliberately limited reference compiler spike.
+
+## Repository Map
+
+- [`00_Project_Brain/`](00_Project_Brain/) — project constitution, current focus, decisions, backlog, and state.
+- [`01_Documentation/`](01_Documentation/) — engineering and quality documentation placeholders.
+- [`02_Architecture/`](02_Architecture/) — architecture specifications and ADR placeholders.
+- `03_DSL/` — future language RFCs, examples, and grammar specifications.
+- `04_Compiler/` — future compiler implementation.
+- `09_Testing/` — future conformance and implementation tests.
+
+## Governance
+
+- Project and source documentation is written in English.
+- Language behavior is specified through RFCs.
+- Implementation architecture is justified through ADRs.
+- Fundamental changes require review and explicit approval before implementation.
+- Target generation must use the canonical intermediate representation rather than bypassing it through source- or template-specific logic.
