@@ -1,6 +1,6 @@
 # RFC-0000: Language Design Principles
 
-**Status:** Draft
+**Status:** Proposed
 
 **Authors:** IndustrialMDE Project
 
@@ -10,7 +10,7 @@
 
 **Target Language Version:** Pre-1.0
 
-**Dependencies:** Project Constitution version 2.0
+**Dependencies:** Project Constitution version 2.1
 
 **Supersedes:** None
 
@@ -18,9 +18,9 @@
 
 **Implementation Status:** Not Started
 
-**Review:** TBD
+**Review:** [Foundational RFC Review Decisions](../../00_Project_Brain/06_Foundational_RFC_Review_Decisions.md)
 
-**Related Proposal:** [Project Constitution 2.1 Amendment](../../00_Project_Brain/05_Constitution_Amendment_2.1.md)
+**Approval Context:** [Project Constitution 2.1 Amendment Record](../../00_Project_Brain/05_Constitution_Amendment_2.1.md)
 
 ## 1. Summary
 
@@ -28,7 +28,7 @@ This RFC defines the design constraints for the IndustrialMDE language. Later la
 
 IndustrialMDE is a declarative modeling and generative language for industrial automation. It may describe bounded runtime behavior, but IndustrialMDE source is compiled rather than interpreted on the target.
 
-Several clauses in this Draft depend on the Proposed Project Constitution 2.1 amendment. This RFC cannot advance beyond Draft while those clauses conflict with Approved Constitution version 2.0.
+This Proposed RFC is written under Approved Project Constitution version 2.1. Constitutional alignment no longer blocks review, but this RFC remains non-normative until its own dependencies, decision gates, and conformance requirements satisfy the RFC acceptance process.
 
 ## 2. Motivation
 
@@ -254,7 +254,7 @@ Every compilation MUST have an unambiguous effective language version.
 
 The same language version MUST NOT change accepted semantics silently.
 
-Deprecation, removal, support windows, and migration follow the managed compatibility policy proposed for Project Constitution version 2.1. Until that amendment is accepted, compatibility rules in this RFC remain Draft.
+Deprecation, removal, support windows, and migration follow the managed compatibility contract in Approved Project Constitution version 2.1. The exact deprecated-version support window remains delegated to a published release-support policy.
 
 A compiler MAY support multiple language versions, but it MUST resolve each compilation unit under one declared version and MUST reject unsupported combinations deterministically.
 
@@ -379,16 +379,18 @@ Rejected because vendor semantics would contaminate reusable models and Canonica
 
 Rejected because templates cannot safely own type checking, memory planning, validation, or target-independent semantics.
 
-## 13. Unresolved Questions
+## 13. Resolved and Deferred Decisions
 
-- Will the semantic model adopt Core Semantic Kernel + Industrial Profiles?
-- Which language-version directive and manifest fallback rules will RFC-0001 and RFC-0001C select?
-- Which expression and bounded iteration constructs, if any, will RFC-0003 and RFC-0004 permit?
-- What is the final namespaced attribute model?
-- Which guarantees become Stabilized for language version 1.0?
-- What support window applies to deprecated language versions?
+| Topic | Resolution | Owning contract or gate |
+| --- | --- | --- |
+| Semantic model | Core Semantic Kernel plus Industrial Profiles | RFC-0001A |
+| Language-version directive | Required per source file; the manifest may constrain but not override | RFC-0001 and RFC-0001C |
+| Expressions and bounded iteration | Must satisfy this RFC's boundedness invariant | RFC-0003 and RFC-0004 |
+| Namespaced attributes | No attribute is authorized until a dedicated public contract defines it | Future attribute RFC |
+| Version 1.0 stabilization set | Deferred until reference-spike and conformance evidence exist | Stabilization review |
+| Deprecated-version support window | Deferred to a published managed support policy | Constitution 2.1 and release policy |
 
-This RFC cannot become Accepted while an unresolved question changes a normative principle rather than only a downstream design detail.
+The two stabilization decisions do not alter the pre-1.0 principles in this RFC. They must be resolved before Stabilized status, not before Proposed review.
 
 ## 14. Conformance Requirements
 
@@ -418,3 +420,5 @@ The reference spike should prioritize architecture feedback, traceable represent
 | Date | Change |
 | --- | --- |
 | 2026-07-19 | Initial Draft |
+| 2026-07-19 | Promoted to Proposed after project-owner audit; resolved foundational decisions and recorded stabilization deferrals |
+| 2026-07-19 | Reconciled the dependency and compatibility text with Approved Project Constitution version 2.1 |

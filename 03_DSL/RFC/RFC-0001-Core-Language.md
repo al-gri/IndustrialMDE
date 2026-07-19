@@ -1,6 +1,6 @@
 # RFC-0001: Core Language and Lexical Structure
 
-**Status:** Draft
+**Status:** Proposed
 
 **Authors:** IndustrialMDE Project
 
@@ -18,7 +18,7 @@
 
 **Implementation Status:** Not Started
 
-**Review:** TBD
+**Review:** [Foundational RFC Review Decisions](../../00_Project_Brain/06_Foundational_RFC_Review_Decisions.md)
 
 ## 1. Summary
 
@@ -26,7 +26,7 @@ This RFC defines the source-file and lexical foundation of the IndustrialMDE lan
 
 This RFC deliberately does not define the semantic meaning of industrial declarations. Semantic entities, scopes, compilation units, types, expressions, and attributes are owned by later RFCs.
 
-RFC-0000 is currently Draft. Under the proposed RFC governance rules, this document cannot advance beyond Draft until RFC-0000 and every other normative dependency required by its final scope are Accepted.
+RFC-0000 is currently Proposed. This RFC may be reviewed as Proposed while its dependency is at a compatible review status. It cannot become Accepted until RFC-0000 and every other normative dependency required by its final scope are Accepted.
 
 ## 2. Motivation
 
@@ -229,7 +229,7 @@ A source identifier MUST contain no more than 255 ASCII characters.
 
 The core limit is intentionally not derived from a legacy target. A target profile MAY impose a stricter representable-symbol limit during target validation and MAY define deterministic name mangling with traceability. A target-specific restriction MUST NOT retroactively make the source text lexically malformed.
 
-The 255-character limit remains subject to architectural review before this RFC becomes Proposed.
+The 255-character limit is the Proposed vendor-neutral core contract. Stricter target limits remain target-validation concerns.
 
 ### 10.3 Case
 
@@ -261,7 +261,7 @@ true
 
 Reserved keywords MUST NOT be used as identifiers in that language version. Keyword matching is case-sensitive; for example, `Dsl` is an identifier token, not the `dsl` keyword.
 
-Declaration keywords not yet established by an Accepted semantic RFC are not made normative by this list. The keyword table may change while this RFC is Draft.
+Declaration keywords not yet established by an Accepted semantic RFC are not made normative by this list. A change to the keyword table requires an explicit RFC revision and compatibility analysis.
 
 Adding a reserved keyword to a Stabilized language version is a breaking lexical change unless the spelling was already reserved or the grammar uses a specified contextual-keyword rule.
 
@@ -408,7 +408,7 @@ Composite operator tokens, if introduced, MUST be listed by the RFC that defines
 
 There is no automatic semicolon insertion.
 
-The version directive, metadata entries, namespace directive, and import directive defined or outlined by this RFC use explicit semicolons. Later grammar RFCs must state where a terminator is required after each declaration form.
+The version directive and metadata entries defined by this RFC use explicit semicolons. Later RFCs must state where a terminator is required after each additional declaration form.
 
 ### 14.4 No Preprocessor or Shebang
 
@@ -442,7 +442,7 @@ The declared version selects the lexical and syntactic contract used for the ent
 
 A compiler that does not support the declared version MUST report that fact and MUST NOT silently parse the file as another version.
 
-Whether one project may contain files with different supported language versions is deferred to RFC-0001C. The explicit per-file directive remains the effective lexical-version source unless this RFC is amended.
+RFC-0001C may constrain the set of language versions permitted within one Project. The explicit per-file directive remains authoritative for that file and MUST NOT be silently overridden by a manifest.
 
 ## 16. Metadata Block
 
@@ -474,22 +474,21 @@ Metadata MUST NOT alter name resolution, type checking, execution behavior, conn
 
 An Accepted specification MAY define how particular metadata keys are copied into documentation, provenance, or artifact manifests. Unknown metadata keys MUST be preserved by lossless tooling but MUST NOT acquire implementation-defined semantics.
 
+This RFC standardizes no metadata keys. A later provenance or documentation contract may register keys without making metadata executable.
+
 Required project configuration and compiler options belong in the project manifest, not in source metadata.
 
-## 17. Preliminary Source-File Outline
+## 17. Post-Metadata Syntax Boundary
 
-The lexical and structural outline of a source file is:
+The source prefix owned by this RFC is:
 
 ```text
 language-version directive
 optional metadata block
-optional namespace directive
-zero or more import directives
-zero or more declarations
-end of file
+remaining token stream defined by later syntax RFCs
 ```
 
-The following example demonstrates token forms and ordering only:
+The following is a complete source file under the syntax owned by this RFC:
 
 ```plant
 dsl "0.1";
@@ -498,15 +497,9 @@ metadata {
     author: "Jane Doe";
     revision: "0.1.0";
 }
-
-namespace Process.WaterTreatment;
-
-import Common.Motors as Motors;
 ```
 
-This RFC reserves the outlined spellings but does not define namespace identity, import targets, aliases, visibility, or declaration semantics. RFC-0001B and RFC-0001C own those rules.
-
-Wildcard imports are not authorized by this RFC.
+The `namespace` and `import` spellings are reserved keywords, but this RFC defines no namespace or import directive grammar. RFC-0001B owns namespace, scope, qualification, and import syntax. RFC-0001C owns module, package, dependency, and compilation-unit semantics.
 
 ## 18. Deterministic Lexical Behavior
 
@@ -525,7 +518,7 @@ Lexical diagnostics MUST be ordered by raw start offset, then raw end offset, th
 
 ## 19. Diagnostic Expectations
 
-The following diagnostic codes are reserved by this Draft. The code assignments may change before this RFC becomes Proposed, but an implementation claiming conformance to this exact Draft revision must use them.
+The following diagnostic codes are defined by this Proposed revision. A code change requires an explicit RFC revision and diagnostic compatibility analysis.
 
 | Code | Severity | Condition | Required primary span |
 | --- | --- | --- | --- |
@@ -559,26 +552,24 @@ metadata {
     reviewed: false;
     source_number: 1_024;
 }
-
-namespace Process.WaterTreatment;
 ```
 
-Expected result: the lexical layer produces a version directive, one metadata block, one namespace outline, no diagnostics, and stable raw spans.
+Expected result: the lexical layer produces a version directive, one metadata block, no diagnostics, and stable raw spans.
 
 ### 20.2 Invalid Internal Tag Spelling
 
 ```plant
 dsl "0.1";
-namespace Process.PUMP-01;
+PUMP-01
 ```
 
-Expected result: `PUMP`, `-`, and `01` cannot form one identifier. Syntax analysis must reject the qualified-name position. Tooling SHOULD explain that a hyphenated engineering tag belongs in an external string-valued facility.
+Expected result: `PUMP-01` cannot form one identifier. It is tokenized as separate identifier, punctuation, and malformed numeric-like input and is rejected. Tooling SHOULD explain that a hyphenated engineering tag belongs in an external string-valued facility.
 
 ### 20.3 Invalid Unicode Identifier
 
 ```plant
 dsl "0.1";
-namespace Process.Насос;
+Насос
 ```
 
 Expected result: the first non-ASCII identifier character produces `IMDE1002`.
@@ -688,30 +679,30 @@ Allowing `PUMP-01` as one identifier would conflict with subtraction and make in
 
 ### 24.3 Project-Only Language Version
 
-A version only in the manifest would reduce repetition but make an isolated source file ambiguous and complicate tooling. This Draft requires an explicit per-file directive. RFC-0001C may propose coordinated project rules without silently changing a file's effective version.
+A version only in the manifest would reduce repetition but make an isolated source file ambiguous and complicate tooling. This Proposed RFC requires an explicit per-file directive. RFC-0001C may define coordinated project constraints without silently changing a file's effective version.
 
 ### 24.4 A 64-Character Core Identifier Limit
 
-A 64-character core limit would embed constraints from some legacy targets in the vendor-neutral lexical layer. This Draft instead proposes a generous core limit and target-profile validation or deterministic mangling.
+A 64-character core limit would embed constraints from some legacy targets in the vendor-neutral lexical layer. This Proposed RFC instead defines a generous core limit and target-profile validation or deterministic mangling.
 
 ### 24.5 Multiline and Interpolated Strings
 
 These forms add lexer complexity and can blur the boundary between data and executable templates. They are excluded until a concrete modeling use case justifies them.
 
-## 25. Unresolved Questions
+## 25. Resolved and Delegated Decisions
 
-Before this RFC becomes Proposed, review must resolve:
-
-- whether 255 characters is the appropriate core identifier limit;
-- whether a byte-order mark should remain permitted;
-- whether raw byte offsets or decoded-text offsets are the primary external source-map contract;
-- whether bidirectional control characters require a mandatory warning in comments and strings;
-- whether documentation comments may precede the version directive;
-- which metadata keys, if any, should be standardized by a separate specification;
-- whether binary and hexadecimal literals belong in the foundational lexical version;
-- whether the preliminary reserved punctuation set is too broad;
-- whether namespace syntax belongs partially in this RFC or entirely in RFC-0001B;
-- whether the project manifest may constrain all files to one language version.
+| Topic | Resolution | Owning contract |
+| --- | --- | --- |
+| Identifier length | 255 ASCII characters in the core | This RFC |
+| UTF-8 BOM | Permitted only at byte offset zero; ignored for tokens and retained in raw offsets | This RFC |
+| Canonical source span | Half-open raw UTF-8 byte span | This RFC |
+| Bidirectional controls | Tooling SHOULD expose security-sensitive invisible characters; no mandatory warning is added here | This RFC and future diagnostics policy |
+| Documentation before `dsl` | Permitted as trivia; attachment remains undefined | This RFC and documentation contract |
+| Standard metadata keys | None | Future provenance or documentation contract |
+| Binary and hexadecimal integers | Included | This RFC |
+| Reserved punctuation | Retained as reserved syntax space without implicit semantics | This RFC |
+| Namespace and import syntax | Fully delegated | RFC-0001B |
+| Project language-version constraints | May restrict the permitted set but cannot override a file directive | RFC-0001C |
 
 ## 26. Conformance Requirements
 
@@ -725,7 +716,7 @@ An implementation conforms to this RFC revision only if it:
 - does not infer unstandardized semantics from metadata or reserved punctuation;
 - reports its supported language versions explicitly.
 
-Conformance to this Draft does not make the implementation conformant to an IndustrialMDE language release.
+Conformance to this Proposed RFC alone does not make the implementation conformant to an IndustrialMDE language release.
 
 ## 27. Non-Normative Implementation Notes
 
@@ -749,3 +740,9 @@ These notes do not require a separate concrete syntax tree and AST. Phase-repres
 - Created the canonical RFC-0001 file.
 - Defined the initial source, lexical, version, metadata, and diagnostic contracts.
 - Recorded unresolved design questions without claiming acceptance.
+
+### Proposed — 2026-07-19
+
+- Incorporated project-owner audit decisions.
+- Confirmed the 255-character identifier limit, BOM handling, raw-byte spans, literals, and reserved punctuation.
+- Delegated all namespace and import grammar to RFC-0001B.
