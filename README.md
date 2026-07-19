@@ -10,7 +10,7 @@ The project is currently establishing its language architecture and governance. 
 - [Project Constitution version 2.1](00_Project_Brain/00_Project_Constitution.md) is Approved and supersedes version 2.0.
 - The Constitution 2.1 amendment is Accepted and Incorporated; detailed RFC lifecycle rules remain Proposed for review.
 - [RFC-0000](03_DSL/RFC/RFC-0000-Language-Design-Principles.md), the canonical [RFC-0001](03_DSL/RFC/RFC-0001-Core-Language.md), and [RFC-0001A](03_DSL/RFC/RFC-0001A-Semantic-Object-Model.md) are Proposed review artifacts.
-- RFC-0001B and RFC-0001C are not yet drafted.
+- [RFC-0001B](03_DSL/RFC/RFC-0001B-Identifiers-Scopes-and-Namespaces.md) is a Draft review artifact; RFC-0001C is not yet drafted.
 - Compiler source code, grammar, emitters, and tests have not been implemented.
 
 The authoritative status is maintained in [Project State](00_Project_Brain/04_Project_State.md). Current work is listed in [Current Sprint](00_Project_Brain/01_Current_Sprint.md) and [Next Tasks](00_Project_Brain/03_Next_Tasks.md).
@@ -21,7 +21,7 @@ The immediate objective is to establish a consistent foundational language packa
 
 1. review and accept RFC lifecycle and indexing details under Approved Constitution 2.1;
 2. review the Proposed language-principles and lexical contracts;
-3. review the Proposed core semantic model and define identifier rules;
+3. review the Proposed core semantic model and the Draft identifier, scope, namespace, and import rules;
 4. define compilation units, modules, packages, and dependencies;
 5. validate the architecture through a deliberately limited reference compiler spike.
 
