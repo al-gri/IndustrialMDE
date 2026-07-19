@@ -1,8 +1,25 @@
-# Architecture Decisions & Stack
+# Decision Index
 
-* **Language:** Python
-* **Parsing:** textX
-* **Code Generation:** Jinja2
-* **Core Architecture:** Immutable Intermediate Representation (IR)
-* **Extensibility:** Strict Plugin Architecture
-* **Rule:** ADR (Architecture Decision Record) is REQUIRED for any core changes.
+This file is a concise index. It does not replace the normative RFC or ADR that records rationale, alternatives, consequences, and status.
+
+## Project and Language Direction
+
+| Decision | Status | Record |
+| --- | --- | --- |
+| Project Constitution version 2.0 | Approved | [`00_Project_Constitution.md`](00_Project_Constitution.md) |
+| Project documentation and source material use English | Approved; normative record pending | Project owner decision |
+| Language design follows an RFC-first process | Approved; governance document pending | RFC index not yet created |
+| Target generation must not bypass the canonical IR | Approved principle | Project Constitution, section 7 |
+| Published compiler phase artifacts are immutable | Approved principle; detailed contract pending | Project Constitution, section 3 |
+
+## Implementation Choices Requiring Complete ADRs
+
+| Choice | Current status | ADR |
+| --- | --- | --- |
+| Python compiler implementation | Recorded; rationale incomplete | [`ADR0001_TechStack.md`](../02_Architecture/ADR/ADR0001_TechStack.md) |
+| textX parser framework | Recorded; rationale incomplete | [`ADR0001_TechStack.md`](../02_Architecture/ADR/ADR0001_TechStack.md) |
+| Jinja2 template engine | Recorded; rationale incomplete | [`ADR0001_TechStack.md`](../02_Architecture/ADR/ADR0001_TechStack.md) |
+| Canonical immutable IR architecture | Approved principle; schema not defined | [`ADR0002_IR_Design.md`](../02_Architecture/ADR/ADR0002_IR_Design.md) |
+| Strict plugin extension interfaces | Approved principle; isolation model not defined | [`ADR0003_CompilerArchitecture.md`](../02_Architecture/ADR/ADR0003_CompilerArchitecture.md) |
+
+No implementation choice is considered fully documented until its ADR is substantive and explicitly accepted.
