@@ -8,7 +8,8 @@ The project is currently establishing its language architecture and governance. 
 
 - The repository structure and Project Brain exist.
 - Project Constitution version 2.0 is approved.
-- Foundational language RFCs are not yet present in the repository.
+- Constitution 2.1 amendments and RFC governance are proposed for review.
+- Foundational language RFCs are not yet drafted.
 - Compiler source code, grammar, emitters, and tests have not been implemented.
 
 The authoritative status is maintained in [Project State](00_Project_Brain/04_Project_State.md). Current work is listed in [Current Sprint](00_Project_Brain/01_Current_Sprint.md) and [Next Tasks](00_Project_Brain/03_Next_Tasks.md).
@@ -17,8 +18,8 @@ The authoritative status is maintained in [Project State](00_Project_Brain/04_Pr
 
 The immediate objective is to establish a consistent foundational language package before production compiler development:
 
-1. reconcile the Project Constitution with the reviewed architecture;
-2. establish RFC governance, lifecycle, and indexing;
+1. review the proposed Project Constitution 2.1 amendments;
+2. review and accept RFC governance, lifecycle, and indexing;
 3. define the core lexical and semantic model;
 4. define compilation units, modules, packages, and dependencies;
 5. validate the architecture through a deliberately limited reference compiler spike.
@@ -28,7 +29,7 @@ The immediate objective is to establish a consistent foundational language packa
 - [`00_Project_Brain/`](00_Project_Brain/) — project constitution, current focus, decisions, backlog, and state.
 - [`01_Documentation/`](01_Documentation/) — engineering and quality documentation placeholders.
 - [`02_Architecture/`](02_Architecture/) — architecture specifications and ADR placeholders.
-- `03_DSL/` — future language RFCs, examples, and grammar specifications.
+- [`03_DSL/`](03_DSL/) — proposed RFC governance, glossary, future language RFCs, examples, and grammar specifications.
 - `04_Compiler/` — future compiler implementation.
 - `09_Testing/` — future conformance and implementation tests.
 

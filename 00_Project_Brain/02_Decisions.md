@@ -8,7 +8,9 @@ This file is a concise index. It does not replace the normative RFC or ADR that 
 | --- | --- | --- |
 | Project Constitution version 2.0 | Approved | [`00_Project_Constitution.md`](00_Project_Constitution.md) |
 | Project documentation and source material use English | Approved; normative record pending | Project owner decision |
-| Language design follows an RFC-first process | Approved; governance document pending | RFC index not yet created |
+| Language design follows an RFC-first process | Approved direction; governance Proposed | [`RFC/README.md`](../03_DSL/RFC/README.md) |
+| Separate language RFCs from implementation ADRs | Proposed | [`ADR0004_DecisionGovernance.md`](../02_Architecture/ADR/ADR0004_DecisionGovernance.md) |
+| Amend Project Constitution to version 2.1 | Proposed | [`05_Constitution_Amendment_2.1.md`](05_Constitution_Amendment_2.1.md) |
 | Target generation must not bypass the canonical IR | Approved principle | Project Constitution, section 7 |
 | Published compiler phase artifacts are immutable | Approved principle; detailed contract pending | Project Constitution, section 3 |
 
