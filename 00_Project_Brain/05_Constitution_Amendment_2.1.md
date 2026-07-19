@@ -1,8 +1,8 @@
-# Proposed Amendment: IndustrialMDE Project Constitution 2.1
+# Amendment Record: IndustrialMDE Project Constitution 2.1
 
 **Proposal Version:** 0.1
 
-**Status:** Proposed
+**Status:** Accepted and Incorporated
 
 **Target Document:** `00_Project_Constitution.md`, version 2.0
 
@@ -10,11 +10,15 @@
 
 **Created:** 2026-07-19
 
+**Approved:** 2026-07-19
+
+**Incorporated Document:** [`00_Project_Constitution.md`](00_Project_Constitution.md), version 2.1
+
 ## 1. Authority and Effect
 
-This document is an architectural review proposal. It is not normative and does not modify the authority or status of Project Constitution version 2.0.
+The project owner explicitly approved this amendment on 2026-07-19. Its clauses are incorporated into Project Constitution version 2.1, which supersedes version 2.0 and is now the highest normative project document.
 
-If this proposal is explicitly accepted by the project owner, its approved clauses will be incorporated into Project Constitution version 2.1 in a separate patch. Until that acceptance and incorporation occur, Constitution version 2.0 remains the governing document.
+This file preserves the reviewed proposal and acceptance path for traceability. When wording in this historical record differs from the consolidated Constitution, the incorporated [`00_Project_Constitution.md`](00_Project_Constitution.md) is authoritative.
 
 ## 2. Purpose
 
@@ -335,4 +339,14 @@ Acceptance requires:
 4. a separate patch incorporating accepted clauses into Constitution version 2.1;
 5. an amendment entry identifying version 2.0 as superseded.
 
-Until all five steps are complete, Project Constitution version 2.0 remains Approved and authoritative.
+All five acceptance steps were completed on 2026-07-19. Project Constitution version 2.1 is Approved and authoritative; version 2.0 is Superseded.
+
+## 21. Incorporation Record
+
+| Requirement | Evidence |
+| --- | --- |
+| Architectural review | Completed by the project owner |
+| Objection resolution | No unresolved blocking objection recorded at approval |
+| Explicit owner approval | Recorded on 2026-07-19 |
+| Separate incorporation patch | Consolidated in `00_Project_Constitution.md`, version 2.1 |
+| Supersession entry | Constitution version 2.1, Section 24 |
