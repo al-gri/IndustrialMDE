@@ -158,8 +158,8 @@ An example does not establish semantics that are absent from the governing RFC.
 
 | RFC | Title | Document status | Dependencies | Implementation |
 | --- | --- | --- | --- | --- |
-| RFC-0000 | Language Design Principles | Not Drafted | Constitution | Not Started |
-| RFC-0001 | Core Language and Lexical Structure | Not Drafted | RFC-0000 | Not Started |
+| [RFC-0000](RFC-0000-Language-Design-Principles.md) | Language Design Principles | Draft | Constitution | Not Started |
+| [RFC-0001](RFC-0001-Core-Language.md) | Core Language and Lexical Structure | Draft | RFC-0000 | Not Started |
 | RFC-0001A | Semantic Object Model | Not Drafted | RFC-0000, RFC-0001 | Not Started |
 | RFC-0001B | Identifiers, Scopes, and Namespaces | Not Drafted | RFC-0000, RFC-0001, RFC-0001A | Not Started |
 | RFC-0001C | Compilation Units, Modules, Packages, and Dependencies | Not Drafted | RFC-0000, RFC-0001B | Not Started |
