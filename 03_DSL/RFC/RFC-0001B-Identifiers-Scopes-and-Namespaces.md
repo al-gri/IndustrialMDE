@@ -1,12 +1,12 @@
 # RFC-0001B: Identifiers, Scopes, and Namespaces
 
-**Status:** Draft
+**Status:** Proposed
 
 **Authors:** IndustrialMDE Project
 
 **Created:** 2026-07-19
 
-**Last Updated:** 2026-07-19
+**Last Updated:** 2026-07-20
 
 **Target Language Version:** Pre-1.0
 
@@ -18,7 +18,7 @@
 
 **Implementation Status:** Not Started
 
-**Review:** [Pull Request #6](https://github.com/al-gri/IndustrialMDE/pull/6); [Foundational RFC Review Decisions](../../00_Project_Brain/06_Foundational_RFC_Review_Decisions.md)
+**Review:** [Pull Request #6](https://github.com/al-gri/IndustrialMDE/pull/6); [RFC-0001B Review Decision](../../00_Project_Brain/07_RFC-0001B_Review_Decision.md)
 
 ## 1. Summary
 
@@ -26,7 +26,7 @@ This RFC defines how IndustrialMDE source identifiers become deterministic seman
 
 The design deliberately favors explicit qualification and stable lookup over convenience features that can change meaning when dependencies evolve. Wildcard imports, relative imports, implicit parent-namespace search, and implicit shadowing are not part of language version `0.1`.
 
-RFC-0000, RFC-0001, and RFC-0001A are currently Proposed. This RFC is a non-normative Draft and cannot become Accepted until its normative dependencies and the RFC governance contract are Accepted.
+RFC-0000, RFC-0001, and RFC-0001A are currently Proposed. This RFC is a non-normative Proposed specification and cannot become Accepted until its normative dependencies and the RFC governance contract are Accepted.
 
 ## 2. Motivation
 
@@ -223,7 +223,7 @@ The recommended source conventions are:
 
 These conventions classify source presentation; they do not define semantic entity kind. A compiler MUST NOT infer a Definition, Constant, role, or target binding from capitalization.
 
-In the pre-1.0 Draft contract, a convention violation produces `IMDE3013` as a Warning and does not change identity or resolution. The diagnostic configuration MAY promote the Warning to an Error as an explicit build input. Whether a Stabilized production profile makes any convention mandatory remains an unresolved decision.
+In the pre-1.0 Proposed contract, a convention violation produces `IMDE3013` as a Warning and does not change identity or resolution. The diagnostic configuration MAY promote the Warning to an Error as an explicit build input. Whether a Stabilized production profile makes any convention mandatory remains an unresolved decision.
 
 Import aliases SHOULD follow the convention of the imported target. A namespace alias uses `PascalCase`.
 
@@ -413,7 +413,7 @@ Required minimum production limits are deferred to the compiler conformance spec
 
 ### 6.18 Diagnostic Expectations
 
-The following diagnostic codes are reserved by this Draft. A Proposed revision may refine them before acceptance.
+The following diagnostic codes are reserved by this Proposed specification and may be refined before acceptance.
 
 | Code | Severity | Condition | Required facts |
 | --- | --- | --- | --- |
@@ -672,7 +672,7 @@ instance MainPump : MotorVfd;
 constant default_timeout;
 ```
 
-Each identifier is lexically valid. Under the Draft convention policy, each produces `IMDE3013` as a Warning with the expected category convention. The compiler does not infer or alter entity kind from capitalization.
+Each identifier is lexically valid. Under the Proposed convention policy, each produces `IMDE3013` as a Warning with the expected category convention. The compiler does not infer or alter entity kind from capitalization.
 
 ### 11.12 Boundary Fixtures
 
@@ -736,9 +736,9 @@ Rejected because moving a file or adding a declaration to a parent namespace cou
 
 ## 13. Unresolved Questions and Delegated Decisions
 
-The following table records the remaining design gates. Before this RFC becomes Proposed, each gate MUST have a precise review disposition or an explicit owning dependency. Before this RFC becomes Accepted, every gate that changes normative behavior MUST be resolved by compatible Accepted contracts.
+The following table records the remaining design gates. At Proposed status, each gate has a precise review disposition or an explicit owning dependency. Before this RFC becomes Accepted, every gate that changes normative behavior MUST be resolved by compatible Accepted contracts.
 
-| Topic | Current Draft direction | Owner |
+| Topic | Current Proposed direction | Owner |
 | --- | --- | --- |
 | Package root ownership | Namespace Identity includes Package Identity; manifest rules remain undefined | RFC-0001C |
 | Package-qualified import syntax | Imports use a Qualified Name; disambiguation among packages remains undefined | RFC-0001C and this RFC revision |
@@ -746,10 +746,10 @@ The following table records the remaining design gates. Before this RFC becomes 
 | Import-cycle policy | Name imports do not authorize cycles; graph node and cycle rules remain undefined | RFC-0001C |
 | Visibility defaults | Imports cannot bypass visibility; `public` and `private` semantics remain undefined | RFC-0001C |
 | Public re-export | Prohibited in `0.1` unless a later revision defines an explicit form | RFC-0001C and compatibility review |
-| Language prelude | No implicit prelude is assumed by this Draft | RFC-0002 and RFC-0011 |
+| Language prelude | No implicit prelude is assumed by this Proposed specification | RFC-0002 and RFC-0011 |
 | Behavior-local scopes | Must not introduce implicit shadowing | RFC-0003 and RFC-0004 |
 | Interface member binding | Must be explicit and distinct from redeclaration | RFC-0006 |
-| Naming-style severity | Warning in this Draft; Stabilized production policy unresolved | This RFC review |
+| Naming-style severity | Warning in this Proposed specification; Stabilized production policy unresolved | This RFC review |
 | Minimum name-resource limits | Limits are required but minimum production values are unset | Compiler conformance specification |
 
 An unresolved item MUST NOT be filled by implementation-specific behavior. Until its owning contract is Accepted, tools MUST reject forms that require the missing semantics or identify them as non-conforming experimental behavior.
@@ -794,6 +794,12 @@ The resolver can avoid quadratic collision checks by indexing both exact spellin
 No parser framework, object-model library, hash implementation, or filesystem API is part of this language contract.
 
 ## 16. Change Log
+
+### Proposed — 2026-07-20
+
+- Advanced from Draft after the project-owner semantic audit approved the complete text without normative changes.
+- Recorded the language-prelude governance risk as delegated to RFC-0002 and RFC-0011.
+- Updated status metadata, glossary entries, and Project Brain tracking without changing language semantics.
 
 ### Draft — 2026-07-19
 
