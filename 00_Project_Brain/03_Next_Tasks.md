@@ -7,7 +7,7 @@
 3. After acceptance, incorporate approved clauses into Project Constitution version 2.1.
 4. Review RFC-0000: Language Design Principles and resolve its open decisions.
 5. Review canonical RFC-0001: Core Language and Lexical Structure and resolve its open decisions.
-6. Create RFC-0001A: Semantic Object Model as a Draft.
+6. Review RFC-0001A: Semantic Object Model and resolve its open decisions.
 7. Create RFC-0001B: Identifiers, Scopes, and Namespaces as a Draft.
 8. Create RFC-0001C: Compilation Units, Modules, Packages, and Dependencies as a Draft.
 

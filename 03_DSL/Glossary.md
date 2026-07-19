@@ -6,6 +6,8 @@
 
 **Created:** 2026-07-19
 
+**Last Updated:** 2026-07-19
+
 ## 1. Purpose
 
 This glossary provides a shared vocabulary for Project Brain, RFCs, ADRs, compiler specifications, and implementation discussions.
@@ -63,35 +65,42 @@ The glossary does not independently establish language semantics. An Accepted RF
 
 | Term | Status | Working definition |
 | --- | --- | --- |
-| Definition | Proposed | Reusable compile-time declaration that can be referenced by statically known instances |
-| Instance | Proposed | Statically declared occurrence associated with a Definition and a stable qualified identity |
+| Definition | Proposed | Named reusable declaration that owns a statically fixed set of semantic Member Declarations |
+| Member Declaration | Proposed | Declaration owned by one Definition and interpreted or instantiated in that Definition's context |
+| Instance Declaration | Proposed | Static composition site that references one Definition and expands in each applicable parent context |
+| Instance | Proposed | Immutable expanded occurrence associated with one Definition, one creating Instance Declaration, and a stable path identity |
+| Application Assembly | Proposed | Target-neutral root selecting root instances, logical configuration, and application-level relationships |
 | Interface | Reserved | Contract implemented by definitions or exposed instances; conformance rules remain undefined |
-| Port | Reserved | Typed interaction endpoint whose relationship to Signal remains unresolved |
+| Endpoint | Proposed | Neutral kernel category for an interaction endpoint; Port and Signal semantics remain reserved for RFC-0005 |
+| Port | Reserved | Candidate public endpoint concept whose relationship to Signal remains unresolved |
 | Signal | Reserved | Typed data or control endpoint with direction and runtime semantics to be defined by RFC-0005 |
-| Connection | Proposed | First-class relationship between compatible endpoints, including direction and traceability |
-| Parameter | Reserved | Configurable value category whose mutability and lifecycle remain undefined |
-| Constant | Reserved | Compile-time immutable value to be defined by the type and expression RFCs |
-| State Variable | Reserved | Runtime storage category governed by the Execution Model RFC |
-| Mapping | Reserved | Deployment relationship between logical entities and target resources, not reusable domain containment |
-| Profile | Proposed | Named domain or target specialization layered over the core semantic kernel without silently changing core rules |
-| Domain Model | Proposed | Reusable target-neutral definitions and instances describing industrial intent |
-| Deployment Model | Proposed | Project-specific bindings, target profiles, hardware mappings, and deployment configuration |
+| Connection | Proposed | First-class declaration relating explicit Endpoint references in one composition context |
+| Parameter | Proposed | Per-instance configuration input that generated behavior cannot assign by default |
+| Constant | Proposed | Compile-time immutable named value; type and evaluation rules remain reserved |
+| State Variable | Proposed | Per-instance runtime storage owned by bounded behavior |
+| Mapping | Proposed | Deployment-only relationship between a resolved logical identity and a target resource |
+| Profile Role | Proposed | Qualified classification or contextual role applied to an eligible kernel entity without changing its entity kind |
+| Semantic Profile | Proposed | Versioned role vocabulary and validation contract layered over the Core Semantic Kernel |
+| Industrial Profile | Proposed | Target-neutral Semantic Profile providing industrial roles and domain constraints |
+| Domain Definition Plane | Proposed | Reusable target-neutral Definitions and their declared members |
+| Application Assembly Plane | Proposed | Target-neutral root instances, logical configuration, and application-level connections |
+| Deployment Model | Proposed | Project-specific target selection, hardware bindings, mappings, and deployment values |
 
 ## 7. Industrial Hierarchy Terms
 
-The following terms are candidate profile roles rather than confirmed universal core entities:
+The following terms are proposed `industrial.structure` profile roles rather than universal core entities:
 
 | Term | Status | Working definition |
 | --- | --- | --- |
-| Plant | Reserved | Industrial site role; placement in the core or an industrial profile is unresolved |
-| Area | Reserved | Industrial subdivision role |
-| ProcessCell | Reserved | Process-oriented cell role |
-| Unit | Reserved | Independently meaningful process or machine unit role |
-| Equipment | Reserved | Functional industrial assembly role |
-| ControlModule | Reserved | Logical grouping of cooperating control elements |
-| Component | Reserved | Candidate generic role for a nested static instance; exact semantics unresolved |
-| Device | Reserved | Candidate physical-asset role; MUST NOT be used as a synonym for Component until defined |
-| Primitive | Reserved | Candidate minimal standard-library definition; exact semantics unresolved |
+| Plant | Proposed | Definition classification role for an industrial site or facility assembly |
+| Area | Proposed | Definition classification role for a logical or physical facility subdivision |
+| ProcessCell | Proposed | Definition classification role for a process-oriented production subdivision |
+| Unit | Proposed | Definition classification role for an independently meaningful process or machine unit |
+| Equipment | Proposed | Definition classification role for a functional industrial assembly or skid |
+| ControlModule | Proposed | Definition classification role for a coordinated control assembly |
+| Component | Proposed | Contextual role for an Instance Declaration nested in a parent composition |
+| Device | Proposed | Definition classification role for a physical asset or device-abstraction boundary; not a synonym for Component |
+| Primitive | Proposed | Definition classification role requiring zero child Instance Declarations; not a separate kernel entity kind |
 | Atom | Avoid | Ambiguous synonym previously used for Component, Device, or Primitive |
 
 ## 8. External and Target Identity Terms

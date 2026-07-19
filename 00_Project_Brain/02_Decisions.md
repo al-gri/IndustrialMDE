@@ -13,6 +13,9 @@ This file is a concise index. It does not replace the normative RFC or ADR that 
 | Amend Project Constitution to version 2.1 | Proposed | [`05_Constitution_Amendment_2.1.md`](05_Constitution_Amendment_2.1.md) |
 | Target generation must not bypass the canonical IR | Approved principle | Project Constitution, section 7 |
 | Published compiler phase artifacts are immutable | Approved principle; detailed contract pending | Project Constitution, section 3 |
+| Core Semantic Kernel with Industrial Profile roles | Proposed | [`RFC-0001A-Semantic-Object-Model.md`](../03_DSL/RFC/RFC-0001A-Semantic-Object-Model.md) |
+| Definition, Instance Declaration, and expanded Instance are distinct | Proposed | [`RFC-0001A-Semantic-Object-Model.md`](../03_DSL/RFC/RFC-0001A-Semantic-Object-Model.md) |
+| Domain, Application Assembly, and Deployment are separate semantic planes | Proposed | [`RFC-0001A-Semantic-Object-Model.md`](../03_DSL/RFC/RFC-0001A-Semantic-Object-Model.md) |
 
 ## Implementation Choices Requiring Complete ADRs
 

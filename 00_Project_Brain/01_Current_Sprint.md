@@ -12,7 +12,7 @@
 2. Review ADR0004 and the proposed RFC governance contract.
 3. Resolve review comments on the initial glossary and RFC template.
 4. Review RFC-0000 and the canonical RFC-0001 Drafts.
-5. Draft RFC-0001A around a core semantic kernel with explicit definitions and instances.
+5. Review RFC-0001A and resolve its Core Semantic Kernel and Industrial Profile decision gates.
 6. Draft RFC-0001B identifier, scope, namespace, and import rules.
 7. Create RFC-0001C for compilation units, modules, packages, and dependencies.
 
@@ -25,10 +25,13 @@
 - [`Glossary.md`](../03_DSL/Glossary.md)
 - [`RFC-0000-Language-Design-Principles.md`](../03_DSL/RFC/RFC-0000-Language-Design-Principles.md)
 - [`RFC-0001-Core-Language.md`](../03_DSL/RFC/RFC-0001-Core-Language.md)
+- [`RFC-0001A-Semantic-Object-Model.md`](../03_DSL/RFC/RFC-0001A-Semantic-Object-Model.md)
 
 ## Decision Gates
 
-- Approve or reject the Core Semantic Kernel + Industrial Profiles direction.
+- Accept, revise, or reject the RFC-0001A Core Semantic Kernel + Industrial Profiles proposal.
+- Confirm the proposed Definition, Instance Declaration, expanded Instance, Component, Device, and Primitive distinctions.
+- Confirm the Domain Definition, Application Assembly, and Deployment boundaries.
 - Define the boundary between normative specifications and an experimental reference compiler spike.
 - Confirm which implementation choices are accepted after their ADRs contain rationale and consequences.
 
