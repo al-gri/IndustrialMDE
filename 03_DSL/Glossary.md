@@ -56,10 +56,15 @@ The glossary does not independently establish language semantics. An Accepted RF
 | --- | --- | --- |
 | Project | Reserved | Build and deployment root whose exact contents are defined by RFC-0001C and the semantic-model RFC |
 | Module | Reserved | Compilation and visibility construct to be defined by RFC-0001C |
-| Namespace | Reserved | Qualified naming domain to be defined by RFC-0001B |
+| Namespace | Reserved | Candidate package-scoped logical naming domain whose exact path, merge, and ownership rules are drafted in RFC-0001B |
 | Package | Reserved | Versioned dependency and distribution unit to be defined by RFC-0001C |
 | Library | Reserved | Published collection of reusable definitions; relationship to Package remains unresolved |
-| Import | Reserved | Explicit dependency or symbol-visibility declaration to be defined by RFC-0001B and RFC-0001C |
+| Import | Reserved | Candidate file-local explicit binding to one accessible declaration or namespace; package availability remains owned by RFC-0001C |
+| Scope | Reserved | Candidate identity-bearing owner of one ordinary-symbol collision domain, drafted in RFC-0001B |
+| Binding | Reserved | Candidate association from a source-visible identifier to one resolved semantic identity |
+| Qualified Name | Reserved | Candidate dot-separated identifier path resolved left to right without backtracking |
+| Collision Domain | Reserved | Candidate set of bindings required to have distinct exact and ASCII case-folded spellings |
+| Import Environment | Reserved | Candidate file-local set of bindings introduced by explicit import directives |
 
 ## 6. Semantic-Kernel Terms
 
@@ -108,6 +113,7 @@ The following terms are proposed `industrial.structure` profile roles rather tha
 | Term | Status | Working definition |
 | --- | --- | --- |
 | Internal Identifier | Proposed | ASCII language identifier used for deterministic semantic resolution |
+| Canonical Identity Key | Reserved | Candidate structured tuple of package, namespace, owner, spelling, and entity-kind components used for semantic identity |
 | External Tag | Proposed | Engineering identifier stored as validated data rather than parsed as an internal identifier |
 | Generated Target Name | Proposed | Deterministically lowered name satisfying target-profile constraints and traceable to its semantic identity |
 | Target Profile | Proposed | Versioned declaration of target capabilities, constraints, naming rules, and supported lowering behavior |
