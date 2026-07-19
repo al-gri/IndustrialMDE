@@ -160,7 +160,7 @@ An example does not establish semantics that are absent from the governing RFC.
 | --- | --- | --- | --- | --- |
 | [RFC-0000](RFC-0000-Language-Design-Principles.md) | Language Design Principles | Draft | Constitution | Not Started |
 | [RFC-0001](RFC-0001-Core-Language.md) | Core Language and Lexical Structure | Draft | RFC-0000 | Not Started |
-| RFC-0001A | Semantic Object Model | Not Drafted | RFC-0000, RFC-0001 | Not Started |
+| [RFC-0001A](RFC-0001A-Semantic-Object-Model.md) | Semantic Object Model | Draft | RFC-0000, RFC-0001 | Not Started |
 | RFC-0001B | Identifiers, Scopes, and Namespaces | Not Drafted | RFC-0000, RFC-0001, RFC-0001A | Not Started |
 | RFC-0001C | Compilation Units, Modules, Packages, and Dependencies | Not Drafted | RFC-0000, RFC-0001B | Not Started |
 | RFC-0002 | Type System | Not Drafted | RFC-0001A, RFC-0001B, RFC-0001C | Not Started |
@@ -184,9 +184,9 @@ The index records intended dependency direction, not acceptance. Dependencies mu
 
 The following questions remain intentionally unresolved:
 
-- whether the semantic model adopts Core Semantic Kernel + Industrial Profiles;
-- the canonical distinction between Definition, Instance, Component, Device, and Primitive;
-- the boundary between domain and deployment models;
+- whether to accept the Draft Core Semantic Kernel + Industrial Profiles model;
+- whether to accept the proposed Definition, Instance Declaration, Instance, Component, Device, and Primitive distinctions;
+- whether to accept the proposed Domain Definition, Application Assembly, and Deployment boundaries;
 - the exact reference-spike subset and disposal policy;
 - whether wildcard imports are prohibited or restricted;
 - whether core identifier length is fixed or target-profile validated.
