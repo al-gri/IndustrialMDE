@@ -6,7 +6,7 @@
 2. Review Proposed RFC-0000 against Approved Project Constitution version 2.1 before acceptance.
 3. Review Proposed RFC-0001 conformance cases before acceptance.
 4. Review Proposed RFC-0001A conformance cases before acceptance.
-5. Review and resolve RFC-0001B: Identifiers, Scopes, and Namespaces.
+5. Review Proposed RFC-0001B conformance cases and resolve its delegated gates before acceptance.
 6. Create RFC-0001C: Compilation Units, Modules, Packages, and Dependencies as a Draft.
 
 ## P1 — Minimum Executable Specification

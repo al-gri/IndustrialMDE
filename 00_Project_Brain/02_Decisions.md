@@ -12,6 +12,7 @@ This file is a concise index. It does not replace the normative RFC or ADR that 
 | Separate language RFCs from implementation ADRs | Approved by Constitution; detailed ADR Proposed | Project Constitution, section 8; [`ADR0004_DecisionGovernance.md`](../02_Architecture/ADR/ADR0004_DecisionGovernance.md) |
 | Incorporate Project Constitution version 2.1 | Approved and Incorporated | [`05_Constitution_Amendment_2.1.md`](05_Constitution_Amendment_2.1.md) |
 | Promote RFC-0000, RFC-0001, and RFC-0001A to Proposed after architectural audit | Approved | [`06_Foundational_RFC_Review_Decisions.md`](06_Foundational_RFC_Review_Decisions.md) |
+| Promote RFC-0001B to Proposed after semantic audit | Approved | [`07_RFC-0001B_Review_Decision.md`](07_RFC-0001B_Review_Decision.md) |
 | Target generation must not bypass the canonical IR | Approved | Project Constitution, section 6 |
 | Published compiler phase artifacts are immutable | Approved | Project Constitution, section 7 |
 | Core Semantic Kernel with Industrial Profile roles | Proposed | [`RFC-0001A-Semantic-Object-Model.md`](../03_DSL/RFC/RFC-0001A-Semantic-Object-Model.md) |
