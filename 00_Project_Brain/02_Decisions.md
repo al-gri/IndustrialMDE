@@ -13,22 +13,25 @@ This file is a concise index. It does not replace the normative RFC or ADR that 
 | Incorporate Project Constitution version 2.1 | Approved and Incorporated | [`05_Constitution_Amendment_2.1.md`](05_Constitution_Amendment_2.1.md) |
 | Promote RFC-0000, RFC-0001, and RFC-0001A to Proposed after architectural audit | Approved | [`06_Foundational_RFC_Review_Decisions.md`](06_Foundational_RFC_Review_Decisions.md) |
 | Promote RFC-0001B to Proposed after semantic audit | Approved | [`07_RFC-0001B_Review_Decision.md`](07_RFC-0001B_Review_Decision.md) |
+| Promote RFC-0001C to Proposed after independent architectural review and assign public serialization to RFC-0001D | Approved | [`08_RFC-0001C_Review_Decision.md`](08_RFC-0001C_Review_Decision.md) |
 | Target generation must not bypass the canonical IR | Approved | Project Constitution, section 6 |
 | Published compiler phase artifacts are immutable | Approved | Project Constitution, section 7 |
 | Core Semantic Kernel with Industrial Profile roles | Proposed | [`RFC-0001A-Semantic-Object-Model.md`](../03_DSL/RFC/RFC-0001A-Semantic-Object-Model.md) |
 | Definition, Instance Declaration, and expanded Instance are distinct | Proposed | [`RFC-0001A-Semantic-Object-Model.md`](../03_DSL/RFC/RFC-0001A-Semantic-Object-Model.md) |
 | Domain, Application Assembly, and Deployment are separate semantic planes | Proposed | [`RFC-0001A-Semantic-Object-Model.md`](../03_DSL/RFC/RFC-0001A-Semantic-Object-Model.md) |
 
-## Draft Directions Under Review
+## Proposed and Draft Directions Under Review
 
 | Direction | Status | Record |
 | --- | --- | --- |
-| One `.plant` source file is one Compilation Unit in language version 0.1 | Draft | [`RFC-0001C`](../03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) |
-| Package Identity excludes version, content digest, alias, origin, and checkout path | Draft | [`RFC-0001C`](../03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) |
-| A Project resolves at most one Package Revision per Package Identity | Draft | [`RFC-0001C`](../03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) |
-| Package and Module dependency graphs are acyclic | Draft | [`RFC-0001C`](../03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) |
-| Cross-package access uses direct dependency aliases without transitive visibility or implicit re-export | Draft | [`RFC-0001C`](../03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) |
-| Top-level declarations are private by default and Package exports require an exported Module | Draft | [`RFC-0001C`](../03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) |
+| One `.plant` source file is one Compilation Unit in language version 0.1 | Proposed | [`RFC-0001C`](../03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) |
+| Package Identity excludes version, content digest, alias, origin, and checkout path | Proposed | [`RFC-0001C`](../03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) |
+| A Project resolves at most one Package Revision per Package Identity | Proposed | [`RFC-0001C`](../03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) |
+| Package and Module dependency graphs are acyclic and use deterministic dependency-first scheduling | Proposed | [`RFC-0001C`](../03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) |
+| Cross-package access uses direct dependency aliases without transitive visibility or implicit re-export | Proposed | [`RFC-0001C`](../03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) |
+| Top-level declarations are private by default and Package exports require an exported Module | Proposed | [`RFC-0001C`](../03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) |
+| Language version `0.1` has one Project-wide version and no implicit prelude | Proposed | [`RFC-0001B`](../03_DSL/RFC/RFC-0001B-Identifiers-Scopes-and-Namespaces.md), [`RFC-0001C`](../03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) |
+| Public Project, Package, and Dependency Lock serialization uses strict JSON schema `0.1` | Draft | [`RFC-0001D`](../03_DSL/RFC/RFC-0001D-Project-Package-and-Dependency-Lock-Serialization.md) |
 
 ## Implementation Choices Requiring Complete ADRs
 

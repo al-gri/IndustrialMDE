@@ -37,7 +37,7 @@ The glossary does not independently establish language semantics. An Accepted RF
 | Term | Status | Working definition |
 | --- | --- | --- |
 | Source Model | Proposed | Authoritative user-authored model together with its declared build inputs |
-| Compilation Unit | Reserved | Draft RFC-0001C build and incremental boundary represented by one owned `.plant` source file in language version 0.1 |
+| Compilation Unit | Proposed | RFC-0001C build and incremental boundary represented by one owned `.plant` source file in language version 0.1 |
 | Syntax Tree | Proposed | Parse representation preserving concrete source structure needed for syntax diagnostics and tooling |
 | AST | Proposed | Normalized syntax representation used when it adds value beyond the syntax tree |
 | Semantic Model | Proposed | Immutable representation containing resolved identities, types, relationships, and language meaning |
@@ -54,23 +54,28 @@ The glossary does not independently establish language semantics. An Accepted RF
 
 | Term | Status | Working definition |
 | --- | --- | --- |
-| Project | Reserved | Draft RFC-0001C build and orchestration boundary selecting one root Package Revision and Dependency Lock |
-| Project Manifest | Reserved | Draft versioned build input selecting the root Package Manifest, Dependency Lock, language constraints, and project configuration |
-| Module | Reserved | Draft package-owned source, visibility, dependency, export, and incremental-compilation boundary that is not a Namespace |
+| Project | Proposed | RFC-0001C build and orchestration boundary selecting one root Package Revision and, for a locked build, one explicit Dependency Lock |
+| Project Manifest | Proposed | Versioned build input selecting the root Package Manifest, optional explicit Dependency Lock, exact language version, and project configuration identity; the lock is mandatory for reproducible or production compilation |
+| Manifest Schema | Proposed | RFC-0001D closed public serialization schema selected by an exact schema-version string |
+| Canonical Serialization | Proposed | RFC-0001D RFC 8785 JSON bytes produced after validating a document, establishing unique semantic collection keys, and canonically ordering semantically unordered arrays |
+| Module | Proposed | Package-owned source, visibility, dependency, export, and incremental-compilation boundary that is not a Namespace |
 | Namespace | Proposed | Package-scoped logical naming domain whose path, merge, and ownership rules are proposed in RFC-0001B |
-| Package | Reserved | Draft distribution and direct-dependency unit represented by a stable Package Identity and one exact resolved Package Revision |
-| Package Identity | Reserved | Draft structured logical identity consisting of Package Authority and Package Name, excluding version, digest, alias, origin, and checkout path |
-| Package Version | Reserved | Draft exact three-component revision number associated with a Package Identity |
-| Package Content Identity | Reserved | Draft algorithm-qualified cryptographic digest of one immutable package artifact |
-| Package Revision | Reserved | Draft tuple of Package Identity, Package Version, and Package Content Identity |
-| Package Manifest | Reserved | Draft declarative package description of modules, source roots, permitted language versions, and direct dependencies |
-| Library | Reserved | Draft publication role for a reusable Package rather than a global semantic container |
-| Source Root | Reserved | Draft explicit portable package-relative directory contributing `.plant` files to exactly one Module |
-| Portable Package Path | Reserved | Draft normalized ASCII package-relative path with `/` separators and portable collision rules |
-| Dependency Alias | Reserved | Draft manifest identifier used as the first segment of a cross-package import target |
-| Dependency Lock | Reserved | Draft immutable build input resolving the complete package graph to exact revisions, digests, origins, aliases, and edges |
-| Export Surface | Reserved | Draft set of Public declarations owned by exported Modules of one Package |
-| Public Semantic API Fingerprint | Reserved | Draft deterministic digest of one resolved Export Surface under a versioned signature schema |
+| Package | Proposed | Distribution and direct-dependency unit represented by a stable Package Identity and one exact resolved Package Revision |
+| Package Identity | Proposed | Structured logical identity consisting of Package Authority and Package Name, excluding version, digest, alias, origin, and checkout path |
+| Package Version | Proposed | Exact three-component revision number associated with a Package Identity |
+| Package Content Identity | Proposed | Tagged, algorithm-qualified digest of either exact immutable artifact bytes or one immutable root workspace snapshot |
+| Workspace Content Fingerprint | Proposed | `workspace-snapshot` Package Content Identity over root-package-owned manifest, portable path, and source bytes, excluding Project and lock inputs |
+| Package Revision | Proposed | Tuple of Package Identity, Package Version, and Package Content Identity |
+| Package Manifest | Proposed | Declarative package description of Modules, Source Roots, one exact language version, and direct dependencies |
+| Library | Proposed | Publication role for a reusable Package rather than a global semantic container |
+| Source Root | Proposed | Explicit portable package-relative directory contributing `.plant` files to exactly one Module |
+| Portable Package Path | Proposed | Normalized ASCII package-relative path with `/` separators, case-collision rules, and portable device-name restrictions |
+| Dependency Alias | Proposed | Manifest identifier used as the first segment of a cross-package import target |
+| Dependency Lock | Proposed | Immutable build input resolving immutable dependency packages to exact revisions, digests, origins, aliases, and edges while recording the root identity and version separately |
+| Export Surface | Proposed | Set of Public declarations owned by exported Modules of one Package |
+| Project Resolution Fingerprint | Proposed | Versioned digest combining Project, root workspace, lock, dependency, compiler-semantic, configuration, and resource-limit inputs without self-reference |
+| Resolved Entity Handle | Proposed | Build-local reference combining Canonical Semantic Identity with Package Revision and Project Resolution context |
+| Public Semantic API Fingerprint | Proposed | Deterministic digest of one resolved Export Surface under a versioned signature schema |
 | Import | Proposed | File-local explicit binding to one accessible declaration or namespace; package availability remains owned by RFC-0001C |
 | Scope | Proposed | Identity-bearing owner of one ordinary-symbol collision domain, as proposed in RFC-0001B |
 | Binding | Proposed | Association from a source-visible identifier to one resolved semantic identity |

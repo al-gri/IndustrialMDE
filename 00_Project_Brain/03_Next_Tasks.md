@@ -7,15 +7,18 @@
 3. Review Proposed RFC-0001 conformance cases before acceptance.
 4. Review Proposed RFC-0001A conformance cases before acceptance.
 5. Review Proposed RFC-0001B conformance cases and resolve its delegated gates before acceptance.
-6. Review Draft RFC-0001C and resolve its pre-Proposed design gates.
+6. Review Proposed RFC-0001C conformance cases and resolve its delegated acceptance gates.
+7. Review Draft RFC-0001D schema `0.1`, including duplicate handling, canonical serialization, diagnostics, and migration.
 
 ## P1 — Minimum Executable Specification
 
-1. Define the minimum type-system subset required by a reference spike.
-2. Define positive, negative, boundary, and compatibility examples.
-3. Specify stable diagnostic codes and deterministic diagnostic ordering.
-4. Define source-to-semantic-to-IR traceability requirements.
-5. Plan a limited Source → Semantic Model → Canonical IR → Mock Target vertical slice.
+1. Define the minimum type-system subset and intrinsic type-resolution contract required by a reference spike.
+2. Define the minimum RFC-0005, RFC-0006, and RFC-0007 structural slices required for Endpoint, Connection, composition, and Application Assembly roots.
+3. Define explicit experimental grammar and structural IR snapshot contracts without representing them as Accepted syntax or Canonical IR.
+4. Define positive, negative, boundary, compatibility, randomized-order, and integrity examples.
+5. Specify stable diagnostic codes and deterministic diagnostic ordering.
+6. Define source-to-semantic-to-IR traceability requirements.
+7. Plan a limited Source → Semantic Model → structural IR snapshot → Mock Structural Target vertical slice.
 
 ## Deferred Until Foundational Review
 

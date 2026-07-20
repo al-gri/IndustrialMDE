@@ -18,7 +18,7 @@
 
 **Implementation Status:** Not Started
 
-**Review:** [Pull Request #6](https://github.com/al-gri/IndustrialMDE/pull/6); [RFC-0001B Review Decision](../../00_Project_Brain/07_RFC-0001B_Review_Decision.md)
+**Review:** [Pull Request #6](https://github.com/al-gri/IndustrialMDE/pull/6); [RFC-0001B Review Decision](../../00_Project_Brain/07_RFC-0001B_Review_Decision.md); version `0.1` prelude amendment in [Pull Request #10](https://github.com/al-gri/IndustrialMDE/pull/10) and [RFC-0001C Review Decision](../../00_Project_Brain/08_RFC-0001C_Review_Decision.md)
 
 ## 1. Summary
 
@@ -277,8 +277,9 @@ For an unqualified reference, the resolver considers only the binding environmen
 
 1. the current identity-bearing owner scope, when the reference form permits owner members;
 2. the current merged logical Namespace;
-3. the current source file's explicit Import Environment; and
-4. an explicitly specified language prelude, if a later Accepted RFC defines one.
+3. the current source file's explicit Import Environment.
+
+Language version `0.1` has no implicit Package, Namespace, ordinary-symbol, or standard-library prelude. RFC-0002 MAY define intrinsic type entities that are resolved only under its explicit type-context rules. Intrinsic type entities are not ordinary declarations, Namespace contributions, Import Environment bindings, or hidden Package dependencies.
 
 The sets above do not establish a shadowing priority. Collision rules MUST prevent two eligible unqualified bindings from silently competing. If more than one distinct eligible identity remains, resolution fails as ambiguous.
 
@@ -335,8 +336,7 @@ Every Import Directive MUST resolve to exactly one accessible target identity. R
 An import alias participates in the file's Import Environment collision domain. It MUST NOT collide exactly or by ASCII Case-Folded Key with:
 
 - another import binding in that file;
-- a directly visible declaration in the current merged namespace; or
-- another binding made unqualified by an Accepted language prelude.
+- a directly visible declaration in the current merged namespace.
 
 Two textually identical imports of the same target and alias produce `IMDE3009` as a redundant-import Warning. They introduce only one binding.
 
@@ -736,17 +736,18 @@ Rejected because moving a file or adding a declaration to a parent namespace cou
 
 ## 13. Unresolved Questions and Delegated Decisions
 
+The language-prelude gate is resolved for version `0.1`: no implicit prelude exists. Intrinsic type entities remain owned by RFC-0002 and do not enter the ordinary-symbol lookup environments defined here.
+
 The following table records the remaining design gates. At Proposed status, each gate has a precise review disposition or an explicit owning dependency. Before this RFC becomes Accepted, every gate that changes normative behavior MUST be resolved by compatible Accepted contracts.
 
 | Topic | Current Proposed direction | Owner |
 | --- | --- | --- |
-| Package root ownership | Namespace Identity includes Package Identity; manifest rules remain undefined | RFC-0001C |
-| Package-qualified import syntax | Imports use a Qualified Name; disambiguation among packages remains undefined | RFC-0001C and this RFC revision |
-| Module scope | No module scope is introduced here | RFC-0001C |
-| Import-cycle policy | Name imports do not authorize cycles; graph node and cycle rules remain undefined | RFC-0001C |
-| Visibility defaults | Imports cannot bypass visibility; `public` and `private` semantics remain undefined | RFC-0001C |
+| Package root ownership | Proposed RFC-0001C defines Package ownership, root Namespace segments, and direct Dependency Aliases | RFC-0001C |
+| Package-qualified import syntax | Proposed RFC-0001C resolves the first segment through the Import Root Domain without backtracking | RFC-0001C and this RFC revision |
+| Module scope | Proposed RFC-0001C gives Modules visibility and access boundaries without making them semantic scopes or Namespaces | RFC-0001C |
+| Import-cycle policy | Proposed RFC-0001C requires acyclic Package and Module graphs; source imports do not create a file graph | RFC-0001C |
+| Visibility defaults | Proposed RFC-0001C defines private-by-default top-level declarations and exported Module requirements | RFC-0001C |
 | Public re-export | Prohibited in `0.1` unless a later revision defines an explicit form | RFC-0001C and compatibility review |
-| Language prelude | No implicit prelude is assumed by this Proposed specification | RFC-0002 and RFC-0011 |
 | Behavior-local scopes | Must not introduce implicit shadowing | RFC-0003 and RFC-0004 |
 | Interface member binding | Must be explicit and distinct from redeclaration | RFC-0006 |
 | Naming-style severity | Warning in this Proposed specification; Stabilized production policy unresolved | This RFC review |
@@ -765,6 +766,7 @@ An implementation conforms to an Accepted version of this RFC only if it:
 - uses one ordinary-symbol namespace per identity-bearing owner;
 - resolves qualified names left to right without backtracking;
 - performs no implicit parent, sibling, filesystem, or transitive-dependency search;
+- introduces no implicit Package, Namespace, ordinary-symbol, or standard-library prelude;
 - supports explicit declaration and namespace-alias imports with file-local bindings;
 - rejects wildcard, relative, group, and recursive imports;
 - prevents implicit shadowing while permitting repeated names in independent owner scopes;
@@ -797,9 +799,11 @@ No parser framework, object-model library, hash implementation, or filesystem AP
 
 ### Proposed — 2026-07-20
 
-- Advanced from Draft after the project-owner semantic audit approved the complete text without normative changes.
-- Recorded the language-prelude governance risk as delegated to RFC-0002 and RFC-0011.
-- Updated status metadata, glossary entries, and Project Brain tracking without changing language semantics.
+- Amended the Proposed text to close the language-version `0.1` prelude gate: intrinsic types may be language-owned under RFC-0002 but are not ordinary bindings, imports, or hidden Package dependencies.
+- Initially advanced from Draft after the project-owner semantic audit approved the complete Draft text without normative changes.
+- Replaced the former language-prelude delegation with the explicit version `0.1` rule while retaining intrinsic type semantics for RFC-0002.
+- Synchronized package, import-root, Module, cycle, and visibility gate descriptions with Proposed RFC-0001C while retaining RFC-0001C as their normative owner.
+- The initial Proposed transition updated status metadata, glossary entries, and Project Brain tracking without changing the reviewed Draft semantics.
 
 ### Draft — 2026-07-19
 
