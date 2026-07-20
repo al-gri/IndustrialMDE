@@ -12,6 +12,7 @@ The project is currently establishing its language architecture and governance. 
 - [RFC-0000](03_DSL/RFC/RFC-0000-Language-Design-Principles.md), the canonical [RFC-0001](03_DSL/RFC/RFC-0001-Core-Language.md), [RFC-0001A](03_DSL/RFC/RFC-0001A-Semantic-Object-Model.md), and [RFC-0001B](03_DSL/RFC/RFC-0001B-Identifiers-Scopes-and-Namespaces.md) are Proposed review artifacts.
 - [RFC-0001C](03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) is a Proposed review artifact.
 - [RFC-0001D](03_DSL/RFC/RFC-0001D-Project-Package-and-Dependency-Lock-Serialization.md) is a Draft public-serialization review artifact.
+- [RFC-0002](03_DSL/RFC/RFC-0002-Type-System.md) is a Draft minimal Type System review artifact.
 - Compiler source code, grammar, emitters, and tests have not been implemented.
 
 The authoritative status is maintained in [Project State](00_Project_Brain/04_Project_State.md). Current work is listed in [Current Sprint](00_Project_Brain/01_Current_Sprint.md) and [Next Tasks](00_Project_Brain/03_Next_Tasks.md).
@@ -25,7 +26,7 @@ The immediate objective is to establish a consistent foundational language packa
 3. review the Proposed core semantic model and the Proposed identifier, scope, namespace, and import rules;
 4. review the Proposed compilation-unit, module, package, dependency, lock, and visibility contracts;
 5. review the Draft strict JSON Project, Package, and Dependency Lock serialization contract;
-6. define the minimum Type System and structural companion slices required by a deliberately limited reference compiler spike.
+6. review the Draft minimum Type System and define the structural companion slices required by a deliberately limited reference compiler spike.
 
 ## Repository Map
 

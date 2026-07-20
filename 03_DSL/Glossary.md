@@ -6,7 +6,7 @@
 
 **Created:** 2026-07-19
 
-**Last Updated:** 2026-07-20
+**Last Updated:** 2026-07-21
 
 ## 1. Purpose
 
@@ -108,7 +108,23 @@ The glossary does not independently establish language semantics. An Accepted RF
 | Application Assembly Plane | Proposed | Target-neutral root instances, logical configuration, and application-level connections |
 | Deployment Model | Proposed | Project-specific target selection, hardware bindings, mappings, and deployment values |
 
-## 7. Industrial Hierarchy Terms
+## 7. Type-System Terms
+
+| Term | Status | Working definition |
+| --- | --- | --- |
+| Type | Draft | Language-defined classification with a stable Type Identity and a semantic value domain |
+| Intrinsic Type | Draft | Language-owned type defined directly by RFC-0002 rather than by a Package declaration |
+| Intrinsic Type Designator | Draft | Exact Identifier spelling recognized as an Intrinsic Type only in a type-reference context without creating an ordinary binding or implicit prelude |
+| Intrinsic Type Identity | Draft | Structured identity containing the intrinsic identity domain, exact Language Version, and Intrinsic Kind |
+| Type Reference | Draft | Source or semantic reference occurring in a context that requires a Type |
+| Type Equality | Draft | Exact equality relation over complete Type Identities |
+| Type Compatibility | Draft | Relation used by an owning semantic rule to determine whether one typed position may satisfy another; equal to Type Equality in the RFC-0002 minimum subset |
+| Semantic Value Domain | Draft | Complete target-neutral set of values denoted by a Type before target lowering |
+| Representability | Draft | Membership of a mathematical or semantic value in a Type's Semantic Value Domain |
+| Physical Representation | Draft | Implementation- or target-specific encoding of values that does not define source Type Identity |
+| Invalid Type Placeholder | Draft | Build-local recovery value that is not a valid Type and cannot enter published semantic or generated artifacts |
+
+## 8. Industrial Hierarchy Terms
 
 The following terms are proposed `industrial.structure` profile roles rather than universal core entities:
 
@@ -125,7 +141,7 @@ The following terms are proposed `industrial.structure` profile roles rather tha
 | Primitive | Proposed | Definition classification role requiring zero child Instance Declarations; not a separate kernel entity kind |
 | Atom | Avoid | Ambiguous synonym previously used for Component, Device, or Primitive |
 
-## 8. External and Target Identity Terms
+## 9. External and Target Identity Terms
 
 | Term | Status | Working definition |
 | --- | --- | --- |
@@ -135,7 +151,7 @@ The following terms are proposed `industrial.structure` profile roles rather tha
 | Generated Target Name | Proposed | Deterministically lowered name satisfying target-profile constraints and traceable to its semantic identity |
 | Target Profile | Proposed | Versioned declaration of target capabilities, constraints, naming rules, and supported lowering behavior |
 
-## 9. Terms to Avoid in Normative Text
+## 10. Terms to Avoid in Normative Text
 
 - “IR is the single source of truth” without distinguishing user input from generation input.
 - “Fully isolated plugin” without naming the process and trust boundary.

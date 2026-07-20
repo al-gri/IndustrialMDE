@@ -32,6 +32,11 @@ This file is a concise index. It does not replace the normative RFC or ADR that 
 | Top-level declarations are private by default and Package exports require an exported Module | Proposed | [`RFC-0001C`](../03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) |
 | Language version `0.1` has one Project-wide version and no implicit prelude | Proposed | [`RFC-0001B`](../03_DSL/RFC/RFC-0001B-Identifiers-Scopes-and-Namespaces.md), [`RFC-0001C`](../03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) |
 | Public Project, Package, and Dependency Lock serialization uses strict JSON schema `0.1` | Draft | [`RFC-0001D`](../03_DSL/RFC/RFC-0001D-Project-Package-and-Dependency-Lock-Serialization.md) |
+| Intrinsic type designators remain Identifier tokens and resolve through an explicit type-context rule rather than an implicit prelude | Draft | [`RFC-0002`](../03_DSL/RFC/RFC-0002-Type-System.md) |
+| Intrinsic Type Identity includes Language Version; build-local handles additionally retain Project resolution context | Draft | [`RFC-0002`](../03_DSL/RFC/RFC-0002-Type-System.md) |
+| `INT` and `TIME` use exact signed 64-bit-range semantic domains that target lowering must preserve without silent narrowing | Draft | [`RFC-0002`](../03_DSL/RFC/RFC-0002-Type-System.md) |
+| Minimum type compatibility is exact identity; declaration inference and all cross-type conversions are unsupported | Draft | [`RFC-0002`](../03_DSL/RFC/RFC-0002-Type-System.md) |
+| `REAL` is proposed as binary64, with exceptional-value identity remaining a Draft-to-Proposed gate | Draft | [`RFC-0002`](../03_DSL/RFC/RFC-0002-Type-System.md) |
 
 ## Implementation Choices Requiring Complete ADRs
 
