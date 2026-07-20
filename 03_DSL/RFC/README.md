@@ -162,7 +162,7 @@ An example does not establish semantics that are absent from the governing RFC.
 | [RFC-0001](RFC-0001-Core-Language.md) | Core Language and Lexical Structure | Proposed | RFC-0000 | Not Started |
 | [RFC-0001A](RFC-0001A-Semantic-Object-Model.md) | Semantic Object Model | Proposed | RFC-0000, RFC-0001 | Not Started |
 | [RFC-0001B](RFC-0001B-Identifiers-Scopes-and-Namespaces.md) | Identifiers, Scopes, and Namespaces | Proposed | RFC-0000, RFC-0001, RFC-0001A | Not Started |
-| RFC-0001C | Compilation Units, Modules, Packages, and Dependencies | Not Drafted | RFC-0000, RFC-0001B | Not Started |
+| [RFC-0001C](RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) | Compilation Units, Modules, Packages, and Dependencies | Draft | RFC-0000, RFC-0001, RFC-0001A, RFC-0001B | Not Started |
 | RFC-0002 | Type System | Not Drafted | RFC-0001A, RFC-0001B, RFC-0001C | Not Started |
 | RFC-0003 | Literals, Expressions, and Operators | Not Drafted | RFC-0002 | Not Started |
 | RFC-0004 | Execution Model and Bounded Semantics | Not Drafted | RFC-0002, RFC-0003 | Not Started |
@@ -186,7 +186,7 @@ The following decision gates remain:
 
 - the exact reference-spike subset and disposal policy;
 - review and resolution of the Proposed RFC-0001B scope, namespace, import, collision, and naming contracts;
-- the RFC-0001C compilation-unit, package, and dependency contracts;
+- review and resolution of the Draft RFC-0001C compilation-unit, module, package, dependency, lock, visibility, and serialization contracts;
 - conformance of every foundational RFC with Approved Constitution 2.1 before RFC acceptance;
 - conformance evidence required before the foundational RFCs may become Accepted.
 

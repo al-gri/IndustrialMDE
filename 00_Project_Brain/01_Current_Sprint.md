@@ -13,7 +13,7 @@
 3. Review RFC-0000 and the canonical RFC-0001 as Proposed specifications.
 4. Review RFC-0001A as a Proposed Core Semantic Kernel and Industrial Profile specification.
 5. Review RFC-0001B conformance and acceptance gates as a Proposed specification.
-6. Create RFC-0001C for compilation units, modules, packages, and dependencies.
+6. Review Draft RFC-0001C compilation-unit, module, package, dependency, lock, and visibility contracts.
 
 ## Deliverables Under Review
 
@@ -25,6 +25,7 @@
 - [`RFC-0001-Core-Language.md`](../03_DSL/RFC/RFC-0001-Core-Language.md)
 - [`RFC-0001A-Semantic-Object-Model.md`](../03_DSL/RFC/RFC-0001A-Semantic-Object-Model.md)
 - [`RFC-0001B-Identifiers-Scopes-and-Namespaces.md`](../03_DSL/RFC/RFC-0001B-Identifiers-Scopes-and-Namespaces.md)
+- [`RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md`](../03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md)
 - [`06_Foundational_RFC_Review_Decisions.md`](06_Foundational_RFC_Review_Decisions.md)
 - [`07_RFC-0001B_Review_Decision.md`](07_RFC-0001B_Review_Decision.md)
 
@@ -33,6 +34,7 @@
 - Verify every foundational RFC against Approved Project Constitution version 2.1 before acceptance.
 - Keep version 1.0 stabilization guarantees deferred until reference-spike and conformance evidence exist.
 - Resolve the package-boundary, visibility, import-cycle, naming-severity, and resource-limit gates identified by Proposed RFC-0001B.
+- Resolve RFC-0001C manifest and lock serialization, package-authority ownership, public-signature closure, fingerprint-schema, and production-limit gates.
 - Define the boundary between normative specifications and an experimental reference compiler spike.
 - Confirm which implementation choices are accepted after their ADRs contain rationale and consequences.
 

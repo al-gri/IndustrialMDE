@@ -19,6 +19,17 @@ This file is a concise index. It does not replace the normative RFC or ADR that 
 | Definition, Instance Declaration, and expanded Instance are distinct | Proposed | [`RFC-0001A-Semantic-Object-Model.md`](../03_DSL/RFC/RFC-0001A-Semantic-Object-Model.md) |
 | Domain, Application Assembly, and Deployment are separate semantic planes | Proposed | [`RFC-0001A-Semantic-Object-Model.md`](../03_DSL/RFC/RFC-0001A-Semantic-Object-Model.md) |
 
+## Draft Directions Under Review
+
+| Direction | Status | Record |
+| --- | --- | --- |
+| One `.plant` source file is one Compilation Unit in language version 0.1 | Draft | [`RFC-0001C`](../03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) |
+| Package Identity excludes version, content digest, alias, origin, and checkout path | Draft | [`RFC-0001C`](../03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) |
+| A Project resolves at most one Package Revision per Package Identity | Draft | [`RFC-0001C`](../03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) |
+| Package and Module dependency graphs are acyclic | Draft | [`RFC-0001C`](../03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) |
+| Cross-package access uses direct dependency aliases without transitive visibility or implicit re-export | Draft | [`RFC-0001C`](../03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) |
+| Top-level declarations are private by default and Package exports require an exported Module | Draft | [`RFC-0001C`](../03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) |
+
 ## Implementation Choices Requiring Complete ADRs
 
 | Choice | Current status | ADR |
