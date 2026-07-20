@@ -18,7 +18,7 @@
 
 **Implementation Status:** Not Started
 
-**Review:** Initial Draft in [Pull Request #9](https://github.com/al-gri/IndustrialMDE/pull/9); Proposed transition review pending
+**Review:** Initial Draft in [Pull Request #9](https://github.com/al-gri/IndustrialMDE/pull/9); Proposed transition in [Pull Request #10](https://github.com/al-gri/IndustrialMDE/pull/10) and [RFC-0001C Review Decision](../../00_Project_Brain/08_RFC-0001C_Review_Decision.md)
 
 ## 1. Summary
 

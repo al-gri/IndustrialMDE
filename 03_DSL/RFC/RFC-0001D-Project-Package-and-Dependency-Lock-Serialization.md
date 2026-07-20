@@ -18,7 +18,7 @@
 
 **Implementation Status:** Not Started
 
-**Review:** Pending pull request
+**Review:** [Pull Request #10](https://github.com/al-gri/IndustrialMDE/pull/10); [RFC-0001C Review Decision](../../00_Project_Brain/08_RFC-0001C_Review_Decision.md)
 
 ## 1. Summary
 

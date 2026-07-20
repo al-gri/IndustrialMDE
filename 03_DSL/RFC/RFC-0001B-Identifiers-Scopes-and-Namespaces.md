@@ -18,7 +18,7 @@
 
 **Implementation Status:** Not Started
 
-**Review:** [Pull Request #6](https://github.com/al-gri/IndustrialMDE/pull/6); [RFC-0001B Review Decision](../../00_Project_Brain/07_RFC-0001B_Review_Decision.md); version `0.1` prelude amendment in [RFC-0001C Review Decision](../../00_Project_Brain/08_RFC-0001C_Review_Decision.md), transition review pending
+**Review:** [Pull Request #6](https://github.com/al-gri/IndustrialMDE/pull/6); [RFC-0001B Review Decision](../../00_Project_Brain/07_RFC-0001B_Review_Decision.md); version `0.1` prelude amendment in [Pull Request #10](https://github.com/al-gri/IndustrialMDE/pull/10) and [RFC-0001C Review Decision](../../00_Project_Brain/08_RFC-0001C_Review_Decision.md)
 
 ## 1. Summary
 
