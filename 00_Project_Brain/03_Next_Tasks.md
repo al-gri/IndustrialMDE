@@ -7,7 +7,7 @@
 3. Review Proposed RFC-0001 conformance cases before acceptance.
 4. Review Proposed RFC-0001A conformance cases before acceptance.
 5. Review Proposed RFC-0001B conformance cases and resolve its delegated gates before acceptance.
-6. Create RFC-0001C: Compilation Units, Modules, Packages, and Dependencies as a Draft.
+6. Review Draft RFC-0001C and resolve its pre-Proposed design gates.
 
 ## P1 — Minimum Executable Specification
 

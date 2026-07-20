@@ -37,7 +37,7 @@ The glossary does not independently establish language semantics. An Accepted RF
 | Term | Status | Working definition |
 | --- | --- | --- |
 | Source Model | Proposed | Authoritative user-authored model together with its declared build inputs |
-| Compilation Unit | Reserved | Incremental and diagnostic source boundary to be defined by RFC-0001C |
+| Compilation Unit | Reserved | Draft RFC-0001C build and incremental boundary represented by one owned `.plant` source file in language version 0.1 |
 | Syntax Tree | Proposed | Parse representation preserving concrete source structure needed for syntax diagnostics and tooling |
 | AST | Proposed | Normalized syntax representation used when it adds value beyond the syntax tree |
 | Semantic Model | Proposed | Immutable representation containing resolved identities, types, relationships, and language meaning |
@@ -54,11 +54,23 @@ The glossary does not independently establish language semantics. An Accepted RF
 
 | Term | Status | Working definition |
 | --- | --- | --- |
-| Project | Reserved | Build and deployment root whose exact contents are defined by RFC-0001C and the semantic-model RFC |
-| Module | Reserved | Compilation and visibility construct to be defined by RFC-0001C |
+| Project | Reserved | Draft RFC-0001C build and orchestration boundary selecting one root Package Revision and Dependency Lock |
+| Project Manifest | Reserved | Draft versioned build input selecting the root Package Manifest, Dependency Lock, language constraints, and project configuration |
+| Module | Reserved | Draft package-owned source, visibility, dependency, export, and incremental-compilation boundary that is not a Namespace |
 | Namespace | Proposed | Package-scoped logical naming domain whose path, merge, and ownership rules are proposed in RFC-0001B |
-| Package | Reserved | Versioned dependency and distribution unit to be defined by RFC-0001C |
-| Library | Reserved | Published collection of reusable definitions; relationship to Package remains unresolved |
+| Package | Reserved | Draft distribution and direct-dependency unit represented by a stable Package Identity and one exact resolved Package Revision |
+| Package Identity | Reserved | Draft structured logical identity consisting of Package Authority and Package Name, excluding version, digest, alias, origin, and checkout path |
+| Package Version | Reserved | Draft exact three-component revision number associated with a Package Identity |
+| Package Content Identity | Reserved | Draft algorithm-qualified cryptographic digest of one immutable package artifact |
+| Package Revision | Reserved | Draft tuple of Package Identity, Package Version, and Package Content Identity |
+| Package Manifest | Reserved | Draft declarative package description of modules, source roots, permitted language versions, and direct dependencies |
+| Library | Reserved | Draft publication role for a reusable Package rather than a global semantic container |
+| Source Root | Reserved | Draft explicit portable package-relative directory contributing `.plant` files to exactly one Module |
+| Portable Package Path | Reserved | Draft normalized ASCII package-relative path with `/` separators and portable collision rules |
+| Dependency Alias | Reserved | Draft manifest identifier used as the first segment of a cross-package import target |
+| Dependency Lock | Reserved | Draft immutable build input resolving the complete package graph to exact revisions, digests, origins, aliases, and edges |
+| Export Surface | Reserved | Draft set of Public declarations owned by exported Modules of one Package |
+| Public Semantic API Fingerprint | Reserved | Draft deterministic digest of one resolved Export Surface under a versioned signature schema |
 | Import | Proposed | File-local explicit binding to one accessible declaration or namespace; package availability remains owned by RFC-0001C |
 | Scope | Proposed | Identity-bearing owner of one ordinary-symbol collision domain, as proposed in RFC-0001B |
 | Binding | Proposed | Association from a source-visible identifier to one resolved semantic identity |
