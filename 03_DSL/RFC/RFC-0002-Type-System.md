@@ -18,7 +18,7 @@
 
 **Implementation Status:** Not Started
 
-**Review:** TBD
+**Review:** [Pull Request #11](https://github.com/al-gri/IndustrialMDE/pull/11)
 
 ## 1. Summary
 
