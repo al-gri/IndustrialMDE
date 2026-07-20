@@ -1,6 +1,6 @@
 # RFC-0001C: Compilation Units, Modules, Packages, and Dependencies
 
-**Status:** Draft
+**Status:** Proposed
 
 **Authors:** IndustrialMDE Project
 
@@ -18,7 +18,7 @@
 
 **Implementation Status:** Not Started
 
-**Review:** [Pull Request #9](https://github.com/al-gri/IndustrialMDE/pull/9)
+**Review:** Initial Draft in [Pull Request #9](https://github.com/al-gri/IndustrialMDE/pull/9); Proposed transition review pending
 
 ## 1. Summary
 
@@ -37,7 +37,7 @@ Packages, modules, namespaces, files, and semantic declarations are not synonyms
 
 This RFC also closes the package-facing decision gates delegated by RFC-0001B. Cross-package import targets begin with an explicit direct-dependency alias. Package and module dependency graphs are acyclic. Transitive dependencies are not source-visible. Public re-export is not supported in language version `0.1`.
 
-This document is a non-normative Draft. Its concrete manifest and lock serialization remains an explicit design gate. A compiler implementation MUST NOT treat an experimental encoding as Accepted language behavior.
+This document is a non-normative Proposed specification. Public Project Manifest, Package Manifest, and Dependency Lock serialization is owned by Draft RFC-0001D. A compiler implementation MUST NOT treat either Proposed semantics or a Draft serialization as Accepted language behavior.
 
 ## 2. Motivation
 
@@ -108,22 +108,23 @@ This RFC does not define:
 - Application Assembly or Deployment selection by a Project;
 - target profiles, hardware mapping, or artifact emission;
 - package signing infrastructure or certification claims;
-- a language prelude or standard-library contents; or
-- the final concrete serialization syntax of Project Manifests, Package Manifests, and dependency locks in this initial Draft.
+- standard-library contents; or
+- internal parser, object-model, or cache serialization choices.
 
-Concrete manifest and lock serialization belongs to this RFC before acceptance. It remains unresolved in the initial Draft so that the semantic schema is reviewed before a file format becomes a compatibility constraint.
+Public Project Manifest, Package Manifest, and Dependency Lock serialization belongs to RFC-0001D. This RFC owns the semantic document model and cross-document build rules; RFC-0001D owns filenames, encoding, exact fields, duplicate handling, source spans, canonical serialization, and format migration.
 
 ## 5. Terminology
 
 This RFC uses terms from the [IndustrialMDE Glossary](../Glossary.md).
 
-- **Project** — one explicit build and orchestration boundary selecting one root Package Revision and one dependency lock.
+- **Project** — one explicit build and orchestration boundary selecting one root Package Revision and, for a locked build, one explicit Dependency Lock.
 - **Project Manifest** — versioned build input that identifies the root Package Manifest, lock, language constraints, and project-level build configuration.
 - **Package Identity** — stable structured logical identity consisting of Package Authority and Package Name.
 - **Package Authority** — lowercase ASCII ownership coordinate used as part of Package Identity.
 - **Package Name** — lowercase ASCII package label scoped by one Package Authority.
 - **Package Version** — exact three-part release revision in the foundational contract.
-- **Package Content Identity** — algorithm-qualified cryptographic digest of one immutable package artifact.
+- **Package Content Identity** — tagged, algorithm-qualified cryptographic digest of either one immutable package artifact or one immutable root-workspace content snapshot.
+- **Workspace Content Fingerprint** — the `workspace-snapshot` Package Content Identity computed from root-package-owned manifest, path, and source bytes after those inputs are snapshotted for one compilation.
 - **Package Revision** — exact tuple of Package Identity, Package Version, and Package Content Identity.
 - **Package Manifest** — versioned declarative description of one package revision's modules, source roots, language constraints, and direct dependencies.
 - **Library** — a package published for reuse; not a global semantic container or distinct kernel entity.
@@ -155,7 +156,7 @@ Project
 │       ├── one or more Source Roots
 │       └── zero or more Compilation Units
 ├── zero or more resolved dependency Package Revisions
-└── Dependency Lock
+└── zero or one Dependency Lock
 ```
 
 Each semantically compiled source file MUST have exactly one owner at every required level:
@@ -188,6 +189,8 @@ One language version `0.1` Project MUST select exactly one root Package Manifest
 
 Compilation MUST begin from an explicitly supplied Project Manifest. A compiler MUST NOT search the current directory, parent directories, user home, environment-specific workspace metadata, or registry configuration to select a Project Manifest implicitly.
 
+The explicitly supplied Project Manifest entry MUST be a regular non-link file. It MUST NOT itself be a symbolic link, junction, reparse point, or archive link entry.
+
 For a local root package:
 
 - the Project root is the directory containing the explicitly supplied Project Manifest;
@@ -195,7 +198,7 @@ For a local root package:
 - the root package root is the directory containing the selected Package Manifest; and
 - neither physical root enters Package Identity or semantic identity.
 
-The resolved root Package Manifest and every participating source path MUST remain below their declared physical roots without symlink or parent-traversal escape.
+The resolved root Package Manifest, Dependency Lock when present, every immutable dependency Package Manifest, and every participating source path MUST remain below their declared physical roots without link or parent-traversal escape. A selected build document MUST be a regular non-link file, and no relative path component below its declared root may be a symbolic link, junction, reparse point, or archive link entry.
 
 The Project Manifest MUST identify:
 
@@ -204,10 +207,10 @@ The Project Manifest MUST identify:
 | manifest schema version | Required |
 | root Package Manifest | Required portable path |
 | Dependency Lock | Required for reproducible or production compilation |
-| permitted language versions | Required non-empty set |
+| language version | Required exact version |
 | project configuration identity | Required when configuration changes semantic or generated results |
 
-A Project Manifest MAY constrain the language versions permitted by the build. It MUST NOT replace, synthesize, or silently override the `dsl` directive required in each source file by RFC-0001.
+A language version `0.1` Project Manifest selects exactly one effective language version for the complete Project. It MUST NOT replace, synthesize, or silently override the `dsl` directive required in each source file by RFC-0001. Every participating directive must agree with the selected version under section 6.16.
 
 Project names, workspace display names, checkout directories, and CI job names MUST NOT enter Package Identity or semantic identity unless a later Accepted RFC explicitly makes one a structured identity input.
 
@@ -228,16 +231,18 @@ Each document MUST declare an explicit schema version. Duplicate fields are inva
 
 Field ordering MUST NOT change semantics. Where a field represents a set or map, its semantic interpretation is unordered and its canonical processing order is defined by section 7.
 
-The concrete serialization MUST, before this RFC becomes Proposed:
+RFC-0001D owns the public schema `0.1` serialization and MUST:
 
 - preserve exact string and integer values;
-- detect duplicate keys;
+- detect duplicate keys before map construction;
 - define encoding and newline handling;
-- define canonical schema-version placement;
-- reject non-finite numeric values;
+- define schema-version representation;
+- reject non-finite or otherwise unsupported numeric values;
 - avoid executable interpolation;
-- define unknown-field behavior; and
+- define unknown-field and extension behavior; and
 - support deterministic diagnostics with document spans.
+
+An implementation claiming public manifest or lock conformance MUST conform to a compatible Accepted serialization RFC. The semantic model in this RFC does not authorize an alternative public encoding.
 
 An experimental implementation MAY use a temporary encoding only when it identifies that encoding as non-conforming and does not publish it as the stable manifest contract.
 
@@ -323,17 +328,35 @@ Package Version participates in package-revision and compatibility checks but no
 
 #### 6.4.5 Package Content Identity
 
-An immutable dependency package MUST have a Package Content Identity:
+A Package Content Identity is the tagged tuple:
 
 ```text
-(Digest Algorithm, Digest Bytes)
+(Content Kind, Digest Algorithm, Digest Bytes)
 ```
 
-The foundational digest algorithm is `sha256`. The digest is computed over the exact immutable package artifact bytes supplied by the distribution system.
+The foundational Content Kinds are:
 
-The digest does not prove publisher identity, review status, or safety. It proves only equality to the locked bytes under the selected algorithm.
+| Content Kind | Meaning |
+| --- | --- |
+| `immutable-artifact` | Exact immutable dependency package artifact bytes |
+| `workspace-snapshot` | Exact root-package-owned inputs snapshotted for one compilation |
 
-The root workspace package MAY be represented by a Workspace Content Fingerprint rather than an immutable archive digest. That fingerprint MUST include every participating manifest, source path, and source byte sequence.
+The foundational digest algorithm is `sha256`.
+
+For `immutable-artifact`, the digest is computed over the exact package artifact bytes supplied by the distribution system.
+
+For `workspace-snapshot`, the Workspace Content Fingerprint MUST use a versioned, length-delimited encoding of:
+
+- exact root Package Manifest bytes;
+- every participating root-package Portable Package Path;
+- the exact source bytes at each participating path; and
+- any additional package-owned input explicitly assigned by a later public contract.
+
+The Workspace Content Fingerprint MUST NOT include the Project Manifest, Dependency Lock, project configuration, dependency artifacts, compiler version, or active resource limits. Those are separate Project Resolution Fingerprint inputs. This exclusion prevents a lock from becoming a self-referential hash input.
+
+All root workspace inputs MUST be snapshotted before the fingerprint is published. A participating path or byte sequence that changes during compilation produces `IMDE4015`; the compiler MUST NOT combine bytes from different workspace states.
+
+A content digest does not prove publisher identity, review status, or safety. It proves only equality to the identified bytes under the selected algorithm and Content Kind.
 
 #### 6.4.6 Package Revision
 
@@ -359,7 +382,7 @@ The Package Manifest MUST declare:
 | Package Authority | Required |
 | Package Name | Required |
 | Package Version | Required |
-| permitted language versions | Required non-empty set |
+| language version | Required exact version |
 | Modules | Required non-empty set |
 | direct Dependency Declarations | Required, possibly empty |
 
@@ -456,6 +479,16 @@ A Portable Package Path:
 - MUST NOT resolve outside the package root; and
 - is compared by exact ASCII bytes.
 
+For portability to Windows filesystem APIs, the ASCII-case-folded stem before the first `.` in every segment MUST NOT be one of:
+
+```text
+CON PRN AUX NUL
+COM1 COM2 COM3 COM4 COM5 COM6 COM7 COM8 COM9
+LPT1 LPT2 LPT3 LPT4 LPT5 LPT6 LPT7 LPT8 LPT9
+```
+
+The prohibition applies with or without an extension. For example, `CON`, `con.txt`, and `Lpt1.plant` are invalid Portable Package Path segments.
+
 Two participating package paths MUST NOT differ only by ASCII case. This is rejected before source parsing so the source set is portable across case-sensitive and case-insensitive filesystems.
 
 Host-native paths MUST be converted to Portable Package Paths before they become build inputs. Host path normalization MUST NOT change a package-relative spelling silently.
@@ -470,7 +503,7 @@ Source discovery:
 
 1. validates all declared Source Roots;
 2. recursively enumerates candidate regular files;
-3. rejects symbolic links in a participating source path;
+3. rejects symbolic links, junctions, reparse points, and archive link entries in a participating source path;
 4. converts candidates to Portable Package Paths;
 5. rejects exact and ASCII case-folded path collisions;
 6. assigns every candidate to exactly one Module; and
@@ -552,7 +585,7 @@ The lock MUST record:
 
 - lock schema version;
 - root Package Identity and Package Version;
-- every resolved Package Revision;
+- every resolved immutable dependency Package Revision;
 - exact Package Content Identity;
 - origin or retrieval locator as provenance data;
 - each consuming-package to direct-dependency edge;
@@ -560,9 +593,9 @@ The lock MUST record:
 - the manifest digest for every immutable dependency package; and
 - enough data to reconstruct one deterministic resolved dependency graph.
 
-The lock MUST contain exactly one Package Revision per Package Identity.
+The lock MUST contain exactly one immutable dependency Package Revision per Package Identity and MUST NOT repeat the root Package Identity as a locked dependency package.
 
-Every locked Package Revision MUST be reachable from the root Package through locked direct-dependency edges. Unreachable package entries and edges are stale lock data and are invalid.
+Every locked Package Revision MUST be reachable from the root Package through locked direct-dependency edges. Unreachable package entries and edges are stale lock data and are invalid. The root Workspace Content Fingerprint is computed from the immutable compilation snapshot and is not stored in the Dependency Lock.
 
 Normal compilation treats the Dependency Lock as immutable input. It MUST NOT:
 
@@ -711,22 +744,23 @@ Member visibility inside Definitions and public signature closure remain delegat
 
 An import cannot bypass Module or Package visibility. An inaccessible exact match produces a visibility diagnostic rather than an unresolved-name success.
 
-### 6.16 Language-Version Constraints
+### 6.16 Language-Version and Prelude Constraints
 
 Every Compilation Unit retains the effective language version declared by its own `dsl` directive.
 
-The Project Manifest and each Package Manifest MUST declare a non-empty set of permitted language versions.
+In foundational language version `0.1`:
 
-A Compilation Unit is valid only when:
+- the Project Manifest MUST select exactly one language version;
+- every Package Manifest MUST declare exactly that language version;
+- every participating Compilation Unit `dsl` directive MUST declare exactly that language version;
+- the compiler MUST explicitly declare support for that exact language version; and
+- a Project containing more than one effective language version is invalid.
 
-- its version is permitted by its Package Manifest;
-- its version is permitted by the Project Manifest;
-- the compiler declares support for that version; and
-- every cross-version semantic reference is supported by the applicable compatibility contracts.
+Manifests MUST NOT rewrite or infer a Compilation Unit's language version. Mixed-version linking requires a later RFC that defines grammar, type, identity, public-signature, and compatibility behavior across versions.
 
-Manifests MUST NOT rewrite or infer a Compilation Unit's language version.
+Language version `0.1` has no implicit package, namespace, or ordinary-symbol prelude. A compiler MUST NOT synthesize a hidden Package, dependency, Namespace contribution, Import Environment binding, or standard-library declaration.
 
-A Project MAY contain more than one effective language version only when the compiler explicitly supports the combination. Unsupported combinations fail deterministically before Canonical IR construction.
+RFC-0002 MAY define intrinsic type entities such as `BOOL`, `INT`, `REAL`, and `TIME`. Such entities are language-owned type constructs rather than Package declarations or implicit imports, and their exact syntax, collision behavior, and type-context resolution belong to RFC-0002. A future Standard Library remains an explicit dependency and import unless a later Accepted language-version contract states otherwise.
 
 ### 6.17 Resource Bounds
 
@@ -754,24 +788,26 @@ Required minimum production values remain owned by the compiler conformance spec
 
 ### 6.18 Diagnostic Expectations
 
-The following diagnostic codes are reserved by this Draft and may be refined before acceptance.
+The following diagnostic codes are reserved by this Proposed specification and may be refined before acceptance.
+
+When a compatible serialization RFC applies, its encoding, JSON syntax, closed-schema, value-kind, and serialized field-grammar diagnostics take precedence. The compiler MUST NOT also emit an RFC-0001C diagnostic for the same serialization fact. The codes below govern missing build inputs, selection failures, filesystem validation, and semantic or cross-document validation after the required fields have been parsed.
 
 | Code | Severity | Condition | Required facts |
 | --- | --- | --- | --- |
-| `IMDE4001` | Error | Missing, invalid, unsupported, or implicitly discovered Project Manifest | Explicit requested origin and failure reason |
-| `IMDE4002` | Error | Invalid Package Identity or Package Version | Invalid component, value, and governing rule |
-| `IMDE4003` | Error | Invalid Package Manifest or Module declaration | Package identity, field, and manifest span |
+| `IMDE4001` | Error | Missing or unavailable Project Manifest, implicit discovery attempt, or invalid Project selection after schema validation | Explicit requested origin and failure reason |
+| `IMDE4002` | Error | Package Identity or Package Version violates a semantic or cross-document rule after field parsing | Invalid component, value, and governing rule |
+| `IMDE4003` | Error | Package Manifest or Module declaration violates a semantic rule after schema validation | Package identity, field, and manifest span |
 | `IMDE4004` | Error | Missing, stale, extra, or inconsistent Dependency Lock entry | Consumer, alias, expected requirement, and locked facts |
 | `IMDE4005` | Error | Package artifact or manifest digest mismatch | Package Revision, algorithm, expected digest, and observed digest |
 | `IMDE4006` | Error | More than one Package Revision for one Package Identity | Identity, revisions, and dependency paths |
 | `IMDE4007` | Error | Package dependency cycle | Ordered component nodes, directed edges, and manifest spans |
 | `IMDE4008` | Error | Module dependency cycle or invalid module edge | Package, ordered Modules, directed edges, and spans |
-| `IMDE4009` | Error | Invalid, escaping, symlinked, colliding, overlapping, or multiply owned source path | Package, Module, path, and conflicting origin |
+| `IMDE4009` | Error | Invalid, escaping, linked, colliding, overlapping, or multiply owned participating build-document or source path | Document role or Package and Module, path, and conflicting origin |
 | `IMDE4010` | Error | Compilation Unit has no owner or inconsistent owner metadata | Path and candidate Package or Module owners |
 | `IMDE4011` | Error | Unknown, duplicate, or colliding Dependency Alias | Consumer Package, exact aliases, folded keys, and spans |
 | `IMDE4012` | Error | Undeclared, transitive-only, or self dependency access | Consumer, requested package or alias, and available direct dependencies |
 | `IMDE4013` | Error | Declaration is inaccessible through Module or Package visibility | Target identity, visibility, owning Module, and required direct edge |
-| `IMDE4014` | Error | Language version violates Project, Package, or compiler constraints | Unit path, declared version, and applicable constraints |
+| `IMDE4014` | Error | Language version violates Project, Package, single-version, or compiler constraints | Unit path, declared version, and applicable constraints |
 | `IMDE4015` | Error | Package content, manifest, or source set differs from its resolved build input | Package Revision and changed input identity |
 | `IMDE4016` | Error | Manifest, package, source, graph, archive, or fingerprint resource limit exceeded | Active limit, observed count, and affected origin |
 | `IMDE4017` | Error | Reproducible or production compilation attempted without an exact lock | Project origin and required explicit package operation |
@@ -793,7 +829,7 @@ For the concerns owned by this RFC, deterministic resolution depends on:
 - every resolved immutable package artifact;
 - root workspace source paths and bytes;
 - every Package Manifest;
-- explicit Project and Package language-version constraints;
+- exact Project and Package language version;
 - active resource limits;
 - compiler version and supported manifest schemas; and
 - package-tool configuration explicitly declared as a build input.
@@ -807,14 +843,24 @@ Canonical ordering uses structured keys:
 | Entity | Canonical ordering key |
 | --- | --- |
 | Package Identity | Package Authority labels, then Package Name, by exact ASCII bytes |
-| Package Revision | Package Identity, Package Version components, digest algorithm, digest bytes |
+| Package Revision | Package Identity, Package Version components, Content Kind, digest algorithm, digest bytes |
 | Module | Package Identity, then Module Name by exact ASCII bytes |
 | Compilation Unit | Package Identity, Module Name, Portable Package Path by exact ASCII bytes |
 | Dependency edge | consumer Package Identity, Dependency Alias, target Package Identity |
 | Module edge | consumer Module Identity, target Module Identity |
-| Manifest diagnostic | document role, Package Identity when known, Portable Package Path, field path, diagnostic code |
+| Manifest or lock diagnostic | validation layer, document role, expected or declared Package Identity when applicable, Package Content Identity fallback, stable portable path or non-file origin, primary raw span, diagnostic code, field path |
 
-Topological processing MUST use the applicable canonical ordering key whenever more than one node has zero remaining predecessors.
+The public Package and Module graphs store edges as `consumer → dependency`.
+
+Dependency-first processing MUST therefore use reverse topological scheduling:
+
+1. count each node's remaining outgoing dependency edges;
+2. place every node with zero remaining dependencies in a ready set;
+3. select the ready node with the smallest applicable canonical ordering key;
+4. after processing that node, remove each incoming edge from a consumer and update that consumer's remaining dependency count; and
+5. continue until every node is processed or a previously diagnosed cycle prevents completion.
+
+Consumer-first presentation order, when needed, is the reverse of this dependency-first order. An implementation MUST NOT interpret `consumer → dependency` as authorization to compile a consumer before its required dependency.
 
 Filesystem enumeration order, manifest field order, lock entry order, cache order, registry result order, hash-map iteration, concurrency, locale, and host path rules MUST NOT change the Resolved Project Graph.
 
@@ -826,7 +872,7 @@ If resource limits prevent reporting every edge, the diagnostic MUST report a de
 
 ### 7.4 Content and Fingerprint Algorithms
 
-Package Content Identity uses the algorithm recorded in the lock. The foundational algorithm is `sha256`.
+Immutable dependency Package Content Identity uses the algorithm recorded in the lock. Root Workspace Content Identity uses the algorithm and `workspace-snapshot` domain defined by the applicable fingerprint schema. The foundational algorithm is `sha256`.
 
 Compiler fingerprints MUST use:
 
@@ -836,6 +882,21 @@ Compiler fingerprints MUST use:
 - canonical ordering for sets and maps.
 
 Random UUIDs, object memory addresses, absolute checkout paths, file timestamps, inode numbers, and cache insertion order MUST NOT enter a persistent identity or fingerprint.
+
+The Project Resolution Fingerprint MUST combine, through a versioned length-delimited encoding:
+
+- Project Manifest exact bytes and schema version;
+- root Workspace Content Fingerprint;
+- Dependency Lock exact bytes and schema version when present;
+- every immutable dependency Package Revision;
+- exact project configuration identity when applicable;
+- compiler semantic version and selected exact language version;
+- active resource limits; and
+- every other declared build input that can change the Resolved Project Graph.
+
+The Project Resolution Fingerprint is computed outside the Dependency Lock. Neither value contains itself directly or indirectly.
+
+This RFC standardizes fingerprint inputs, domains, and required properties, but not the final public byte encoding. Until a compatible Accepted fingerprint specification registers that encoding, an implementation MUST NOT describe its concrete Workspace Content, Project Resolution, implementation, or public-API fingerprint bytes as interoperable IndustrialMDE fingerprints.
 
 ## 8. Compatibility and Migration
 
@@ -879,7 +940,7 @@ Normal compilation MUST NOT hide a lock update inside a successful build.
 
 Manifest and lock schema versions follow managed compatibility. A compiler MUST reject an unsupported schema rather than guess its meaning.
 
-A migration tool MAY rewrite a document only through an explicit user-selected command and SHOULD preserve comments or presentation data when the selected serialization supports them.
+A migration tool MAY rewrite a document only through an explicit user-selected command and SHOULD preserve presentation data when the selected serialization supports it. Schema `0.1` RFC-0001D JSON does not support comments.
 
 ## 9. Safety and Security Considerations
 
@@ -889,7 +950,7 @@ Implementations MUST:
 
 - enforce declared byte, count, depth, and graph limits;
 - reject absolute paths and parent traversal;
-- reject source symlinks and archive links that can escape package roots;
+- reject build-document and source symlinks, junctions, reparse points, and archive links in participating paths;
 - prevent archive writes outside an isolated extraction root;
 - verify locked artifact and manifest digests;
 - reject duplicate Package Identities and multiple revisions;
@@ -920,9 +981,23 @@ Tooling MUST retain:
 - Dependency Aliases and target Package Identities;
 - visibility and Export Surface membership;
 - digest verification status;
-- language-version constraints;
+- exact language version;
 - active resource limits; and
 - traceability spans for every declared edge and owner.
+
+Compiler APIs and caches MUST distinguish:
+
+```text
+Canonical Semantic Identity
+```
+
+from a build-local resolved handle such as:
+
+```text
+(Canonical Semantic Identity, Package Revision, Project Resolution Fingerprint)
+```
+
+Canonical Semantic Identity alone MUST NOT authorize cross-build cache reuse, reuse of a previously resolved type-compatibility or type-equality result, or entity dereference after a Package Revision, language version, compiler semantic version, or relevant configuration change. The Type System remains responsible for defining type identity and equality.
 
 ### 10.2 Compilation Unit Fingerprint
 
@@ -963,6 +1038,8 @@ A Package Resolution Fingerprint MUST include:
 - locked target Package Revisions; and
 - relevant manifest schema versions.
 
+A Project Resolution Fingerprint additionally includes the exact Project Manifest, Dependency Lock when present, root Workspace Content Fingerprint, compiler semantic version, exact language version, project configuration identity, and active resource limits under section 7.4.
+
 A Package Public Semantic API Fingerprint is derived from the Export Surfaces of exported Modules and their versioned public-signature schemas.
 
 ### 10.5 Invalidation Rules
@@ -998,42 +1075,52 @@ An IDE SHOULD:
 
 ## 11. Examples
 
-Manifest examples in this Draft use conceptual structured data. They do not select the final manifest serialization.
+Manifest examples use the Draft RFC-0001D schema `0.1` public serialization. RFC-0001D remains non-normative until separately Accepted.
 
 ### 11.1 Positive: Root Project and Package
 
-```text
-project {
-    schema: "0.1"
-    root_package_manifest: "package.imde"
-    dependency_lock: "industrialmde.lock"
-    permitted_language_versions: ["0.1"]
+```json
+{
+  "schema_version": "0.1",
+  "root_package_manifest": "industrialmde.package.json",
+  "dependency_lock": "industrialmde.lock.json",
+  "language_version": "0.1"
 }
+```
 
-package {
-    schema: "0.1"
-    authority: "com.acme.automation"
-    name: "water-treatment"
-    version: "0.1.0"
-    permitted_language_versions: ["0.1"]
-
-    module Application {
-        exposure: internal
-        source_roots: ["src/application"]
-        dependencies: ["Domain"]
+```json
+{
+  "schema_version": "0.1",
+  "package": {
+    "authority": "com.acme.automation",
+    "name": "water-treatment"
+  },
+  "version": "0.1.0",
+  "language_version": "0.1",
+  "modules": [
+    {
+      "name": "Application",
+      "exposure": "internal",
+      "source_roots": ["src/application"],
+      "dependencies": ["Domain"]
+    },
+    {
+      "name": "Domain",
+      "exposure": "exported",
+      "source_roots": ["src/domain"],
+      "dependencies": []
     }
-
-    module Domain {
-        exposure: exported
-        source_roots: ["src/domain"]
-        dependencies: []
+  ],
+  "dependencies": [
+    {
+      "alias": "Motors",
+      "package": {
+        "authority": "org.industrialmde",
+        "name": "motor-library"
+      },
+      "version": "1.2.3"
     }
-
-    dependency Motors {
-        authority: "org.industrialmde"
-        name: "motor-library"
-        version: "1.2.3"
-    }
+  ]
 }
 ```
 
@@ -1089,13 +1176,23 @@ When Package Identity, Module, Namespace Path, semantic owner path, spelling, an
 
 ### 11.5 Positive: Explicit Lock Entry
 
-```text
-locked_package {
-    authority: "org.industrialmde"
-    name: "motor-library"
-    version: "1.2.3"
-    digest: "sha256:<exact-digest>"
-    origin: "https://packages.example.invalid/org.industrialmde/motor-library/1.2.3"
+```json
+{
+  "package": {
+    "authority": "org.industrialmde",
+    "name": "motor-library"
+  },
+  "version": "1.2.3",
+  "content_identity": {
+    "kind": "immutable-artifact",
+    "algorithm": "sha256",
+    "value": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+  },
+  "manifest_digest": {
+    "algorithm": "sha256",
+    "value": "abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789"
+  },
+  "origin": "https://packages.example.invalid/org.industrialmde/motor-library/1.2.3"
 }
 ```
 
@@ -1163,7 +1260,7 @@ Expected result: `IMDE4009` because Source Roots overlap and files could receive
 
 ### 11.12 Negative: Symlink Escape
 
-Source Root `src/domain` contains a symlink to `../../external`.
+Source Root `src/domain` contains a symlink, junction, reparse point, or archive link to `../../external`.
 
 Expected result: `IMDE4009`. The compiler does not follow the link or compile a partial source set.
 
@@ -1173,13 +1270,34 @@ Module `Application` directly depends on Module `Domain`, but `Domain` declarati
 
 Expected result: `IMDE4013`. A direct module edge does not expose Private declarations.
 
-### 11.14 Negative: Stale Lock
+### 11.14 Negative: Private Declarations Still Collide in a Merged Namespace
+
+Module `DomainA` and Module `DomainB` each contribute a Private declaration named `InternalConfig` to the same logical Namespace in the same Package.
+
+Expected result: RFC-0001B `IMDE3002`. Module privacy restricts accessibility; it does not create a separate semantic identity or collision domain.
+
+### 11.15 Negative: Windows Reserved Device Stem
+
+```text
+src/domain/CON.plant
+src/domain/Lpt1.config
+```
+
+Expected result: `IMDE4009`. The reserved device stem is rejected ASCII-case-insensitively even when the segment has an extension.
+
+### 11.16 Negative: Mixed Language Versions
+
+The Project Manifest and most Compilation Units select language version `0.1`, but one dependency Package Manifest or source `dsl` directive selects another version.
+
+Expected result: `IMDE4014`. Foundational language version `0.1` has no cross-version linking contract.
+
+### 11.17 Negative: Stale Lock
 
 The Package Manifest requires version `1.2.3`, while the lock records version `1.2.2`.
 
 Expected result: `IMDE4004`. Normal compilation does not update the lock.
 
-### 11.15 Boundary Fixtures
+### 11.18 Boundary Fixtures
 
 Conformance fixtures MUST include:
 
@@ -1187,6 +1305,8 @@ Conformance fixtures MUST include:
 - Package Version components `0` and `2147483647`;
 - rejected leading-zero and out-of-range version components;
 - Portable Package Paths at the active segment and total-length limits;
+- Windows reserved device stems with case and extension variants;
+- linked Project, Package, and lock documents and link components below each declared root;
 - two paths differing only by ASCII case;
 - zero, one, and the maximum direct dependencies;
 - zero, one, and the maximum direct module dependencies;
@@ -1196,11 +1316,12 @@ Conformance fixtures MUST include:
 - a cycle diagnostic exceeding its edge-reporting limit;
 - exact digest success and one-bit digest mismatch;
 - a package with one exported and one internal Module; and
+- a Project containing two effective language versions; and
 - an empty Source Root that contributes zero Compilation Units.
 
 An empty Source Root is permitted when the Module and Package remain structurally valid. A Package with zero declared Modules is invalid.
 
-### 11.16 Compatibility: Package Upgrade
+### 11.19 Compatibility: Package Upgrade
 
 Version `1.2.3` and `1.2.4` have the same Package Identity. If their Export Surface and public semantic signatures are compatible, imports resolve to the same Canonical Declaration Identities after an explicit lock update.
 
@@ -1256,26 +1377,48 @@ Rejected because scripts, host conditionals, and environment interpolation creat
 
 Rejected because registry state and network timing would become semantic build inputs and ordinary compilation could not be reproduced.
 
-## 13. Unresolved Questions and Delegated Decisions
+## 13. Resolved Version 0.1 Limits and Delegated Decisions
 
-The following design gates MUST be resolved before this RFC becomes Proposed or assigned to an explicit compatible owner. Every gate that changes normative behavior MUST be resolved by compatible Accepted contracts before this RFC becomes Accepted.
+### 13.1 Resolved Version 0.1 Limits
 
-| Topic | Current Draft direction | Owner |
+The following items are deliberate foundational limits rather than unresolved behavior:
+
+| Topic | Version `0.1` rule |
+| --- | --- |
+| Public manifest and lock format | Strict JSON schema `0.1` is defined by RFC-0001D |
+| Package Version | Exact `Major.Minor.Patch`; no prerelease or build fields |
+| Dependency requirements | Exact versions only; no ranges, wildcards, or implicit latest |
+| Project roots | Exactly one root Package |
+| Local workspace | No multi-package workspace orchestration |
+| Language versions | Exactly one effective language version throughout one Project |
+| Prelude | No implicit Package, Namespace, ordinary-symbol, or standard-library prelude |
+| Built-in types | May be intrinsic language entities only under RFC-0002; not hidden Package declarations or imports |
+| Graph processing | Public edges are `consumer → dependency`; compilation uses deterministic dependency-first reverse topological scheduling |
+| Root content identity | `workspace-snapshot` Package Content Identity excludes Project and lock inputs; Project Resolution Fingerprint combines them separately |
+| Portable paths | Windows device stems and participating symlink, junction, reparse, and archive links are prohibited |
+| Module privacy | Visibility does not create a Module-owned semantic collision domain |
+| External dependency availability | Direct dependencies are declared Package-wide; Module-specific external allowlists are not present |
+
+Changing one of these rules requires a later public RFC and compatibility analysis. An implementation MUST NOT treat a current absence as an extension point.
+
+### 13.2 Delegated Decisions
+
+RFC-0001C may become Accepted when its own normative scope and listed dependencies are complete. A downstream RFC that serializes, consumes, or extends this model is not made an upstream dependency merely by that relationship.
+
+An implementation claiming behavior in a delegated topic MUST conform to a compatible Accepted owning contract. End-to-end compiler or package-tool conformance therefore may require Accepted downstream RFCs even when the abstract RFC-0001C model is independently Accepted.
+
+| Topic | Current Proposed direction | Owner |
 | --- | --- | --- |
-| Manifest and lock serialization | Declarative, versioned, duplicate-detecting, non-executable format; exact syntax and filenames unset | This RFC review |
-| Package Authority ownership | Syntax defined; ownership and registry validation external | Package distribution RFC |
-| Prerelease and build version fields | Unsupported in `0.1` | Compatibility review |
-| Non-exact version requirements | Unsupported in `0.1`; explicit lock-update tooling may add them only through a later RFC | Package distribution RFC |
-| Local multi-package workspace | One root Package only in `0.1` | Future workspace RFC |
-| Package archive canonicalization | Lock hashes exact artifact bytes; canonical publication archive format unset | Package distribution RFC or compiler specification |
-| Signature and provenance policy | Optional distribution-system control; not a compilation-success guarantee | Security and package distribution RFC |
+| Manifest and lock serialization | Complete Draft schema `0.1` exists; public file-format conformance requires its compatible Accepted contract | RFC-0001D |
+| Package Authority ownership | Syntax defined; ownership and registry validation external | Package Distribution RFC |
+| Package archive canonicalization | Lock hashes exact artifact bytes; canonical publication archive format unset | Package Distribution RFC |
+| Signature and provenance policy | Distribution control; not a compilation-success guarantee | Security and Package Distribution RFCs |
 | Public member signature closure | Top-level visibility defined; member and type signature closure unresolved | RFC-0002 and RFC-0006 |
 | Application and Deployment entry-point selection | Project is a build boundary only | RFC-0007 and compiler specification |
-| Language prelude dependency | No implicit prelude | RFC-0002 and RFC-0011 |
-| Minimum production resource limits | Required categories defined; numeric minima unset | Compiler conformance specification |
-| Fingerprint canonical encoding | Required properties defined; exact binary schema unset | Compiler specification and ADR |
+| Minimum production resource limits | Required categories defined; numeric minima unset | Compiler Conformance Specification |
+| Fingerprint canonical encoding | Required properties defined; exact binary schema unset | Public compiler or fingerprint specification; implementation codec MAY have an ADR |
 
-An unresolved item MUST NOT be filled by undocumented compiler, package-manager, registry, or filesystem behavior.
+A delegated item MUST NOT be filled by undocumented compiler, package-manager, registry, or filesystem behavior.
 
 ## 14. Conformance Requirements
 
@@ -1292,6 +1435,7 @@ An implementation conforms to an Accepted version of this RFC only if it:
 - treats one `.plant` file as one Compilation Unit;
 - constructs explicit direct Package and Module dependency DAGs;
 - rejects package and module cycles deterministically;
+- processes dependencies before consumers using the defined edge orientation and scheduling rule;
 - requires exact direct dependencies and a lock for reproducible builds;
 - verifies locked package and manifest digests;
 - exposes only direct Dependency Aliases to import-target resolution;
@@ -1300,7 +1444,10 @@ An implementation conforms to an Accepted version of this RFC only if it:
 - applies private-by-default top-level visibility;
 - requires direct Module access and exported Module status where applicable;
 - preserves Namespace and Canonical Declaration Identity rules from RFC-0001B;
-- enforces explicit language-version constraints without overriding source directives;
+- enforces one exact Project language version without overriding source directives;
+- introduces no implicit Package, Namespace, ordinary-symbol, or standard-library prelude;
+- computes a root Workspace Content Fingerprint without a Project/lock self-reference;
+- distinguishes Canonical Semantic Identity from build-local resolved handles and cache keys;
 - publishes an immutable Resolved Project Graph;
 - enforces deterministic resource limits;
 - emits the required diagnostic facts and ordering;
@@ -1308,6 +1455,10 @@ An implementation conforms to an Accepted version of this RFC only if it:
 - passes the positive, negative, boundary, compatibility, randomized-order, and digest-integrity fixtures.
 
 Conformance to this RFC does not establish conformance to the Type System, Execution Model, package registry, target profile, or complete IndustrialMDE language.
+
+An implementation that reads or writes public Project Manifests, Package Manifests, or Dependency Locks additionally requires conformance to a compatible Accepted serialization RFC. Draft RFC-0001D schema `0.1` is the current candidate and is not made normative by RFC-0001C conformance alone.
+
+An implementation that publishes or exchanges concrete fingerprint bytes additionally requires a compatible Accepted fingerprint specification. RFC-0001C conformance alone establishes the input model and safety properties, not an interoperable byte encoding.
 
 ## 15. Non-Normative Implementation Notes
 
@@ -1328,9 +1479,24 @@ Mutable graph builders MAY exist inside resolution, but the published Resolved P
 
 The package cache is not authoritative. Cache entries are selected by exact locked Package Content Identity and verified before use.
 
-The concrete manifest parser, hash library, archive library, storage engine, and cache serialization are implementation choices unless their observable formats are standardized by this or another public RFC.
+The concrete manifest parser, hash library, archive library, storage engine, and cache serialization are implementation choices. Public manifest and lock bytes are standardized by RFC-0001D and MUST NOT be redefined by an implementation ADR.
 
 ## 16. Change Log
+
+### Proposed — 2026-07-20
+
+- Advanced from Draft after architectural review confirmed the foundational Project, Package, Module, dependency, lock, visibility, and incremental-compilation direction.
+- Delegated the complete public manifest and lock serialization contract to Draft RFC-0001D rather than an implementation ADR.
+- Reconciled the Project model with explicit unlocked development builds while retaining mandatory locks for reproducible and production compilation.
+- Fixed `consumer → dependency` graph scheduling by defining deterministic dependency-first reverse topological processing.
+- Distinguished root `workspace-snapshot` content from immutable dependency artifacts and excluded Project and lock inputs from the Workspace Content Fingerprint to prevent self-reference.
+- Restricted foundational Projects to one effective language version and closed the implicit-prelude question for language version `0.1`.
+- Reserved intrinsic built-in type ownership for RFC-0002 without creating hidden Package or import bindings.
+- Added Windows reserved device stems and participating symlink/junction/reparse/archive-link rules to build-document selection and source discovery.
+- Confirmed that Module privacy does not create separate Namespace collision domains.
+- Distinguished Canonical Semantic Identity from build-local resolved handles and Project Resolution cache keys.
+- Restricted claims about interoperable fingerprint bytes to a compatible Accepted fingerprint specification.
+- Moved fixed version `0.1` limitations out of unresolved questions and assigned every remaining gate to a compatible public owner.
 
 ### Draft — 2026-07-20
 
