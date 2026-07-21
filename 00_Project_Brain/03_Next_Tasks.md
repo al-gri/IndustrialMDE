@@ -12,7 +12,7 @@
 
 ## P1 — Minimum Executable Specification
 
-1. Define the minimum type-system subset and intrinsic type-resolution contract required by a reference spike.
+1. Review Proposed RFC-0002 conformance and diagnostic matrices before acceptance; its `REAL` exceptional-value Draft-to-Proposed gates are resolved.
 2. Define the minimum RFC-0005, RFC-0006, and RFC-0007 structural slices required for Endpoint, Connection, composition, and Application Assembly roots.
 3. Define explicit experimental grammar and structural IR snapshot contracts without representing them as Accepted syntax or Canonical IR.
 4. Define positive, negative, boundary, compatibility, randomized-order, and integrity examples.

@@ -164,7 +164,7 @@ An example does not establish semantics that are absent from the governing RFC.
 | [RFC-0001B](RFC-0001B-Identifiers-Scopes-and-Namespaces.md) | Identifiers, Scopes, and Namespaces | Proposed | RFC-0000, RFC-0001, RFC-0001A | Not Started |
 | [RFC-0001C](RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) | Compilation Units, Modules, Packages, and Dependencies | Proposed | RFC-0000, RFC-0001, RFC-0001A, RFC-0001B | Not Started |
 | [RFC-0001D](RFC-0001D-Project-Package-and-Dependency-Lock-Serialization.md) | Project, Package, and Dependency-Lock Serialization | Draft | RFC-0000, RFC-0001, RFC-0001C | Not Started |
-| RFC-0002 | Type System | Not Drafted | RFC-0001A, RFC-0001B, RFC-0001C | Not Started |
+| [RFC-0002](RFC-0002-Type-System.md) | Type System | Proposed | RFC-0000, RFC-0001, RFC-0001A, RFC-0001B, RFC-0001C | Not Started |
 | RFC-0003 | Literals, Expressions, and Operators | Not Drafted | RFC-0002 | Not Started |
 | RFC-0004 | Execution Model and Bounded Semantics | Not Drafted | RFC-0002, RFC-0003 | Not Started |
 | RFC-0005 | Signals, Ports, Connections, and Data Flow | Not Drafted | RFC-0002, RFC-0004 | Not Started |
@@ -189,6 +189,7 @@ The following decision gates remain:
 - review and resolution of the Proposed RFC-0001B scope, namespace, import, collision, and naming contracts;
 - review and resolution of the Proposed RFC-0001C compilation-unit, module, package, dependency, lock, and visibility contracts;
 - independent review of Draft RFC-0001D strict JSON schema `0.1` as a public compatibility contract;
+- review of Proposed RFC-0002 intrinsic domains, Canonical Value Identity, diagnostic precedence, and conformance evidence; its `REAL` exceptional-value Draft-to-Proposed gates are resolved;
 - conformance of every foundational RFC with Approved Constitution 2.1 before RFC acceptance;
 - conformance evidence required before the foundational RFCs may become Accepted.
 

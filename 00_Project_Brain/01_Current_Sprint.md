@@ -15,6 +15,7 @@
 5. Review RFC-0001B conformance and acceptance gates as a Proposed specification.
 6. Review Proposed RFC-0001C compilation-unit, module, package, dependency, lock, and visibility contracts.
 7. Review Draft RFC-0001D strict JSON schema `0.1` as the public Project, Package, and Dependency Lock serialization contract.
+8. Review Proposed RFC-0002 intrinsic domains, canonical value identity, compatibility, deterministic `REAL` boundaries, and conformance matrix.
 
 ## Deliverables Under Review
 
@@ -28,9 +29,11 @@
 - [`RFC-0001B-Identifiers-Scopes-and-Namespaces.md`](../03_DSL/RFC/RFC-0001B-Identifiers-Scopes-and-Namespaces.md)
 - [`RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md`](../03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md)
 - [`RFC-0001D-Project-Package-and-Dependency-Lock-Serialization.md`](../03_DSL/RFC/RFC-0001D-Project-Package-and-Dependency-Lock-Serialization.md)
+- [`RFC-0002-Type-System.md`](../03_DSL/RFC/RFC-0002-Type-System.md)
 - [`06_Foundational_RFC_Review_Decisions.md`](06_Foundational_RFC_Review_Decisions.md)
 - [`07_RFC-0001B_Review_Decision.md`](07_RFC-0001B_Review_Decision.md)
 - [`08_RFC-0001C_Review_Decision.md`](08_RFC-0001C_Review_Decision.md)
+- [`09_RFC-0002_Review_Decision.md`](09_RFC-0002_Review_Decision.md)
 
 ## Decision Gates
 
@@ -38,7 +41,8 @@
 - Keep version 1.0 stabilization guarantees deferred until reference-spike and conformance evidence exist.
 - Resolve the package-boundary, visibility, import-cycle, naming-severity, and resource-limit gates identified by Proposed RFC-0001B.
 - Review RFC-0001D serialization independently and resolve RFC-0001C package-authority ownership, public-signature closure, fingerprint-schema, and production-limit acceptance gates.
-- Define minimal Type System, composition, connection, application-root, experimental grammar, and structural IR contracts before a full Structural Reference Spike.
+- Review the Proposed minimal Type System conformance matrix; the `REAL` exceptional-value Draft-to-Proposed gates are resolved.
+- Define composition, connection, application-root, experimental grammar, and structural IR contracts before a full Structural Reference Spike.
 - Define the boundary between normative specifications and an experimental reference compiler spike.
 - Confirm which implementation choices are accepted after their ADRs contain rationale and consequences.
 
