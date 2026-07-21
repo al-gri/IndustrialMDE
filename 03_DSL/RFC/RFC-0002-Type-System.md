@@ -1,6 +1,6 @@
 # RFC-0002: Type System
 
-**Status:** Draft
+**Status:** Proposed
 
 **Authors:** IndustrialMDE Project
 
@@ -18,7 +18,7 @@
 
 **Implementation Status:** Not Started
 
-**Review:** [Pull Request #11](https://github.com/al-gri/IndustrialMDE/pull/11)
+**Review:** [Pull Request #11](https://github.com/al-gri/IndustrialMDE/pull/11); [RFC-0002 Review Decision](../../00_Project_Brain/09_RFC-0002_Review_Decision.md)
 
 ## 1. Summary
 
@@ -45,7 +45,7 @@ The minimal subset deliberately has:
 
 This RFC defines semantic value domains, not physical target storage. A target may use any representation that preserves the complete observable domain under later Accepted execution and lowering contracts. A target that cannot preserve a required domain must reject the deployment deterministically rather than silently narrow the type.
 
-This document is a non-normative Draft. In particular, the complete language treatment of `REAL` exceptional values remains unresolved and blocks transition to Proposed.
+This document is a non-normative Proposed specification. It is complete enough for architectural and conformance review, including the `REAL` exceptional-value domain and Canonical Value Identity. Proposed does not mean Accepted, Implemented, or Stabilized and does not authorize production compiler or target implementation.
 
 ## 2. Motivation
 
@@ -74,7 +74,8 @@ This RFC proposes to:
 - define a stable, structured Intrinsic Type Identity that includes the effective language version;
 - recognize intrinsic type designators without an implicit prelude or ordinary-symbol lookup;
 - define exact `BOOL`, `INT`, and `TIME` value domains;
-- propose IEEE 754 binary64 as the `REAL` semantic numeric format while exposing remaining exceptional-value gates;
+- define IEEE 754 binary64 as the `REAL` semantic numeric format, including infinities, signed zeros, and one canonical quiet NaN;
+- define Canonical Value Identity independently from Type Equality and future operator equality;
 - define deterministic type equality and minimum compatibility;
 - prohibit declaration type inference and cross-type conversions in the minimum subset;
 - separate semantic value domains from physical target memory representation;
@@ -118,6 +119,7 @@ This RFC uses terms from the [IndustrialMDE Glossary](../Glossary.md), RFC-0001A
 - **Type Equality** — the relation determining whether two Type Identities denote the same Type.
 - **Type Compatibility** — a relation that an owning semantic rule may use when it requires values of one type to be acceptable as another type. In this minimum subset it is identical to Type Equality.
 - **Semantic Value Domain** — the complete set of values a Type can denote before target lowering.
+- **Canonical Value Identity** — the exact deterministic identity of a semantic value when an owning contract requires value identity for constants, signatures, fingerprints, or another published artifact. It is distinct from Type Identity and from the result of a language equality operator.
 - **Representability** — membership of a mathematical or semantic value in a Type's Semantic Value Domain.
 - **Physical Representation** — a target- or implementation-specific storage and operation encoding. It is not Type Identity.
 - **Invalid Type Placeholder** — a build-local recovery value used after a type diagnostic. It is not a valid Type and cannot enter published semantic or generated artifacts.
@@ -134,6 +136,7 @@ This RFC owns:
 - Intrinsic Type Identity;
 - intrinsic type-context recognition and spelling reservation;
 - scalar Semantic Value Domains;
+- Canonical Value Identity for values in those domains;
 - Type Equality and the minimum Type Compatibility relation;
 - representability predicates;
 - the absence of type inference and cross-type conversions in the minimum subset;
@@ -144,7 +147,7 @@ RFC-0001 owns tokenization and literal token forms. The exact spellings `BOOL`, 
 
 RFC-0001B owns ordinary name resolution. It does not add the Intrinsic Types to an ordinary-symbol environment. This RFC defines a separate, explicit rule that applies only in a Type Reference context.
 
-RFC-0003 owns expression grammar, operator typing, conversion syntax, literal evaluation, constant-expression evaluation, and the application of representability to evaluated expressions.
+RFC-0003 owns expression grammar, operator typing, conversion syntax, literal evaluation, constant-expression evaluation, numeric operator equality, and the application of representability to evaluated expressions. Its `REAL` evaluation rules must satisfy the deterministic binary64 contract in section 6.7.2.
 
 RFC-0004 owns target-neutral observable execution behavior, including runtime arithmetic results, faults, and propagation rules. Observable behavior cannot vary silently by target.
 
@@ -270,29 +273,56 @@ Binary and hexadecimal literal interpretation, contextual typing, unary signs, o
 
 ### 6.7 `REAL`
 
-`REAL` is proposed to use the IEEE 754 binary64 interchange format as its target-neutral semantic numeric format.
+`REAL` uses the IEEE 754 binary64 interchange format as its target-neutral abstract semantic numeric format.
 
-At minimum, its finite numeric domain includes:
+The `REAL` Semantic Value Domain contains exactly:
 
-- both binary64 zero encodings;
-- every binary64 subnormal finite value;
-- every binary64 normal finite value; and
-- both signs where the format provides them.
+- every finite binary64 value, including every subnormal and normal value;
+- positive zero and negative zero as distinct Canonical Value Identities;
+- positive infinity and negative infinity as distinct values; and
+- one canonical semantic quiet NaN value.
 
-This RFC does not define a physical target register layout or require native binary64 instructions. A target may emulate the required semantics if a later Accepted execution and lowering contract permits it.
+The canonical quiet NaN has no observable sign or payload. All quiet-NaN encodings admitted by an owning source, evaluation, or boundary contract MUST be normalized to that one semantic value before publication in the immutable Semantic Model. NaN sign and payload therefore cannot affect Canonical Value Identity, a public semantic signature, a fingerprint input, deterministic ordering, or clean/incremental equivalence.
 
-RFC-0001 does not define `NaN` or infinity source literals. The following questions remain unresolved in this Draft:
+A signaling NaN is not a language value and MUST NOT enter the Semantic Model. RFC-0001 defines no NaN or infinity source literal. A later target, deployment, external-data, or interoperability contract that can encounter a signaling NaN MUST explicitly define rejection or conversion to the canonical quiet NaN, including the applicable diagnostic, fault, and traceability behavior. Host-language handling is not such a contract.
 
-- whether positive and negative infinity are language values;
-- whether NaN is one semantic value or a family distinguished by sign, quiet/signaling state, or payload;
-- whether signaling NaNs may enter the Semantic Model;
-- whether positive and negative zero have distinct canonical value identities;
-- how exceptional values participate in equality, ordering, constant evaluation, public signatures, and deterministic serialization; and
-- which rounding rule converts a decimal real literal to a binary64 value.
+This RFC does not define a physical target register layout or require native binary64 instructions. A target may emulate the required semantics when the Accepted execution and lowering contracts permit it. A target that cannot preserve the required observable domain and operations MUST reject the deployment rather than silently substitute a narrower or different floating-point model.
 
-Until those questions are resolved by compatible RFC revisions, an implementation MUST NOT claim full RFC-0002 conformance for `REAL` exceptional values. A reference spike that excludes them must declare that restriction and identify itself as non-conforming.
+#### 6.7.1 Canonical `REAL` Value Identity
 
-Arithmetic, comparison, rounding mode, fused operations, overflow, underflow, NaN propagation, and runtime fault behavior are not established by this RFC.
+Canonical Value Identity for `REAL` is the following abstract tagged value:
+
+```text
+finite-binary64(bits)
+positive-infinity
+negative-infinity
+canonical-quiet-nan
+```
+
+For a finite value, `bits` is its exact IEEE 754 binary64 interchange encoding interpreted as a 64-bit bit sequence. Consequently, positive zero and negative zero have distinct Canonical Value Identities even though a future numeric equality operator may compare them as equal.
+
+Every admitted quiet NaN maps to `canonical-quiet-nan`; no NaN sign, payload, or quiet-NaN bit-pattern distinction survives. Positive and negative infinity remain distinct. The abstract tags and bit sequence define semantic identity, not a public byte serialization; any public encoding remains owned by its applicable serialization or IR specification.
+
+Canonical Value Identity is reflexive as an identity relation, including for `canonical-quiet-nan`. This does not define numeric operator equality. RFC-0003 may, for example, define numeric equality so that positive and negative zero compare equal and NaN compares unequal to every operand, including itself, without changing any identity defined here.
+
+#### 6.7.2 Downstream Deterministic Evaluation Contract
+
+RFC-0003 must define bit-exact, host-independent `REAL` literal conversion and constant-expression evaluation consistent with this domain and identity. At minimum, that contract MUST require:
+
+- decimal-to-binary64 conversion with a uniquely specified result and `roundTiesToEven` rounding;
+- a binary64 result rounded with `roundTiesToEven` at every separately specified semantic operation boundary;
+- no implicit contraction of separately specified operations into a fused operation;
+- no observable excess-precision intermediate that changes a specified operation result;
+- canonicalization of every quiet-NaN result to the single semantic quiet NaN; and
+- identical results across clean and incremental compilation, hosts, compiler configurations, and targets.
+
+A future explicitly defined fused operation may have one fused rounding step. Its existence does not permit an implementation to fuse other operations implicitly.
+
+These requirements specify observable results rather than an x87, FMA, host-compiler, hardware, or software implementation technique. An implementation may use verified software arithmetic, suitable hardware arithmetic, or a mixture, provided the result is bit-exact under the owning expression contract.
+
+If an implementation cannot guarantee the required result for a compile-time `REAL` expression, it MUST produce a deterministic diagnostic and MUST NOT publish a guessed or host-dependent semantic value. A deliberately limited reference spike may reject such expressions only as a documented non-conforming limitation. It MUST NOT defer evaluation of a compile-time Constant to Target IR, because that would make a compile-time semantic fact depend on target selection.
+
+General arithmetic operators, ordering, numeric equality, exceptional-result generation, and runtime fault or propagation behavior remain owned by RFC-0003 and RFC-0004. Those RFCs may refine behavior within this value domain but cannot silently change the domain or Canonical Value Identity.
 
 ### 6.8 `TIME`
 
@@ -504,6 +534,7 @@ Diagnostics follow the deterministic ordering rules in section 7. A fix suggesti
 Given identical complete build inputs, a conforming implementation must produce identical:
 
 - Intrinsic Type Identities;
+- Canonical Value Identities whenever an owning rule constructs semantic values;
 - Type Equality and Type Compatibility results;
 - representability results;
 - type-resolution outcomes;
@@ -576,7 +607,7 @@ Physical source relocation does not change Intrinsic Type Identity. It may chang
 
 ### 8.4 Pre-1.0 Status
 
-This Draft may change incompatibly during review while history remains available. It creates no Stabilized guarantee and no production compatibility claim.
+This Proposed specification may change incompatibly during review while history remains available. It creates no Accepted semantic contract, Stabilized guarantee, or production compatibility claim.
 
 ## 9. Safety and Security Considerations
 
@@ -588,8 +619,11 @@ This Draft may change incompatibly during review while history remains available
 - Semantic spelling reservation prevents an ordinary binding from impersonating an Intrinsic Type in another context.
 - Invalid placeholders cannot reach generated artifacts.
 - The closed four-type set bounds intrinsic lookup and prevents attacker-controlled type-registry growth.
+- Canonicalizing quiet NaNs prevents host-specific NaN payload or sign bits from contaminating semantic identity, signatures, fingerprints, or incremental results.
+- Preserving signed-zero identity prevents target or host normalization from erasing an observable binary64 distinction before the owning operator contract applies.
+- Excluding signaling NaNs prevents undocumented host traps or quieting behavior from entering the Semantic Model.
 
-`REAL` exceptional-value, comparison, and execution semantics remain unresolved. No safety claim may rely on unspecified NaN, infinity, signed-zero, rounding, overflow, or target-fault behavior.
+`REAL` operator comparison, exceptional-result generation, and execution fault or propagation behavior remain owned by RFC-0003 and RFC-0004. No safety claim may rely on those behaviors until their owning RFCs are Accepted. No implementation may substitute host defaults for the domain and Canonical Value Identity defined here.
 
 Successful type checking does not establish process safety, numerical stability, target timing adequacy, SIL or PL compliance, or physical equipment correctness.
 
@@ -761,13 +795,42 @@ right: (intrinsic-type, future-version, BOOL)
 
 Expected result: the identities are unequal in the absence of a future explicit cross-version contract. RFC-0001C independently rejects a mixed-version language version `0.1` Project.
 
-### 11.12 Draft Gate: `REAL` Exceptional Values
+### 11.12 Positive: Canonical Quiet NaN Identity
 
 ```text
-candidate semantic value: NaN with payload 0x1
+candidate encoding A: quiet NaN, positive sign, payload 0x1
+candidate encoding B: quiet NaN, negative sign, payload 0x1234
 ```
 
-Expected result for this Draft: no conformance result is defined. A reference spike must reject or exclude the case under a documented non-conforming limitation rather than select host-language behavior implicitly.
+Expected result: when an owning contract admits these encodings, both normalize to the single `canonical-quiet-nan` Canonical Value Identity before publication in the Semantic Model. Neither sign nor payload is preserved.
+
+### 11.13 Boundary: Signed Zero and Infinities
+
+| Candidate value | Canonical Value Identity |
+| --- | --- |
+| positive zero | `finite-binary64(0x0000000000000000)` |
+| negative zero | `finite-binary64(0x8000000000000000)` |
+| positive infinity | `positive-infinity` |
+| negative infinity | `negative-infinity` |
+
+All four values have the same `REAL` Type Identity. Each row has a distinct Canonical Value Identity. This fixture does not define numeric equality or ordering.
+
+### 11.14 Negative: Signaling NaN Boundary
+
+```text
+external candidate encoding: signaling NaN with payload 0x1
+```
+
+Expected result: the signaling NaN does not enter the Semantic Model. The owning target, deployment, or interoperability contract must reject it or explicitly convert it to the canonical quiet NaN and define the associated diagnostic, fault, and traceability behavior.
+
+### 11.15 Negative: Target-IR Constant-Evaluation Fallback
+
+```text
+compile-time REAL Constant expression: accepted by its owning RFC
+compiler capability: cannot guarantee the required bit-exact result
+```
+
+Expected result: deterministic compilation failure under the owning expression diagnostic. The compiler does not defer the Constant expression to Target IR and does not publish a host-dependent approximation.
 
 ## 12. Alternatives Considered
 
@@ -811,21 +874,31 @@ Rejected for the minimum subset because it would require expression and connecti
 
 Deferred. They require identity, bounds, compatibility, layout intent, public-signature, and migration rules that are unnecessary for the initial structural hypothesis.
 
+### 12.11 Preserve NaN Sign, Payload, or Signaling State
+
+Rejected for the minimum subset. Those distinctions are inconsistently preserved across hosts and industrial targets, would complicate deterministic identity and fingerprints, and are not required by the first structural slice. The language domain instead has one canonical quiet NaN and excludes signaling NaNs.
+
+### 12.12 Collapse Positive and Negative Zero Identity
+
+Rejected. Binary64 distinguishes the encodings, and later sign-sensitive operations may observe that distinction. Canonical Value Identity preserves both zeros while leaving numeric equality to RFC-0003.
+
+### 12.13 Defer Compile-Time `REAL` Evaluation to Target IR
+
+Rejected. A compile-time Constant is a semantic fact established before target lowering. Target-dependent evaluation would break vendor neutrality, public-signature stability, and clean/incremental equivalence. An implementation that cannot guarantee the specified result must diagnose the unsupported expression instead.
+
 ## 13. Unresolved Questions
 
-The following questions change the `REAL` Semantic Value Domain or canonical value identity and block transition of this RFC from Draft to Proposed:
+No unresolved question remains within the minimum Type System scope required for Proposed review. The `REAL` Semantic Value Domain and Canonical Value Identity are complete in section 6.7.
 
-1. Does the `REAL` Semantic Value Domain include positive and negative infinity?
-2. What semantic identities, if any, distinguish NaN sign, quiet/signaling state, and payload?
-3. Are positive and negative zero distinct for canonical value identity, equality, public constants, and serialization?
+The following are explicit downstream ownership and acceptance gates, not unresolved RFC-0002 domain questions:
 
-Resolution must preserve vendor neutrality and deterministic clean/incremental equivalence. Delegation is valid only when the owning RFC and the boundary are explicit; an implementation default is not a resolution.
+- RFC-0003 must define deterministic decimal-literal conversion, expression typing, operator equality and ordering, constant-expression evaluation, exceptional results, and application of representability predicates while satisfying section 6.7.2;
+- RFC-0004 must define target-neutral runtime arithmetic, exceptional-value propagation, faults, and other observable execution behavior;
+- RFC-0005 must define Endpoint and Connection rules that invoke the Type Equality or Type Compatibility relation and any restrictions on exceptional runtime values;
+- RFC-0007 must define target capability, deployment validation, and external-boundary handling, including signaling-NaN rejection or explicit conversion when applicable; and
+- a public signature, fingerprint, serialization, or Canonical IR owner must define its exact encoding of Canonical Value Identity before claiming interoperable bytes.
 
-The following are explicit downstream gates rather than blockers to RFC-0002 Proposed consideration once the value domain and ownership boundary above are complete:
-
-- RFC-0003 must define deterministic decimal-literal conversion, expression typing, constant evaluation, and application of representability predicates;
-- RFC-0003 and RFC-0004 must define operator equality, ordering, rounding, exceptional results, and runtime fault or propagation behavior; and
-- RFC-0005 and RFC-0007 must define whether and how exceptional values may cross Endpoint, deployment, and target boundaries.
+Those downstream contracts may define behavior within this RFC's domain. They MUST NOT silently change the domain, collapse signed-zero Canonical Value Identity, preserve NaN payloads as semantic facts, admit signaling NaN into the Semantic Model, or make compile-time Constant evaluation target-dependent.
 
 The following features are resolved as unsupported in the minimum subset rather than left open:
 
@@ -846,9 +919,10 @@ An implementation may claim conformance to a future Accepted revision of this RF
 - creates no hidden Package, Namespace, import, or ordinary Binding;
 - constructs complete language-versioned Intrinsic Type Identities;
 - distinguishes identity from build-local resolved handles;
+- constructs the complete `REAL` Semantic Value Domain and Canonical Value Identities defined in section 6.7;
 - implements exact Type Equality and minimum Type Compatibility;
 - enforces the `BOOL`, `INT`, and `TIME` domains exactly;
-- implements the finally accepted `REAL` domain and exceptional-value rules;
+- normalizes admitted quiet NaNs, excludes signaling NaNs from the Semantic Model, and preserves signed-zero identity;
 - rejects unsupported type forms, inference, and cross-type conversions;
 - prevents invalid placeholders from reaching published artifacts;
 - contributes type facts to public signatures as required;
@@ -866,10 +940,15 @@ At minimum, planned fixtures include:
 - invalid-placeholder publication rejection;
 - public signature change after a Type Identity change;
 - target capability failure without silent narrowing;
-- cross-version identity inequality; and
+- cross-version identity inequality;
+- positive- and negative-infinity identity;
+- quiet-NaN sign and payload canonicalization;
+- signaling-NaN boundary rejection or explicit conversion by its owning contract;
+- positive- and negative-zero Canonical Value Identity distinction;
+- rejection rather than Target-IR deferral when a compile-time `REAL` result cannot be guaranteed; and
 - randomized internal map and file orders producing identical semantic results and diagnostics.
 
-Until section 13 is resolved, no implementation can claim complete RFC-0002 conformance. A deliberately limited reference spike may implement a declared subset only when it identifies itself as non-conforming and records architecture feedback.
+Because this RFC remains Proposed, no implementation can claim conformance to an Accepted RFC-0002. A deliberately limited reference spike may implement a declared subset only when it identifies itself as non-conforming and records architecture feedback. Full language conformance additionally depends on the applicable Accepted downstream contracts listed in section 13.
 
 ## 15. Implementation Notes
 
@@ -882,11 +961,16 @@ An implementation should not use:
 - a host-language class or object identity as Type Identity;
 - the host integer width as the `INT` range;
 - the host float parser without a specified deterministic conversion contract;
+- host floating-point evaluation whose excess precision, contraction, NaN payload, or rounding behavior can change an observable semantic result;
 - a target register type as the source Type;
 - raw strings interchangeably for Type Identity and display names; or
 - a valid Type as the error-recovery placeholder.
 
 The reference spike should test whether a dedicated resolved intrinsic record simplifies semantic checking. It should not require a parser-specific `IntrinsicTypeNode` or treat that internal choice as evidence for source-language grammar.
+
+The specification does not require platform-specific switches such as disabling x87 excess precision or FMA instructions. It requires the observable result defined by the owning RFC. Verified software arithmetic, suitable hardware arithmetic, or a mixed implementation may satisfy that requirement.
+
+A reference spike that does not implement bit-exact `REAL` expression evaluation should reject the unsupported compile-time expressions with a stable diagnostic and record the limitation. It should never use Target IR as a fallback evaluator for a compile-time Constant.
 
 Experimental semantic or structural snapshots must be labeled non-conforming and non-interoperable until the Canonical IR and fingerprint encodings are governed by compatible specifications.
 
@@ -895,3 +979,4 @@ Experimental semantic or structural snapshots must be labeled non-conforming and
 | Date | Change |
 | --- | --- |
 | 2026-07-21 | Created the initial minimal Type System Draft with four language-versioned Intrinsic Types, exact equality, no conversions or inference, and explicit target-preservation boundaries |
+| 2026-07-21 | Promoted to Proposed after defining the complete binary64 `REAL` domain, Canonical Value Identity, quiet-NaN canonicalization, signaling-NaN exclusion, signed-zero identity, and the downstream deterministic-evaluation boundary |

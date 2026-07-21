@@ -112,17 +112,18 @@ The glossary does not independently establish language semantics. An Accepted RF
 
 | Term | Status | Working definition |
 | --- | --- | --- |
-| Type | Draft | Language-defined classification with a stable Type Identity and a semantic value domain |
-| Intrinsic Type | Draft | Language-owned type defined directly by RFC-0002 rather than by a Package declaration |
-| Intrinsic Type Designator | Draft | Exact Identifier spelling recognized as an Intrinsic Type only in a type-reference context without creating an ordinary binding or implicit prelude |
-| Intrinsic Type Identity | Draft | Structured identity containing the intrinsic identity domain, exact Language Version, and Intrinsic Kind |
-| Type Reference | Draft | Source or semantic reference occurring in a context that requires a Type |
-| Type Equality | Draft | Exact equality relation over complete Type Identities |
-| Type Compatibility | Draft | Relation used by an owning semantic rule to determine whether one typed position may satisfy another; equal to Type Equality in the RFC-0002 minimum subset |
-| Semantic Value Domain | Draft | Complete target-neutral set of values denoted by a Type before target lowering |
-| Representability | Draft | Membership of a mathematical or semantic value in a Type's Semantic Value Domain |
-| Physical Representation | Draft | Implementation- or target-specific encoding of values that does not define source Type Identity |
-| Invalid Type Placeholder | Draft | Build-local recovery value that is not a valid Type and cannot enter published semantic or generated artifacts |
+| Type | Proposed | Language-defined classification with a stable Type Identity and a semantic value domain |
+| Intrinsic Type | Proposed | Language-owned type defined directly by RFC-0002 rather than by a Package declaration |
+| Intrinsic Type Designator | Proposed | Exact Identifier spelling recognized as an Intrinsic Type only in a type-reference context without creating an ordinary binding or implicit prelude |
+| Intrinsic Type Identity | Proposed | Structured identity containing the intrinsic identity domain, exact Language Version, and Intrinsic Kind |
+| Type Reference | Proposed | Source or semantic reference occurring in a context that requires a Type |
+| Type Equality | Proposed | Exact equality relation over complete Type Identities |
+| Type Compatibility | Proposed | Relation used by an owning semantic rule to determine whether one typed position may satisfy another; equal to Type Equality in the RFC-0002 minimum subset |
+| Semantic Value Domain | Proposed | Complete target-neutral set of values denoted by a Type before target lowering |
+| Canonical Value Identity | Proposed | Exact deterministic identity of a semantic value for an owning constant, signature, fingerprint, or artifact rule; distinct from Type Identity and numeric operator equality |
+| Representability | Proposed | Membership of a mathematical or semantic value in a Type's Semantic Value Domain |
+| Physical Representation | Proposed | Implementation- or target-specific encoding of values that does not define source Type Identity |
+| Invalid Type Placeholder | Proposed | Build-local recovery value that is not a valid Type and cannot enter published semantic or generated artifacts |
 
 ## 8. Industrial Hierarchy Terms
 
