@@ -165,7 +165,7 @@ Every Connection Declaration in the structural subset MUST preserve:
 - one explicit source Endpoint reference;
 - one explicit destination Endpoint reference;
 - the declaration origin;
-- both reference origins; and
+- distinct source-reference and destination-reference origins; and
 - deterministic declaration order within its owner.
 
 Every Connection Declaration MUST be explicitly named. Source order alone MUST NOT create Connection Declaration Identity.
@@ -253,7 +253,24 @@ For each Connection Declaration, validation MUST proceed in this order:
 6. exact type compatibility; and
 7. duplicate-driver checking across otherwise valid Connections.
 
-An earlier failure suppresses diagnostics that require the missing or invalid fact. Diagnostic publication and global pipeline ordering are defined by the Spike A snapshot contract.
+An earlier failure suppresses diagnostics that require the missing or invalid fact. One invalid fact produces exactly one most-specific diagnostic under the following precedence matrix:
+
+| Condition | Single diagnostic owner |
+| --- | --- |
+| Unresolved reference spelling | Applicable RFC-0001B resolution diagnostic |
+| Connection reference resolves to a non-Endpoint kind | `IMDE2007` |
+| Resolved Endpoint crosses the permitted direct composition boundary | `SPIKEA002(endpoint-locality)` |
+| Source or destination has the wrong contextual direction | `SPIKEA002(endpoint-direction)` |
+| Resolved Endpoint Type Identities are unequal | `SPIKEA002(connection-type-mismatch)` |
+| Otherwise-valid Connections provide more than one driver | `SPIKEA002(duplicate-driver)` |
+| Prohibited Deployment Mapping matching the RFC-0001A condition | `IMDE2004` |
+| Other recognized unsupported deployment or target construct | `SPIKEA001` |
+| Structural expansion exceeds a fixed RFC-0006 limit | `IMDE2011` |
+| Publication candidate violates schema or graph integrity | `SPIKEA002(snapshot-schema)` or `SPIKEA002(snapshot-referential-integrity)`, according to the failed rule |
+
+`IMDE2009` remains available for an applicable non-Connection semantic-kind mismatch, but MUST NOT duplicate `IMDE2007`. `IMDE5003` MUST NOT accompany the Connection-specific type-mismatch diagnostic. A construct matching `IMDE2004` MUST NOT also receive `SPIKEA001`.
+
+Diagnostic publication, scope, and global ordering are defined by the Spike A snapshot contract.
 
 ## 7. Determinism and Ordering
 
@@ -412,7 +429,9 @@ The following questions are delegated to the Runtime Layer and MUST NOT be answe
 - environmental and target bindings; and
 - `inout`, bus, channel, and message semantics.
 
-This RFC cannot advance beyond Draft as a complete data-flow contract until those questions have compatible owning RFCs. The Structural Layer may be reviewed independently as an explicit subset.
+While RFC-0005 remains one umbrella document, the Structural Layer has no lifecycle status independent of the RFC as a whole. It may be reviewed as an explicit subset, but that review is not a Proposed or Accepted transition.
+
+Before any RFC-0005 transition beyond Draft, the project MUST either split Structural and Runtime contracts into separately governed RFCs or adopt one lifecycle whose gates include the unresolved Runtime Layer. The transition decision MUST state which strategy applies.
 
 ## 14. Conformance Requirements
 
@@ -427,7 +446,8 @@ A Structural Layer implementation satisfies this Draft subset only if it:
 - rejects more than one valid driver per destination;
 - permits unconnected Endpoints;
 - does not reject Connection cycles as runtime cycles;
-- preserves structured identity and source traceability; and
+- preserves structured identity and role-specific source traceability;
+- applies the single-owner diagnostic precedence matrix; and
 - can complete validation without expressions, values, execution, state updates, or target mapping.
 
 Planned fixtures include valid owner-child and sibling Connections, application-level Connections, repeated Instance expansion, wrong-kind references, invalid directions, type mismatch, duplicate drivers, descendant reach-through, unconnected Endpoints, structural cycles, and randomized internal ordering.
@@ -442,4 +462,5 @@ The reference spike may use the temporary `SPIKEA` diagnostic domain. Those code
 
 | Date | Change |
 | --- | --- |
+| 2026-07-23 | Clarified diagnostic ownership, role-specific Connection origins, and the umbrella-RFC lifecycle gate after independent review |
 | 2026-07-23 | Initial Draft separating the Structural Layer required by Spike A from the deferred Runtime Layer |

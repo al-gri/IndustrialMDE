@@ -149,7 +149,12 @@ An application-level Connection MUST NOT:
 
 ### 6.4 Exactly One Selected Assembly
 
-Every Spike A structural compilation invocation MUST contain exactly one Assembly Selector.
+Every Spike A structural compilation invocation MUST contain exactly one Assembly Selector request. The request is input to resolution; it is not assumed to be valid or already resolved.
+
+Pipeline step 2 performs two ordered sub-steps:
+
+1. **2a — semantic-kind checking:** validate the kinds of references resolved by step 1;
+2. **2b — Assembly selector resolution and root-revision validation:** resolve the complete selector identity, require Application Assembly kind, require root Package Revision ownership, and establish the selected Assembly.
 
 The selector MUST resolve to exactly one Application Assembly Declaration Identity. The compiler MUST reject:
 
@@ -161,7 +166,7 @@ The selector MUST resolve to exactly one Application Assembly Declaration Identi
 - a dependency-Package Assembly; and
 - a selector whose Package Revision is not the Project's root Package Revision.
 
-Selection occurs after Project, Package, Module, Namespace, and declaration resolution have established the complete candidate identity. It occurs before RFC-0006 expansion.
+Step 2 begins only after Project, Package, Module, Namespace, and declaration resolution have established candidate identities. Successful sub-step 2b precedes validation-closure construction, containment-cycle validation, and RFC-0006 expansion.
 
 ### 6.5 Complete Identity, Not Discovery
 
@@ -206,24 +211,27 @@ The concrete spelling and serialization of these channels are implementation or 
 
 The effective selector is a complete build input. It MUST participate in reproducibility, cache keys, diagnostic context, and snapshot provenance.
 
+The published snapshot provenance MUST record the resolved selector identity and a structured origin identifying the invocation or metadata channel. It MUST also distinguish the exact root Package Revision, effective language version, experimental input-contract identifier, compiler semantic version, semantic-algorithm identifier, project-resolution fingerprint, build fingerprint, and active limits as specified by the snapshot contract. These fields remain experimental and non-interoperable.
+
 ### 6.8 Empty Assembly
 
 An explicitly selected Application Assembly with zero root Instance Declarations and zero Connections is structurally valid.
 
 The empty Assembly expands to an empty forest and empty Connection overlay. Profiles, products, or future deployment contracts MAY require a non-empty Assembly, but Spike A MUST NOT invent that requirement.
 
-### 6.9 Expansion Boundary
+### 6.9 Expansion and Validation Boundary
 
 After successful selection:
 
 1. the selected Assembly becomes the virtual owner context;
-2. RFC-0006 expands every root Instance Declaration;
-3. Definition-owned Connections are instantiated in their Instance contexts;
-4. application-level Connections are instantiated in the Assembly context;
-5. RFC-0005 validates the complete Connection overlay; and
-6. the Spike A publication gate decides whether to emit the experimental snapshot.
+2. the Structural Validation Closure and Expansion Closure are finalized;
+3. RFC-0006 validates containment cycles and expands every root Instance Declaration in the closure;
+4. Definition-owned Connections are instantiated in their Instance contexts;
+5. application-level Connections are instantiated in the Assembly context;
+6. RFC-0005 validates the complete Connection overlay; and
+7. the Spike A publication gate validates provenance, schema, and graph integrity before emitting the experimental snapshot.
 
-Unselected Assemblies MAY be resolved sufficiently for ordinary declaration diagnostics, but they MUST NOT contribute occurrences to the selected Assembly's snapshot.
+Unselected Assemblies and unreachable Definitions MAY be resolved sufficiently to build the Project Resolution Universe and MAY produce separate diagnostics. They MUST NOT contribute occurrences to the selected Assembly's graph. An error wholly outside the Structural Validation Closure does not block the snapshot unless it prevents construction of the shared symbol universe, makes the selector ambiguous or invalid, or affects a declaration or dependency used by the closure.
 
 One Assembly's root Instances, Endpoints, and Connections MUST NOT be merged with another Assembly's graph.
 
@@ -244,6 +252,8 @@ The structural subset MUST reject or classify as unsupported:
 Target selection MUST NOT influence Assembly selection, occurrence identity, structural validation, or the experimental snapshot.
 
 The complete RFC-0007 may later define Deployment Models that reference one Application Assembly as required by RFC-0001A. That future layer is not defined by this Draft.
+
+A prohibited Deployment Mapping that exactly matches RFC-0001A `IMDE2004` uses that diagnostic alone. Another deployment or target construct recognized only as outside the experimental subset uses `SPIKEA001`. The same fact MUST NOT receive both diagnostics.
 
 ### 6.11 Selection Diagnostics
 
@@ -303,8 +313,9 @@ Tooling MUST be able to:
 - distinguish root-Package and dependency-Package Assemblies;
 - navigate the selected Assembly to roots and application-level Connections;
 - report selector origins separately from source origins;
-- invalidate expansion when the selected identity or selected Assembly changes; and
-- avoid invalidating the selected graph solely because an unrelated unselected Assembly changes, except where shared dependencies require it.
+- invalidate expansion when the selected identity or selected Assembly changes;
+- reuse the selected occurrence graph when an unrelated unselected Assembly changes and no shared resolution input changes; and
+- republish provenance when the exact root Package Revision or project-resolution fingerprint changes, even when the reusable occurrence graph is structurally unchanged.
 
 An IDE MAY offer candidate completion. It MUST NOT write an implicit selection or reinterpret ordinary visibility as entry authorization.
 
@@ -395,6 +406,8 @@ The following are delegated and do not block the structural slice:
 
 No unresolved question in this slice requires expression parsing, state execution, or target mapping.
 
+While Application and Deployment remain in one umbrella RFC, the Structural Layer has no lifecycle status independent of RFC-0007. Before a transition beyond Draft, the project MUST either split the deferred Deployment contract into separately governed work or adopt a single lifecycle whose gates include it.
+
 ## 14. Conformance Requirements
 
 A Structural Layer implementation satisfies this Draft subset only if it:
@@ -406,7 +419,9 @@ A Structural Layer implementation satisfies this Draft subset only if it:
 - prohibits every implicit and discovery-based fallback;
 - restricts entry selection to the root Package Revision;
 - permits dedicated lookup of a private root-Package Assembly;
-- treats the selector as an extralinguistic complete build input;
+- treats the selector as an unresolved extralinguistic input resolved in pipeline sub-step 2b;
+- records the resolved selector and complete experimental build provenance;
+- isolates the selected Structural Validation Closure from unrelated diagnostics;
 - accepts an explicitly selected empty Assembly;
 - creates no synthetic root Instance; and
 - includes no deployment or target facts in the structural graph.
@@ -423,4 +438,5 @@ The resolver should establish all candidate Declaration Identities before entry 
 
 | Date | Change |
 | --- | --- |
+| 2026-07-23 | Clarified selector phase ownership, validation closure, reproducibility provenance, diagnostic precedence, and the umbrella-RFC lifecycle gate after independent review |
 | 2026-07-23 | Initial Draft defining explicit target-neutral Application Assembly selection and multiple-root expansion for Spike A |

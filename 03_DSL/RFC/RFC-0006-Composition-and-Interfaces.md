@@ -110,7 +110,11 @@ For Spike A, a Definition is structurally interpreted only through:
 
 Every admitted declaration MUST remain a distinct semantic kind. A parser or semantic builder MUST NOT coerce an unsupported member into one of these kinds.
 
-If the experimental input contains a Constant, Parameter, State, Behavior, Interface, configuration expression, replication construct, deployment mapping, or another member outside this subset, Spike A MUST produce the experimental unsupported-feature diagnostic and MUST NOT silently ignore the declaration.
+Within the Structural Validation Closure defined by the Spike A snapshot contract, a recognized Constant, Parameter, State, Behavior, Interface, configuration expression, replication construct, deployment mapping, or other member outside this subset MUST produce the experimental unsupported-feature diagnostic and MUST block publication. The implementation MUST NOT silently ignore it.
+
+The future versioned experimental input or fixture contract MUST expose a recognized unsupported construct as a typed marker containing its category, origin, and an opaque payload range. Spike A does not parse the payload and does not import expression grammar from RFC-0003. `SPIKEA001` applies only when that input contract has classified the marker. Bytes rejected before such classification receive the input contract's experimental syntax diagnostic and do not receive a fabricated `SPIKEA001`.
+
+Unsupported declarations outside the Structural Validation Closure may be reported as separate non-blocking diagnostics under the snapshot scope rules, but they do not enter expansion or the snapshot.
 
 This restriction is an experimental implementation boundary, not a claim that RFC-0001A removes those member categories.
 
@@ -155,7 +159,7 @@ Configuration bindings and contextual roles remain outside Spike A even where RF
 
 ### 6.4 Definition Containment Graph
 
-For every Definition-owned Instance Declaration `i`:
+For every Definition-owned Instance Declaration `i` whose owner Definition belongs to the Structural Validation Closure:
 
 ```text
 containment_edge(i) =
@@ -164,14 +168,16 @@ containment_edge(i) =
      i.declaration_identity)
 ```
 
-The Definition containment graph MUST be acyclic.
+The containment graph for one selected build contains exactly the Definitions and Instance Declarations in that closure and MUST be acyclic.
 
-Cycle detection MUST complete before expansion materializes Instance or Endpoint occurrences. If a direct or indirect cycle exists:
+Cycle detection MUST complete before expansion materializes Instance or Endpoint occurrences. If a direct or indirect cycle exists in the closure:
 
 - compilation MUST fail with RFC-0001A `IMDE2001`;
 - the diagnostic MUST preserve the deterministic cycle path and participating Instance Declaration origins;
 - no depth-limited partial expansion may be used as semantic recovery; and
 - no experimental structural snapshot may be published.
+
+A cycle wholly outside the Structural Validation Closure MAY be reported in the wider Diagnostic Universe but does not block the selected snapshot. If a selected or shared Definition references any participant, that participant enters the closure and the cycle becomes blocking.
 
 The graph algorithm MUST operate on resolved Definition Identity, not source spelling, parser-object identity, or file path.
 
@@ -283,7 +289,11 @@ Every Connection occurrence MUST retain:
 - creating Connection Declaration Identity;
 - source and destination Endpoint Occurrence Identities;
 - declaration ordinal; and
-- declaration and reference origins.
+- declaration, source-reference, and destination-reference origins.
+
+`declaration_ordinal` is the zero-based position in the owner's complete deterministic semantic member order after applicable declaration merging and name resolution, and before filtering members by semantic kind. Unsupported or non-occurrence-producing members therefore retain their positions as gaps when an ordinal is observable in diagnostics.
+
+The same rule applies to Instance, Endpoint, and Connection records. A root Instance Declaration uses the complete deterministic member order of its Application Assembly. If an owning RFC does not establish a complete deterministic order for merged declarations, the publication candidate is invalid rather than implementation-ordered.
 
 Containment ownership and the Connection overlay MUST remain distinguishable. A Connection does not become a containment parent or child.
 
@@ -296,28 +306,38 @@ maximum expansion depth:              64
 maximum expanded semantic entities:   262,144
 ```
 
-Both limits apply per selected Application Assembly.
+Both limits apply per selected Application Assembly. Depth counts root Instance occurrences at depth `1`; the empty Assembly has depth `0`.
 
-Depth counts root Instance occurrences at depth `1`. The empty Assembly has depth `0`.
+The semantic entity count is exactly:
 
-The expanded-entity counter MUST include every materialized Instance occurrence, Endpoint occurrence, and Connection occurrence admitted to the experimental snapshot. An implementation MAY count additional internal candidate entities conservatively, but it MUST document that choice and MUST NOT claim a higher externally observable capacity.
+```text
+published_entity_count =
+    count(instance occurrence records)
+  + count(endpoint occurrence records)
+  + count(connection occurrence records)
+```
 
-The implementation MUST check limits before allocating or publishing the next entity. Exceeding either limit produces RFC-0001A `IMDE2011` and MUST NOT publish a partial snapshot.
+A fully valid publication candidate with `published_entity_count == 262,144` MUST be accepted with respect to this limit. The next entity, which would make the count `262,145`, produces RFC-0001A `IMDE2011` and prevents publication.
 
-These fixed Spike A limits satisfy the baseline capacity stated by RFC-0001A. Lower implicit defaults are prohibited.
+Parser nodes, unresolved candidates, symbol-table entries, reference-resolution work items, diagnostics, temporary graph nodes, and other implementation objects MUST NOT consume the semantic entity count. Any work, memory, reference-resolution, or diagnostic budget is a separate implementation budget and MUST NOT be presented as this semantic limit. An implementation claiming this Spike A profile MUST provision those budgets so that every otherwise-valid model within depth `64` and entity count `262,144` can reach the publication gate.
+
+The implementation MUST check the semantic limit before admitting the next occurrence record to the publication candidate. Exceeding either fixed semantic limit MUST NOT publish a partial snapshot. Lower implicit semantic defaults are prohibited.
+
+The snapshot provenance records the active depth, entity, and diagnostic limits. Internal implementation budgets are not semantic capacity claims.
 
 ### 6.11 Invalid and Partial Models
 
-An unresolved, wrong-kind, cyclic, over-limit, or structurally invalid model MUST NOT produce `experimental-structural-snapshot/0`.
+An unresolved, wrong-kind, cyclic, over-limit, unsupported, or structurally invalid fact in the Structural Validation Closure MUST NOT produce `experimental-structural-snapshot/0`.
 
 An implementation MAY retain build-local invalid placeholders for bounded diagnostic recovery, but:
 
 - placeholders have no valid occurrence identity;
+- placeholders MUST NOT enter a phase artifact after the boundary that requires the missing fact;
 - placeholders MUST NOT enter the published graph;
 - a valid-looking node MUST NOT stand in for an unresolved declaration; and
 - diagnostics MUST NOT be serialized as graph nodes.
 
-Publication is all-or-nothing for the selected Application Assembly.
+Publication is all-or-nothing for the selected Application Assembly and its Structural Validation Closure. Diagnostics wholly outside that closure are published separately under the Diagnostic Universe rules; they do not turn the selected snapshot into a partial snapshot and do not appear inside it.
 
 ### 6.12 Interfaces Deferred
 
@@ -492,6 +512,8 @@ The following questions are delegated and do not block the defined structural sl
 
 No unresolved question in this slice requires expression parsing or state execution.
 
+While composition and Interfaces remain in one umbrella RFC, the Structural Layer has no lifecycle status independent of RFC-0006. Before a transition beyond Draft, the project MUST either split the deferred Interface contract into separately governed work or adopt a single lifecycle whose gates include it.
+
 ## 14. Conformance Requirements
 
 A Structural Layer implementation satisfies this Draft subset only if it:
@@ -503,8 +525,9 @@ A Structural Layer implementation satisfies this Draft subset only if it:
 - enforces direct-boundary locality;
 - constructs the three tuple identity forms exactly;
 - never uses delimiter-concatenated strings as semantic identity;
-- enforces depth `64` and entity limit `262,144`;
-- retains source ordinal separately from identity;
+- enforces depth `64` and the exact published-entity formula at limit `262,144`;
+- scopes blocking validation to the selected Structural Validation Closure;
+- retains the zero-based complete-member declaration ordinal separately from identity;
 - distinguishes containment from the Connection overlay; and
 - publishes no invalid or partial snapshot.
 
@@ -527,4 +550,5 @@ Cycle detection should operate on Definition Identity before materialization. Ex
 
 | Date | Change |
 | --- | --- |
+| 2026-07-23 | Clarified validation closure, unsupported-input markers, exact resource accounting, declaration ordinals, and the umbrella-RFC lifecycle gate after independent review |
 | 2026-07-23 | Initial Draft defining the minimal static composition and occurrence-identity subset for Spike A |
