@@ -13,12 +13,12 @@
 ## P1 — Minimum Executable Specification
 
 1. Review Proposed RFC-0002 conformance and diagnostic matrices before acceptance; its `REAL` exceptional-value Draft-to-Proposed gates are resolved.
-2. Define the minimum RFC-0005, RFC-0006, and RFC-0007 structural slices required for Endpoint, Connection, composition, and Application Assembly roots.
-3. Define explicit experimental grammar and structural IR snapshot contracts without representing them as Accepted syntax or Canonical IR.
-4. Define positive, negative, boundary, compatibility, randomized-order, and integrity examples.
-5. Specify stable diagnostic codes and deterministic diagnostic ordering.
-6. Define source-to-semantic-to-IR traceability requirements.
-7. Plan a limited Source → Semantic Model → structural IR snapshot → Mock Structural Target vertical slice.
+2. Review Draft RFC-0005's Structural/Runtime split and confirm that its Spike A layer has no RFC-0003 or RFC-0004 dependency.
+3. Review Draft RFC-0006 and RFC-0007 composition, occurrence-identity, multiple-root, and explicit Assembly-selection contracts.
+4. Review `experimental-structural-snapshot/0`, its nine-step validation pipeline, all-or-nothing publication rule, and `SPIKEA` diagnostic domain.
+5. Define a separate experimental input grammar or fixture contract limited to Definitions, Instances, Endpoints, Connections, and Application Assemblies, with expressions explicitly excluded.
+6. Approve positive, negative, boundary, randomized-order, limit, and referential-integrity fixtures for the structural subset.
+7. After the documentation gates are approved, authorize a bounded implementation Task Envelope for the non-conforming Structural Reference Spike A.
 
 ## Deferred Until Foundational Review
 

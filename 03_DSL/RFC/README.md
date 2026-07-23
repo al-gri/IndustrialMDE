@@ -167,9 +167,9 @@ An example does not establish semantics that are absent from the governing RFC.
 | [RFC-0002](RFC-0002-Type-System.md) | Type System | Proposed | RFC-0000, RFC-0001, RFC-0001A, RFC-0001B, RFC-0001C | Not Started |
 | RFC-0003 | Literals, Expressions, and Operators | Not Drafted | RFC-0002 | Not Started |
 | RFC-0004 | Execution Model and Bounded Semantics | Not Drafted | RFC-0002, RFC-0003 | Not Started |
-| RFC-0005 | Signals, Ports, Connections, and Data Flow | Not Drafted | RFC-0002, RFC-0004 | Not Started |
-| RFC-0006 | Composition, Definitions, Instances, and Interfaces | Not Drafted | RFC-0001A, RFC-0002, RFC-0005 | Not Started |
-| RFC-0007 | Deployment, Hardware Mapping, and Target Abstraction | Not Drafted | RFC-0005, RFC-0006 | Not Started |
+| [RFC-0005](RFC-0005-Signals-Ports-and-Connections.md) | Signals, Ports, and Connections | Draft | RFC-0000, RFC-0001, RFC-0001A, RFC-0001B, RFC-0002 (Structural); RFC-0003 and RFC-0004 (Runtime) | Not Started |
+| [RFC-0006](RFC-0006-Composition-and-Interfaces.md) | Composition and Interfaces | Draft | RFC-0001A, RFC-0001B, RFC-0002, RFC-0005 (Structural) | Not Started |
+| [RFC-0007](RFC-0007-Application-and-Deployment.md) | Application and Deployment | Draft | RFC-0001A, RFC-0001B, RFC-0001C, RFC-0005 and RFC-0006 (Structural) | Not Started |
 | RFC-0008 | Recipes and Parameter Sets | Not Drafted | RFC-0002, RFC-0004, RFC-0006 | Not Started |
 | RFC-0009 | State Machines and Sequences | Not Drafted | RFC-0004, RFC-0006 | Not Started |
 | RFC-0010 | Alarms, Events, and Diagnostics | Not Drafted | RFC-0004, RFC-0005, RFC-0009 | Not Started |
@@ -179,13 +179,29 @@ An example does not establish semantics that are absent from the governing RFC.
 | RFC-0014 | Grammar Specification | Not Drafted | Accepted syntax and semantic RFC subset | Not Started |
 | RFC-0015 | Plugin and Target Extension Model | Not Drafted | RFC-0007, RFC-0012, RFC-0013 | Not Started |
 
+### 11.1 Structural Spike A Dependency Split
+
+For dependency-cycle validation, RFC-0005 is treated as two conceptual layers within one Draft document:
+
+```mermaid
+flowchart TD
+    R2["RFC-0002"] --> S5["RFC-0005 Structural"]
+    S5 --> S6["RFC-0006 Structural"]
+    S6 --> S7["RFC-0007 Structural"]
+    S7 --> SA["Spike A Snapshot"]
+    R3["RFC-0003"] --> R5["RFC-0005 Runtime"]
+    R4["RFC-0004"] --> R5
+```
+
+RFC-0004 remains a gate for the deferred Runtime Layer. It is not a dependency of RFC-0005 Structural Layer.
+
 The index records intended dependency direction, not acceptance. Dependencies must be revalidated while each RFC is drafted.
 
 ## 12. Initial Decision Gates
 
 The following decision gates remain:
 
-- the exact reference-spike subset and disposal policy;
+- review of the Draft RFC-0005, RFC-0006, and RFC-0007 structural subset and the experimental snapshot disposal policy;
 - review and resolution of the Proposed RFC-0001B scope, namespace, import, collision, and naming contracts;
 - review and resolution of the Proposed RFC-0001C compilation-unit, module, package, dependency, lock, and visibility contracts;
 - independent review of Draft RFC-0001D strict JSON schema `0.1` as a public compatibility contract;

@@ -6,7 +6,7 @@
 
 **Created:** 2026-07-19
 
-**Last Updated:** 2026-07-21
+**Last Updated:** 2026-07-23
 
 ## 1. Purpose
 
@@ -17,7 +17,9 @@ The glossary does not independently establish language semantics. An Accepted RF
 ## 2. Status Labels
 
 - **Established** — already required by the Approved Project Constitution.
+- **Draft** — working terminology introduced by an incomplete, non-normative Draft RFC.
 - **Proposed** — recommended by architectural review but not yet accepted as language semantics.
+- **Experimental** — spike-only terminology or representation with no conformance or interoperability guarantee.
 - **Reserved** — the term is recognized, but its exact meaning must be defined by a named RFC.
 - **Avoid** — ambiguous or misleading usage that should not appear in new normative text.
 
@@ -49,6 +51,7 @@ The glossary does not independently establish language semantics. An Accepted RF
 | Diagnostic | Proposed | Structured compiler finding with stable code, severity, message, origin, and deterministic ordering |
 | Traceability | Proposed | Mapping from source spans through semantic and IR identities to generated artifact locations |
 | Reference Spike | Proposed | Deliberately limited, non-conforming implementation used to test explicit architecture hypotheses |
+| Experimental Structural Snapshot | Experimental | Immutable Spike A-only expanded structural graph that is neither Canonical IR nor an interoperable format |
 
 ## 5. Module and Dependency Terms
 
@@ -91,6 +94,10 @@ The glossary does not independently establish language semantics. An Accepted RF
 | Member Declaration | Proposed | Declaration owned by one Definition and interpreted or instantiated in that Definition's context |
 | Instance Declaration | Proposed | Static composition site that references one Definition and expands in each applicable parent context |
 | Instance | Proposed | Immutable expanded occurrence associated with one Definition, one creating Instance Declaration, and a stable path identity |
+| Instance Occurrence Identity | Draft | Typed tuple of one Application Assembly Identity and the ordered path of creating Instance Declaration Identities |
+| Endpoint Occurrence Identity | Draft | Typed tuple of one Instance Occurrence Identity and one Endpoint Declaration Identity |
+| Connection Occurrence Identity | Draft | Typed tuple of one Owner Context Identity and one Connection Declaration Identity |
+| Owner Context Identity | Draft | Typed union identifying either an Application Assembly or an expanded Instance as the owner of a Connection occurrence |
 | Application Assembly | Proposed | Target-neutral root selecting root instances, logical configuration, and application-level relationships |
 | Interface | Reserved | Contract implemented by definitions or exposed instances; conformance rules remain undefined |
 | Endpoint | Proposed | Neutral kernel category for an interaction endpoint; Port and Signal semantics remain reserved for RFC-0005 |

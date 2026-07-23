@@ -40,6 +40,10 @@ This file is a concise index. It does not replace the normative RFC or ADR that 
 | `REAL` uses binary64 with signed zeros, signed infinities, one canonical quiet NaN, and no signaling-NaN Semantic Model value | Proposed | [`RFC-0002`](../03_DSL/RFC/RFC-0002-Type-System.md) |
 | `REAL` Canonical Value Identity is distinct from numeric equality; signed zeros remain distinct and quiet-NaN payloads canonicalize | Proposed | [`RFC-0002`](../03_DSL/RFC/RFC-0002-Type-System.md) |
 | RFC-0003 must provide bit-exact binary64 compile-time evaluation and cannot defer a compile-time Constant to Target IR | Proposed | [`RFC-0002`](../03_DSL/RFC/RFC-0002-Type-System.md), [`09_RFC-0002_Review_Decision.md`](09_RFC-0002_Review_Decision.md) |
+| RFC-0005 separates a Spike A Structural Layer from a Runtime Layer gated by RFC-0003 and RFC-0004 | Draft | [`RFC-0005`](../03_DSL/RFC/RFC-0005-Signals-Ports-and-Connections.md) |
+| Expanded Instance, Endpoint, and Connection occurrence identities are typed tuples rather than delimiter-concatenated strings | Draft | [`RFC-0006`](../03_DSL/RFC/RFC-0006-Composition-and-Interfaces.md) |
+| Application Assembly selection is an explicit extralinguistic root-Package build input with no source-order or implicit-main fallback | Draft | [`RFC-0007`](../03_DSL/RFC/RFC-0007-Application-and-Deployment.md) |
+| Spike A uses an explicitly non-conforming and non-interoperable Experimental Structural Snapshot instead of Canonical IR | Experimental | [`Spike_A_Experimental_Snapshot.md`](../02_Architecture/Spike_A_Experimental_Snapshot.md) |
 
 ## Implementation Choices Requiring Complete ADRs
 

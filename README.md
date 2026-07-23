@@ -13,6 +13,8 @@ The project is currently establishing its language architecture and governance. 
 - [RFC-0001C](03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md) is a Proposed review artifact.
 - [RFC-0001D](03_DSL/RFC/RFC-0001D-Project-Package-and-Dependency-Lock-Serialization.md) is a Draft public-serialization review artifact.
 - [RFC-0002](03_DSL/RFC/RFC-0002-Type-System.md) is a Proposed minimal Type System review artifact.
+- RFCs [0005](03_DSL/RFC/RFC-0005-Signals-Ports-and-Connections.md), [0006](03_DSL/RFC/RFC-0006-Composition-and-Interfaces.md), and [0007](03_DSL/RFC/RFC-0007-Application-and-Deployment.md) are Draft structural-slice review artifacts for Spike A.
+- [Spike A Experimental Structural Snapshot](02_Architecture/Spike_A_Experimental_Snapshot.md) defines a non-conforming, non-interoperable structural output contract.
 - Compiler source code, grammar, emitters, and tests have not been implemented.
 
 The authoritative status is maintained in [Project State](00_Project_Brain/04_Project_State.md). Current work is listed in [Current Sprint](00_Project_Brain/01_Current_Sprint.md) and [Next Tasks](00_Project_Brain/03_Next_Tasks.md).
@@ -26,13 +28,13 @@ The immediate objective is to establish a consistent foundational language packa
 3. review the Proposed core semantic model and the Proposed identifier, scope, namespace, and import rules;
 4. review the Proposed compilation-unit, module, package, dependency, lock, and visibility contracts;
 5. review the Draft strict JSON Project, Package, and Dependency Lock serialization contract;
-6. review the Proposed minimum Type System conformance matrix and define the structural companion slices required by a deliberately limited reference compiler spike.
+6. review the Proposed minimum Type System conformance matrix, the three Draft structural slices, and the experimental snapshot contract before authorizing an expression-free reference-spike input grammar or implementation.
 
 ## Repository Map
 
 - [`00_Project_Brain/`](00_Project_Brain/) — project constitution, current focus, decisions, backlog, and state.
 - [`01_Documentation/`](01_Documentation/) — engineering and quality documentation placeholders.
-- [`02_Architecture/`](02_Architecture/) — architecture specifications and ADR placeholders.
+- [`02_Architecture/`](02_Architecture/) — ADR placeholders and the experimental, non-Canonical Spike A structural snapshot contract.
 - [`03_DSL/`](03_DSL/) — proposed RFC governance, glossary, future language RFCs, examples, and grammar specifications.
 - `04_Compiler/` — future compiler implementation.
 - `09_Testing/` — future conformance and implementation tests.
