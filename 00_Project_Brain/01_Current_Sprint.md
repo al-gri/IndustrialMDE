@@ -16,6 +16,7 @@
 6. Review Proposed RFC-0001C compilation-unit, module, package, dependency, lock, and visibility contracts.
 7. Review Draft RFC-0001D strict JSON schema `0.1` as the public Project, Package, and Dependency Lock serialization contract.
 8. Review Proposed RFC-0002 intrinsic domains, canonical value identity, compatibility, deterministic `REAL` boundaries, and conformance matrix.
+9. Review Draft RFC-0005, RFC-0006, and RFC-0007 structural slices and the Spike A Experimental Structural Snapshot contract.
 
 ## Deliverables Under Review
 
@@ -30,6 +31,10 @@
 - [`RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md`](../03_DSL/RFC/RFC-0001C-Compilation-Units-Modules-Packages-and-Dependencies.md)
 - [`RFC-0001D-Project-Package-and-Dependency-Lock-Serialization.md`](../03_DSL/RFC/RFC-0001D-Project-Package-and-Dependency-Lock-Serialization.md)
 - [`RFC-0002-Type-System.md`](../03_DSL/RFC/RFC-0002-Type-System.md)
+- [`RFC-0005-Signals-Ports-and-Connections.md`](../03_DSL/RFC/RFC-0005-Signals-Ports-and-Connections.md)
+- [`RFC-0006-Composition-and-Interfaces.md`](../03_DSL/RFC/RFC-0006-Composition-and-Interfaces.md)
+- [`RFC-0007-Application-and-Deployment.md`](../03_DSL/RFC/RFC-0007-Application-and-Deployment.md)
+- [`Spike_A_Experimental_Snapshot.md`](../02_Architecture/Spike_A_Experimental_Snapshot.md)
 - [`06_Foundational_RFC_Review_Decisions.md`](06_Foundational_RFC_Review_Decisions.md)
 - [`07_RFC-0001B_Review_Decision.md`](07_RFC-0001B_Review_Decision.md)
 - [`08_RFC-0001C_Review_Decision.md`](08_RFC-0001C_Review_Decision.md)
@@ -42,7 +47,7 @@
 - Resolve the package-boundary, visibility, import-cycle, naming-severity, and resource-limit gates identified by Proposed RFC-0001B.
 - Review RFC-0001D serialization independently and resolve RFC-0001C package-authority ownership, public-signature closure, fingerprint-schema, and production-limit acceptance gates.
 - Review the Proposed minimal Type System conformance matrix; the `REAL` exceptional-value Draft-to-Proposed gates are resolved.
-- Define composition, connection, application-root, experimental grammar, and structural IR contracts before a full Structural Reference Spike.
+- Review the Draft composition, Connection, Application Assembly, and experimental snapshot contracts; define a separate expression-free experimental input grammar before implementing the Structural Reference Spike.
 - Define the boundary between normative specifications and an experimental reference compiler spike.
 - Confirm which implementation choices are accepted after their ADRs contain rationale and consequences.
 
