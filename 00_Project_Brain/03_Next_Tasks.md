@@ -16,9 +16,10 @@
 2. Review Draft RFC-0005's Structural/Runtime split and confirm that its Spike A layer has no RFC-0003 or RFC-0004 dependency.
 3. Review Draft RFC-0006 and RFC-0007 composition, occurrence-identity, multiple-root, and explicit Assembly-selection contracts.
 4. Review `experimental-structural-snapshot/0`, its nine-step validation pipeline, all-or-nothing publication rule, and `SPIKEA` diagnostic domain.
-5. Define a separate experimental input grammar or fixture contract limited to Definitions, Instances, Endpoints, Connections, and Application Assemblies, with expressions explicitly excluded.
+5. Review the closed `experimental-structural-input/0` fixture contract for Definitions, Instances, Endpoints, Connections, Application Assemblies, unresolved references, and typed unsupported-feature markers; expressions remain explicitly excluded.
 6. Approve positive, negative, boundary, randomized-order, limit, and referential-integrity fixtures for the structural subset.
-7. After the documentation gates are approved, authorize a bounded implementation Task Envelope for the non-conforming Structural Reference Spike A.
+7. After the input-contract and fixture gates are approved, authorize a bounded fixture-loader Task Envelope.
+8. After the documentation and loader gates are approved, authorize a bounded implementation Task Envelope for the non-conforming Structural Reference Spike A.
 
 ## Deferred Until Foundational Review
 
