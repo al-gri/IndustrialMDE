@@ -44,6 +44,7 @@ This file is a concise index. It does not replace the normative RFC or ADR that 
 | Expanded Instance, Endpoint, and Connection occurrence identities are typed tuples rather than delimiter-concatenated strings | Draft | [`RFC-0006`](../03_DSL/RFC/RFC-0006-Composition-and-Interfaces.md) |
 | Application Assembly selection is an explicit extralinguistic root-Package build input with no source-order or implicit-main fallback | Draft | [`RFC-0007`](../03_DSL/RFC/RFC-0007-Application-and-Deployment.md) |
 | Spike A uses an explicitly non-conforming and non-interoperable Experimental Structural Snapshot instead of Canonical IR | Experimental | [`Spike_A_Experimental_Snapshot.md`](../02_Architecture/Spike_A_Experimental_Snapshot.md) |
+| Spike A receives expression-free Collected Structural Input through the closed, non-conforming `experimental-structural-input/0` fixture contract | Experimental | [`Spike_A_Experimental_Input.md`](../02_Architecture/Spike_A_Experimental_Input.md) |
 
 ## Implementation Choices Requiring Complete ADRs
 
