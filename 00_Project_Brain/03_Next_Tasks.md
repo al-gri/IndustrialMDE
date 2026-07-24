@@ -20,7 +20,8 @@
 6. Fixture gate complete: all 44 positive, negative, boundary, randomized-order, limit, and referential-integrity scenarios are approved for the structural subset.
 7. ADR0005 review complete: `AUDIT-PR14-PHASE-A` returned `GO` against exact Phase A head `9bffef77`, and explicit Project Owner acceptance is recorded in the ADR.
 8. Fixture Loader Phase B review complete: `AUDIT-PR15-PHASE-B` returned `IMPLEMENTATION GO / COMPILER HOLD` against exact head `d60fb889`, and the Project Owner accepted the result in `11_Structural_Fixture_Loader_Implementation_Review_Decision.md`.
-9. Structural Reference Spike A step 1 and every later compiler phase remain on HOLD. Prepare a separate bounded Task Envelope covering step-1 identities, resolution, recovery, diagnostics, limits, fixtures, and phase output; require independent review and explicit Project Owner authorization before implementation.
+9. Structural Reference Spike A Step-1 Phase A design review complete: `AUDIT-STEP1-PHASE-A` returned `GO` against exact head `db1ec1b1`, and the Project Owner accepted the result and ADR0006 in `12_Structural_Step_1_Design_Review_Decision.md`.
+10. Step-1 Phase B remains on HOLD until the Project Owner issues `AUTHORIZE TE-STRUCTURAL-SPIKE-STEP-1 PHASE B AT <accepted-gate-a-commit>` against the exact commit containing the acceptance record. Step 2a and every later phase remain on HOLD.
 
 ## Deferred Until Foundational Review
 
