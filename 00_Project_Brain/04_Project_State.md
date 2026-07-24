@@ -20,7 +20,7 @@ Percent-complete estimates are intentionally omitted until measurable acceptance
 | Architecture specifications | Experimental contracts present; input reviewed | `Spike_A_Experimental_Snapshot.md` defines a non-conforming structural snapshot; `experimental-structural-input/0` and its 44-scenario fixture matrix received `GO`; Canonical IR, pipeline, and plugin contracts remain undefined |
 | ADRs | Incomplete | ADR0001–ADR0003 are empty; ADR0004 is Proposed; spike-only fixture-loader ADR0005 is Accepted |
 | Language examples | Not present | Add after foundational syntax and semantics are drafted |
-| Grammar and parser | Not implemented | The expression-free fixture contract and ADR0005 gates are closed; loader implementation remains held pending separate Phase B authorization at the exact accepted gate commit |
+| Grammar and parser | Production parser not implemented; experimental fixture loader in review | Phase B implements only the expression-free JSON fixture boundary from accepted gate `4591552`; `.plant` grammar, production parsing, and compiler steps remain on HOLD |
 | Compiler core and canonical IR | Not implemented | Core Semantic Kernel is Proposed; phase and IR contracts are not defined |
 | Target lowering and emitters | Not implemented | Target model not yet defined |
-| Tests and conformance suite | Fixture matrix approved; not implemented | The 44 Structural Spike A input scenarios are reviewed; executable fixtures and loader tests remain Phase B work |
+| Tests and conformance suite | Experimental loader evidence implemented; review pending | `78` locked-environment tests execute all 44 reviewed scenarios with the exact 35-success/9-failure loader partition; this is not production language conformance |
