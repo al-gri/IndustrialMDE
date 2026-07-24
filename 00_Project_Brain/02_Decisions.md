@@ -47,6 +47,7 @@ This file is a concise index. It does not replace the normative RFC or ADR that 
 | Application Assembly selection is an explicit extralinguistic root-Package build input with no source-order or implicit-main fallback | Draft | [`RFC-0007`](../03_DSL/RFC/RFC-0007-Application-and-Deployment.md) |
 | Spike A uses an explicitly non-conforming and non-interoperable Experimental Structural Snapshot instead of Canonical IR | Experimental | [`Spike_A_Experimental_Snapshot.md`](../02_Architecture/Spike_A_Experimental_Snapshot.md) |
 | Spike A receives expression-free Collected Structural Input through the closed, non-conforming `experimental-structural-input/0` fixture contract | Experimental | [`Spike_A_Experimental_Input.md`](../02_Architecture/Spike_A_Experimental_Input.md) |
+| Spike A step 1 produces immutable `experimental-resolved-structural-model/0` with no-winner collision groups, structured identities, resolved or explicit invalid references, and closure-neutral diagnostics | Experimental design; implementation HOLD | [`Spike_A_Step_1_Resolution.md`](../02_Architecture/Spike_A_Step_1_Resolution.md) |
 
 ## Implementation Choices Requiring Complete ADRs
 
@@ -58,5 +59,6 @@ This file is a concise index. It does not replace the normative RFC or ADR that 
 | Canonical immutable IR architecture | Approved principle; schema not defined | [`ADR0002_IR_Design.md`](../02_Architecture/ADR/ADR0002_IR_Design.md) |
 | Strict plugin extension interfaces | Approved principle; isolation model not defined | [`ADR0003_CompilerArchitecture.md`](../02_Architecture/ADR/ADR0003_CompilerArchitecture.md) |
 | Disposable Structural Spike A fixture-loader stack | Accepted after `AUDIT-PR14-PHASE-A`; Phase B implementation accepted after `AUDIT-PR15-PHASE-B`; compiler HOLD | [`ADR0005_StructuralSpikeFixtureLoader.md`](../02_Architecture/ADR/ADR0005_StructuralSpikeFixtureLoader.md), [`11_Structural_Fixture_Loader_Implementation_Review_Decision.md`](11_Structural_Fixture_Loader_Implementation_Review_Decision.md) |
+| Disposable Structural Spike A Step-1 resolver stack | Proposed; requires independent Phase A audit and explicit acceptance; Phase B HOLD | [`ADR0006_StructuralSpikeStep1Resolver.md`](../02_Architecture/ADR/ADR0006_StructuralSpikeStep1Resolver.md) |
 
 No implementation choice is considered fully documented until its ADR is substantive and explicitly accepted.
