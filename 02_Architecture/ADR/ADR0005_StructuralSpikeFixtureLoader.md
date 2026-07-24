@@ -10,6 +10,10 @@
 
 **Acceptance Evidence:** `AUDIT-PR14-PHASE-A` — `GO`
 
+**Implementation Review:** `AUDIT-PR15-PHASE-B` — `IMPLEMENTATION GO / COMPILER HOLD`
+
+**Accepted Implementation Head:** `d60fb889b5313143c2afacbdd376ea1d55f19178`
+
 **Decision Scope:** Disposable `experimental-structural-input/0` fixture loader only
 
 **Decision Owner:** IndustrialMDE Project Owner
@@ -373,17 +377,27 @@ The following rules apply to any separately authorized Phase B implementation:
 
 ## 7. Implementation Gate
 
-The Project Owner accepts this ADR after independent audit `AUDIT-PR14-PHASE-A` returned `GO` against exact Phase A head `9bffef773a8af159db482ca19e5e8f9a789b4c3d`.
+The Project Owner accepted this ADR after independent audit
+`AUDIT-PR14-PHASE-A` returned `GO` against exact Phase A head
+`9bffef773a8af159db482ca19e5e8f9a789b4c3d`.
 
-Acceptance approves only the replaceable implementation decision recorded here. It does not authorize source, dependency, lock, fixture, or test mutation.
+The Project Owner subsequently issued the exact Phase B authorization against
+accepted Gate A commit `4591552fa478f53c65ee3b1f4342a0e3d7a9b938`.
+The resulting implementation at exact head
+`d60fb889b5313143c2afacbdd376ea1d55f19178` received independent
+`AUDIT-PR15-PHASE-B` verdict `IMPLEMENTATION GO / COMPILER HOLD`, which the
+Project Owner accepted in
+[`11_Structural_Fixture_Loader_Implementation_Review_Decision.md`](../../00_Project_Brain/11_Structural_Fixture_Loader_Implementation_Review_Decision.md).
 
-Phase B still requires the exact command:
+The issued implementation authorization was:
 
 ```text
-AUTHORIZE TE-STRUCTURAL-LOADER-01 PHASE B AT <accepted-gate-commit>
+AUTHORIZE TE-STRUCTURAL-LOADER-01 PHASE B AT 4591552fa478f53c65ee3b1f4342a0e3d7a9b938
 ```
 
-Acceptance of this ADR does not authorize Structural Reference Spike A step 1 or any later compiler phase.
+The ADR acceptance and accepted Phase B implementation evidence close only the
+disposable fixture-loader gate. They do not authorize Structural Reference
+Spike A step 1 or any later compiler phase.
 
 ## 8. Replacement and Supersession
 

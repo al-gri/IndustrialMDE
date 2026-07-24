@@ -19,8 +19,8 @@
 5. Input-contract review complete: `experimental-structural-input/0` received `GO` at exact head `7fdbfbc`; see `10_Structural_Input_Contract_Review_Decision.md`.
 6. Fixture gate complete: all 44 positive, negative, boundary, randomized-order, limit, and referential-integrity scenarios are approved for the structural subset.
 7. ADR0005 review complete: `AUDIT-PR14-PHASE-A` returned `GO` against exact Phase A head `9bffef77`, and explicit Project Owner acceptance is recorded in the ADR.
-8. Fixture Loader Phase B is implemented from accepted gate commit `4591552fa478f53c65ee3b1f4342a0e3d7a9b938` with locked dependencies, executable schema-drift evidence, `78` passing tests, and the exact 35-success/9-failure fixture partition; independent review of its Draft PR remains required.
-9. Structural Reference Spike A step 1 and every later compiler phase remain on HOLD. After independent review of the loader evidence, prepare a separate bounded Task Envelope and require explicit Project Owner authorization.
+8. Fixture Loader Phase B review complete: `AUDIT-PR15-PHASE-B` returned `IMPLEMENTATION GO / COMPILER HOLD` against exact head `d60fb889`, and the Project Owner accepted the result in `11_Structural_Fixture_Loader_Implementation_Review_Decision.md`.
+9. Structural Reference Spike A step 1 and every later compiler phase remain on HOLD. Prepare a separate bounded Task Envelope covering step-1 identities, resolution, recovery, diagnostics, limits, fixtures, and phase output; require independent review and explicit Project Owner authorization before implementation.
 
 ## Deferred Until Foundational Review
 
