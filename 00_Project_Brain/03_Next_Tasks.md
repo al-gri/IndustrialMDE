@@ -18,8 +18,8 @@
 4. Review `experimental-structural-snapshot/0`, its nine-step validation pipeline, all-or-nothing publication rule, and `SPIKEA` diagnostic domain.
 5. Input-contract review complete: `experimental-structural-input/0` received `GO` at exact head `7fdbfbc`; see `10_Structural_Input_Contract_Review_Decision.md`.
 6. Fixture gate complete: all 44 positive, negative, boundary, randomized-order, limit, and referential-integrity scenarios are approved for the structural subset.
-7. Review Proposed `ADR0005_StructuralSpikeFixtureLoader.md` and record explicit Project Owner acceptance or rejection.
-8. Only after ADR0005 acceptance, authorize `TE-STRUCTURAL-LOADER-01 PHASE B` against the exact accepted gate commit.
+7. ADR0005 review complete: `AUDIT-PR14-PHASE-A` returned `GO` against exact Phase A head `9bffef77`, and explicit Project Owner acceptance is recorded in the ADR.
+8. Phase B remains on hold pending the exact command `AUTHORIZE TE-STRUCTURAL-LOADER-01 PHASE B AT <accepted-gate-commit>`.
 9. After the documentation and loader gates are approved with implementation evidence, authorize a bounded implementation Task Envelope for the non-conforming Structural Reference Spike A.
 
 ## Deferred Until Foundational Review

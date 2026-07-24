@@ -56,6 +56,6 @@ This file is a concise index. It does not replace the normative RFC or ADR that 
 | Jinja2 template engine | Recorded; rationale incomplete | [`ADR0001_TechStack.md`](../02_Architecture/ADR/ADR0001_TechStack.md) |
 | Canonical immutable IR architecture | Approved principle; schema not defined | [`ADR0002_IR_Design.md`](../02_Architecture/ADR/ADR0002_IR_Design.md) |
 | Strict plugin extension interfaces | Approved principle; isolation model not defined | [`ADR0003_CompilerArchitecture.md`](../02_Architecture/ADR/ADR0003_CompilerArchitecture.md) |
-| Disposable Structural Spike A fixture-loader stack | Proposed; Phase B implementation on hold | [`ADR0005_StructuralSpikeFixtureLoader.md`](../02_Architecture/ADR/ADR0005_StructuralSpikeFixtureLoader.md) |
+| Disposable Structural Spike A fixture-loader stack | Accepted after `AUDIT-PR14-PHASE-A`; Phase B authorization pending | [`ADR0005_StructuralSpikeFixtureLoader.md`](../02_Architecture/ADR/ADR0005_StructuralSpikeFixtureLoader.md) |
 
 No implementation choice is considered fully documented until its ADR is substantive and explicitly accepted.

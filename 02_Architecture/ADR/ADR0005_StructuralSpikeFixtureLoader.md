@@ -1,8 +1,14 @@
 # ADR0005: Structural Spike A Fixture Loader Technology
 
-**Status:** Proposed
+**Status:** Accepted
 
 **Date:** 2026-07-24
+
+**Acceptance Date:** 2026-07-24
+
+**Accepted Review Baseline:** `9bffef773a8af159db482ca19e5e8f9a789b4c3d`
+
+**Acceptance Evidence:** `AUDIT-PR14-PHASE-A` — `GO`
 
 **Decision Scope:** Disposable `experimental-structural-input/0` fixture loader only
 
@@ -39,7 +45,7 @@ Performance is not a conformance claim. Correct limit admission, deterministic f
 
 ## 3. Decision
 
-If this ADR is accepted, implement the disposable fixture loader with the following stack.
+Implement the disposable fixture loader with the following stack, subject to the separate Phase B authorization gate in section 7.
 
 ### 3.1 Runtime
 
@@ -350,7 +356,7 @@ Rejected because the fixture is explicitly non-interoperable and not the RFC-000
 
 ## 6. Compliance Rules
 
-If accepted:
+The following rules apply to any separately authorized Phase B implementation:
 
 - Phase B must use the exact contract head and accepted gate commit named in its authorization;
 - all implementation paths must remain inside the Phase B Task Envelope;
@@ -367,9 +373,11 @@ If accepted:
 
 ## 7. Implementation Gate
 
-This ADR is Proposed. It authorizes no source, dependency, lock, fixture, or test mutation until the Project Owner explicitly accepts it in the repository.
+The Project Owner accepts this ADR after independent audit `AUDIT-PR14-PHASE-A` returned `GO` against exact Phase A head `9bffef773a8af159db482ca19e5e8f9a789b4c3d`.
 
-After acceptance, Phase B still requires the exact command:
+Acceptance approves only the replaceable implementation decision recorded here. It does not authorize source, dependency, lock, fixture, or test mutation.
+
+Phase B still requires the exact command:
 
 ```text
 AUTHORIZE TE-STRUCTURAL-LOADER-01 PHASE B AT <accepted-gate-commit>
@@ -387,6 +395,7 @@ It applies only while contract identifier `experimental-structural-input/0` exis
 
 The proposal was prepared against:
 
+- independent audit `AUDIT-PR14-PHASE-A` of exact Phase A head `9bffef773a8af159db482ca19e5e8f9a789b4c3d`;
 - [Python 3.12.13 documentation](https://docs.python.org/3.12/);
 - [Python version status](https://devguide.python.org/versions/);
 - [`jsonschema` 4.26.0 package metadata](https://pypi.org/project/jsonschema/);

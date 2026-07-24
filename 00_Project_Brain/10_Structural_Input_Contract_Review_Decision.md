@@ -108,9 +108,9 @@ The next implementation candidate is a duplicate-key-aware, token-preserving, bo
 5. deterministically normalizes set-like collections; and
 6. publishes immutable Resolved Project Context and Collected Structural Input fixture artifacts.
 
-Implementation remains on hold until a substantive implementation ADR is explicitly accepted.
+[`ADR0005_StructuralSpikeFixtureLoader.md`](../02_Architecture/ADR/ADR0005_StructuralSpikeFixtureLoader.md) is the spike-only owner for that replaceable choice. Independent audit `AUDIT-PR14-PHASE-A` returned `GO` against exact Phase A head `9bffef773a8af159db482ca19e5e8f9a789b4c3d`, and the Project Owner subsequently accepted the ADR.
 
-[`ADR0005_StructuralSpikeFixtureLoader.md`](../02_Architecture/ADR/ADR0005_StructuralSpikeFixtureLoader.md) is the proposed, spike-only owner for that replaceable choice. It does not complete or accept the production choices listed in `ADR0001_TechStack.md`.
+That acceptance does not complete or accept the production choices listed in `ADR0001_TechStack.md`. Implementation remains on hold until Phase B is separately authorized against the exact commit that records acceptance.
 
 ## 6. Explicit Non-Authorization
 
@@ -139,15 +139,14 @@ The Project Owner authorized `TE-STRUCTURAL-LOADER-01 PHASE A` on 2026-07-24.
 
 Phase A is limited to recording this review and proposing the spike-only loader ADR. It does not authorize loader source, dependencies, fixtures, or tests.
 
-The next gates are:
+`AUDIT-PR14-PHASE-A` completed the independent ADR review with verdict `GO` against exact Phase A head `9bffef773a8af159db482ca19e5e8f9a789b4c3d`.
 
-1. independently review `ADR0005_StructuralSpikeFixtureLoader.md`;
-2. record explicit Project Owner acceptance of that ADR;
-3. identify the exact accepted gate commit; and
-4. separately authorize:
+The Project Owner explicitly accepted ADR0005 on 2026-07-24. The commit containing this acceptance record is the accepted Gate A commit.
+
+The remaining gate is a separate authorization naming that exact commit:
 
 ```text
 AUTHORIZE TE-STRUCTURAL-LOADER-01 PHASE B AT <accepted-gate-commit>
 ```
 
-Until all four steps complete, fixture-loader implementation and every Structural Reference Spike A compiler phase remain on hold.
+Until that exact authorization is issued, fixture-loader implementation and every Structural Reference Spike A compiler phase remain on hold.
