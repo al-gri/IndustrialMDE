@@ -1,8 +1,14 @@
 # ADR0006: Structural Spike A Step-1 Resolver Technology
 
-**Status:** Proposed
+**Status:** Accepted
 
 **Date:** 2026-07-24
+
+**Acceptance Date:** 2026-07-24
+
+**Accepted Review Baseline:** `db1ec1b119691b4f621a0caf8ce4231cb7be58b4`
+
+**Acceptance Evidence:** `AUDIT-STEP1-PHASE-A` — `GO`
 
 **Decision Scope:** Disposable
 `experimental-resolved-structural-model/0` Step-1 resolver only
@@ -69,11 +75,10 @@ The disposable resolver needs:
 Throughput is not a conformance claim. Correct identity, resolution, recovery,
 ordering, bounds, and phase ownership take priority.
 
-## 3. Proposed Decision
+## 3. Decision
 
-Subject to independent audit, explicit Project Owner acceptance, and a separate
-Phase B authorization, implement Step 1 in the existing disposable Structural
-Spike A project using:
+For any separately authorized Phase B, implement Step 1 in the existing
+disposable Structural Spike A project using:
 
 ```text
 CPython 3.12.13
@@ -844,7 +849,12 @@ Every divergence requires an ADR amendment before implementation.
 
 ## 21. Review and Implementation Gate
 
-This ADR is `Proposed`.
+This ADR is `Accepted`.
+
+The Project Owner accepted it after independent audit
+`AUDIT-STEP1-PHASE-A` returned `GO` against exact Phase A head
+`db1ec1b119691b4f621a0caf8ce4231cb7be58b4`. The acceptance is recorded in
+[`12_Structural_Step_1_Design_Review_Decision.md`](../../00_Project_Brain/12_Structural_Step_1_Design_Review_Decision.md).
 
 It does not authorize:
 
@@ -857,13 +867,7 @@ It does not authorize:
 - PR approval or Ready-for-Review transition; or
 - any compiler phase.
 
-Independent review must inspect this ADR together with
-`Spike_A_Step_1_Resolution.md`.
-
-Only explicit Project Owner acceptance recorded at the exact reviewed Phase A
-head may change this ADR to `Accepted`.
-
-After acceptance, Phase B still requires:
+Phase B still requires:
 
 ```text
 AUTHORIZE TE-STRUCTURAL-SPIKE-STEP-1 PHASE B AT <accepted-gate-a-commit>
@@ -897,14 +901,16 @@ compiler architecture triggers review. The Step-1 package may be deleted rather
 than migrated after its architectural evidence is recorded.
 
 Production implementation must use separately accepted ADRs and must not cite
-this proposal as implicit approval of Python, in-process resolution, frozen
+this ADR as implicit approval of Python, in-process resolution, frozen
 dataclasses, the package layout, or the internal index design.
 
 ## 23. Decision Evidence
 
-The proposal was prepared against:
+The decision was prepared and accepted against:
 
 - Approved Project Constitution version 2.1;
+- independent audit `AUDIT-STEP1-PHASE-A` of exact Phase A head
+  `db1ec1b119691b4f621a0caf8ce4231cb7be58b4`;
 - Proposed RFC-0001A, RFC-0001B, RFC-0001C, and RFC-0002;
 - Draft RFC-0005, RFC-0006, and RFC-0007 structural layers;
 - `experimental-structural-input/0`;
