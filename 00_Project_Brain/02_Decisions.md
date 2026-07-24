@@ -16,6 +16,7 @@ This file is a concise index. It does not replace the normative RFC or ADR that 
 | Promote RFC-0001C to Proposed after independent architectural review and assign public serialization to RFC-0001D | Approved | [`08_RFC-0001C_Review_Decision.md`](08_RFC-0001C_Review_Decision.md) |
 | Promote RFC-0002 to Proposed after resolving the binary64 `REAL` domain, Canonical Value Identity, and deterministic evaluation boundary | Approved | [`09_RFC-0002_Review_Decision.md`](09_RFC-0002_Review_Decision.md) |
 | Approve `experimental-structural-input/0` and its 44-scenario fixture matrix for a separately gated loader | Approved review gate; contract remains Experimental | [`10_Structural_Input_Contract_Review_Decision.md`](10_Structural_Input_Contract_Review_Decision.md) |
+| Accept the audited `experimental-structural-input/0` fixture-loader implementation at PR #15 head `d60fb889` | Accepted implementation gate; compiler remains on HOLD | [`11_Structural_Fixture_Loader_Implementation_Review_Decision.md`](11_Structural_Fixture_Loader_Implementation_Review_Decision.md) |
 | Target generation must not bypass the canonical IR | Approved | Project Constitution, section 6 |
 | Published compiler phase artifacts are immutable | Approved | Project Constitution, section 7 |
 | Core Semantic Kernel with Industrial Profile roles | Proposed | [`RFC-0001A-Semantic-Object-Model.md`](../03_DSL/RFC/RFC-0001A-Semantic-Object-Model.md) |
@@ -56,6 +57,6 @@ This file is a concise index. It does not replace the normative RFC or ADR that 
 | Jinja2 template engine | Recorded; rationale incomplete | [`ADR0001_TechStack.md`](../02_Architecture/ADR/ADR0001_TechStack.md) |
 | Canonical immutable IR architecture | Approved principle; schema not defined | [`ADR0002_IR_Design.md`](../02_Architecture/ADR/ADR0002_IR_Design.md) |
 | Strict plugin extension interfaces | Approved principle; isolation model not defined | [`ADR0003_CompilerArchitecture.md`](../02_Architecture/ADR/ADR0003_CompilerArchitecture.md) |
-| Disposable Structural Spike A fixture-loader stack | Accepted after `AUDIT-PR14-PHASE-A`; Phase B authorization pending | [`ADR0005_StructuralSpikeFixtureLoader.md`](../02_Architecture/ADR/ADR0005_StructuralSpikeFixtureLoader.md) |
+| Disposable Structural Spike A fixture-loader stack | Accepted after `AUDIT-PR14-PHASE-A`; Phase B implementation accepted after `AUDIT-PR15-PHASE-B`; compiler HOLD | [`ADR0005_StructuralSpikeFixtureLoader.md`](../02_Architecture/ADR/ADR0005_StructuralSpikeFixtureLoader.md), [`11_Structural_Fixture_Loader_Implementation_Review_Decision.md`](11_Structural_Fixture_Loader_Implementation_Review_Decision.md) |
 
 No implementation choice is considered fully documented until its ADR is substantive and explicitly accepted.

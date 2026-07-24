@@ -1,0 +1,934 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:industrialmde:experimental:structural-input:0",
+  "title": "IndustrialMDE Experimental Structural Input 0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "project_context",
+    "selector_request",
+    "compilation_units"
+  ],
+  "properties": {
+    "schema": {
+      "const": "experimental-structural-input/0"
+    },
+    "project_context": {
+      "$ref": "#/$defs/project-context"
+    },
+    "selector_request": {
+      "$ref": "#/$defs/selector-request"
+    },
+    "compilation_units": {
+      "type": "array",
+      "maxItems": 1000000,
+      "items": {
+        "$ref": "#/$defs/compilation-unit"
+      }
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 255,
+      "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+      "not": {
+        "pattern": "^__"
+      }
+    },
+    "portable-package-path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "^[A-Za-z0-9_](?:[A-Za-z0-9._/-]*[A-Za-z0-9_])?$"
+    },
+    "namespace-path": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "items": {
+        "$ref": "#/$defs/identifier"
+      }
+    },
+    "owner-path": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "$ref": "#/$defs/identifier"
+      }
+    },
+    "reference-segments": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "items": {
+        "$ref": "#/$defs/identifier"
+      }
+    },
+    "endpoint-reference-segments": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 64,
+      "items": {
+        "$ref": "#/$defs/identifier"
+      }
+    },
+    "package-identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authority",
+        "name"
+      ],
+      "properties": {
+        "authority": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)*$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
+        }
+      }
+    },
+    "package-content-identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "digest_algorithm",
+        "digest"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "immutable-artifact",
+            "workspace-snapshot"
+          ]
+        },
+        "digest_algorithm": {
+          "const": "sha256"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "package-revision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "package_identity",
+        "version",
+        "content_identity"
+      ],
+      "properties": {
+        "package_identity": {
+          "$ref": "#/$defs/package-identity"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)$"
+        },
+        "content_identity": {
+          "$ref": "#/$defs/package-content-identity"
+        }
+      }
+    },
+    "experimental-fingerprint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "algorithm",
+        "value"
+      ],
+      "properties": {
+        "algorithm": {
+          "const": "sha256"
+        },
+        "value": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "source-origin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "source_identity_components",
+        "raw_start",
+        "raw_end"
+      ],
+      "properties": {
+        "kind": {
+          "const": "source"
+        },
+        "source_identity_components": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "raw_start": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "raw_end": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        }
+      }
+    },
+    "non-source-origin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "identity"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "project-manifest",
+            "fixture-metadata",
+            "build-metadata",
+            "invocation"
+          ]
+        },
+        "identity": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      }
+    },
+    "active-limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "maximum_expansion_depth",
+        "maximum_expanded_semantic_entities",
+        "maximum_diagnostics"
+      ],
+      "properties": {
+        "maximum_expansion_depth": {
+          "const": 64
+        },
+        "maximum_expanded_semantic_entities": {
+          "const": 262144
+        },
+        "maximum_diagnostics": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000000
+        }
+      }
+    },
+    "module-identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "package_identity",
+        "module_name"
+      ],
+      "properties": {
+        "package_identity": {
+          "$ref": "#/$defs/package-identity"
+        },
+        "module_name": {
+          "$ref": "#/$defs/identifier"
+        }
+      }
+    },
+    "module": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identity",
+        "exposure",
+        "source_roots",
+        "origin"
+      ],
+      "properties": {
+        "identity": {
+          "$ref": "#/$defs/module-identity"
+        },
+        "exposure": {
+          "enum": [
+            "exported",
+            "internal"
+          ]
+        },
+        "source_roots": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1024,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/portable-package-path"
+          }
+        },
+        "origin": {
+          "$ref": "#/$defs/non-source-origin"
+        }
+      }
+    },
+    "dependency-edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "consumer",
+        "alias",
+        "dependency",
+        "origin"
+      ],
+      "properties": {
+        "consumer": {
+          "$ref": "#/$defs/package-identity"
+        },
+        "alias": {
+          "$ref": "#/$defs/identifier"
+        },
+        "dependency": {
+          "$ref": "#/$defs/package-identity"
+        },
+        "origin": {
+          "$ref": "#/$defs/non-source-origin"
+        }
+      }
+    },
+    "module-edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "consumer",
+        "dependency",
+        "origin"
+      ],
+      "properties": {
+        "consumer": {
+          "$ref": "#/$defs/module-identity"
+        },
+        "dependency": {
+          "$ref": "#/$defs/module-identity"
+        },
+        "origin": {
+          "$ref": "#/$defs/non-source-origin"
+        }
+      }
+    },
+    "project-context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "language_version",
+        "root_package_revision",
+        "dependency_package_revisions",
+        "dependency_edges",
+        "modules",
+        "module_edges",
+        "project_manifest_origin",
+        "dependency_lock_origin",
+        "project_resolution_fingerprint",
+        "active_limits"
+      ],
+      "properties": {
+        "language_version": {
+          "const": "0.1"
+        },
+        "root_package_revision": {
+          "$ref": "#/$defs/package-revision"
+        },
+        "dependency_package_revisions": {
+          "type": "array",
+          "maxItems": 4096,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/package-revision"
+          }
+        },
+        "dependency_edges": {
+          "type": "array",
+          "maxItems": 16384,
+          "items": {
+            "$ref": "#/$defs/dependency-edge"
+          }
+        },
+        "modules": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 65536,
+          "items": {
+            "$ref": "#/$defs/module"
+          }
+        },
+        "module_edges": {
+          "type": "array",
+          "maxItems": 262144,
+          "items": {
+            "$ref": "#/$defs/module-edge"
+          }
+        },
+        "project_manifest_origin": {
+          "$ref": "#/$defs/non-source-origin"
+        },
+        "dependency_lock_origin": {
+          "$ref": "#/$defs/non-source-origin"
+        },
+        "project_resolution_fingerprint": {
+          "$ref": "#/$defs/experimental-fingerprint"
+        },
+        "active_limits": {
+          "$ref": "#/$defs/active-limits"
+        }
+      }
+    },
+    "selector-target-request": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "package_identity": {
+          "$ref": "#/$defs/package-identity"
+        },
+        "namespace_path": {
+          "$ref": "#/$defs/namespace-path"
+        },
+        "owner_path": {
+          "$ref": "#/$defs/owner-path"
+        },
+        "identifier": {
+          "$ref": "#/$defs/identifier"
+        }
+      }
+    },
+    "selector-candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "raw_spelling",
+        "origin"
+      ],
+      "properties": {
+        "target": {
+          "$ref": "#/$defs/selector-target-request"
+        },
+        "raw_spelling": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "pattern": "^[ -~]+$"
+        },
+        "origin": {
+          "$ref": "#/$defs/non-source-origin"
+        }
+      }
+    },
+    "selector-request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "origin",
+        "candidates"
+      ],
+      "properties": {
+        "origin": {
+          "$ref": "#/$defs/non-source-origin"
+        },
+        "candidates": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "$ref": "#/$defs/selector-candidate"
+          }
+        }
+      }
+    },
+    "compilation-unit-identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "package_identity",
+        "module_name",
+        "portable_package_path"
+      ],
+      "properties": {
+        "package_identity": {
+          "$ref": "#/$defs/package-identity"
+        },
+        "module_name": {
+          "$ref": "#/$defs/identifier"
+        },
+        "portable_package_path": {
+          "$ref": "#/$defs/portable-package-path"
+        }
+      }
+    },
+    "namespace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "segments",
+        "origin"
+      ],
+      "properties": {
+        "segments": {
+          "$ref": "#/$defs/namespace-path"
+        },
+        "origin": {
+          "$ref": "#/$defs/source-origin"
+        }
+      }
+    },
+    "name-reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "segments",
+        "origin"
+      ],
+      "properties": {
+        "segments": {
+          "$ref": "#/$defs/reference-segments"
+        },
+        "origin": {
+          "$ref": "#/$defs/source-origin"
+        }
+      }
+    },
+    "endpoint-reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "segments",
+        "origin"
+      ],
+      "properties": {
+        "segments": {
+          "$ref": "#/$defs/endpoint-reference-segments"
+        },
+        "origin": {
+          "$ref": "#/$defs/source-origin"
+        }
+      }
+    },
+    "import": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "target_reference",
+        "alias",
+        "origin"
+      ],
+      "properties": {
+        "kind": {
+          "const": "import"
+        },
+        "target_reference": {
+          "$ref": "#/$defs/name-reference"
+        },
+        "alias": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/identifier"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "origin": {
+          "$ref": "#/$defs/source-origin"
+        }
+      }
+    },
+    "payload-range": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "raw_start",
+        "raw_end"
+      ],
+      "properties": {
+        "raw_start": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "raw_end": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        }
+      }
+    },
+    "unsupported-owner-context": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "identifier"
+          ],
+          "properties": {
+            "kind": {
+              "const": "compilation-unit"
+            },
+            "identifier": {
+              "type": "null"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "identifier"
+          ],
+          "properties": {
+            "kind": {
+              "const": "definition"
+            },
+            "identifier": {
+              "$ref": "#/$defs/identifier"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "identifier"
+          ],
+          "properties": {
+            "kind": {
+              "const": "application-assembly"
+            },
+            "identifier": {
+              "$ref": "#/$defs/identifier"
+            }
+          }
+        }
+      ]
+    },
+    "unsupported-marker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "category",
+        "owning_future_rfc",
+        "owner_context",
+        "origin",
+        "opaque_payload_range"
+      ],
+      "properties": {
+        "kind": {
+          "const": "unsupported-marker"
+        },
+        "category": {
+          "enum": [
+            "expression",
+            "constant",
+            "parameter",
+            "configuration-expression",
+            "state",
+            "behavior",
+            "interface",
+            "replication",
+            "deployment",
+            "target",
+            "deployment-mapping"
+          ]
+        },
+        "owning_future_rfc": {
+          "enum": [
+            "RFC-0003",
+            "RFC-0004",
+            "RFC-0006",
+            "RFC-0007"
+          ]
+        },
+        "owner_context": {
+          "$ref": "#/$defs/unsupported-owner-context"
+        },
+        "origin": {
+          "$ref": "#/$defs/source-origin"
+        },
+        "opaque_payload_range": {
+          "$ref": "#/$defs/payload-range"
+        }
+      }
+    },
+    "endpoint-declaration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "name",
+        "direction",
+        "type_reference",
+        "origin"
+      ],
+      "properties": {
+        "kind": {
+          "const": "endpoint"
+        },
+        "name": {
+          "$ref": "#/$defs/identifier"
+        },
+        "direction": {
+          "enum": [
+            "input",
+            "output"
+          ]
+        },
+        "type_reference": {
+          "$ref": "#/$defs/name-reference"
+        },
+        "origin": {
+          "$ref": "#/$defs/source-origin"
+        }
+      }
+    },
+    "instance-declaration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "name",
+        "definition_reference",
+        "origin"
+      ],
+      "properties": {
+        "kind": {
+          "const": "instance"
+        },
+        "name": {
+          "$ref": "#/$defs/identifier"
+        },
+        "definition_reference": {
+          "$ref": "#/$defs/name-reference"
+        },
+        "origin": {
+          "$ref": "#/$defs/source-origin"
+        }
+      }
+    },
+    "connection-declaration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "name",
+        "source_reference",
+        "destination_reference",
+        "origin"
+      ],
+      "properties": {
+        "kind": {
+          "const": "connection"
+        },
+        "name": {
+          "$ref": "#/$defs/identifier"
+        },
+        "source_reference": {
+          "$ref": "#/$defs/endpoint-reference"
+        },
+        "destination_reference": {
+          "$ref": "#/$defs/endpoint-reference"
+        },
+        "origin": {
+          "$ref": "#/$defs/source-origin"
+        }
+      }
+    },
+    "definition-member": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/endpoint-declaration"
+        },
+        {
+          "$ref": "#/$defs/instance-declaration"
+        },
+        {
+          "$ref": "#/$defs/connection-declaration"
+        },
+        {
+          "$ref": "#/$defs/unsupported-marker"
+        }
+      ]
+    },
+    "assembly-member": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/instance-declaration"
+        },
+        {
+          "$ref": "#/$defs/connection-declaration"
+        },
+        {
+          "$ref": "#/$defs/unsupported-marker"
+        }
+      ]
+    },
+    "definition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "name",
+        "visibility",
+        "members",
+        "origin"
+      ],
+      "properties": {
+        "kind": {
+          "const": "definition"
+        },
+        "name": {
+          "$ref": "#/$defs/identifier"
+        },
+        "visibility": {
+          "enum": [
+            "public",
+            "private"
+          ]
+        },
+        "members": {
+          "type": "array",
+          "maxItems": 1000000,
+          "items": {
+            "$ref": "#/$defs/definition-member"
+          }
+        },
+        "origin": {
+          "$ref": "#/$defs/source-origin"
+        }
+      }
+    },
+    "application-assembly": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "name",
+        "visibility",
+        "members",
+        "origin"
+      ],
+      "properties": {
+        "kind": {
+          "const": "application-assembly"
+        },
+        "name": {
+          "$ref": "#/$defs/identifier"
+        },
+        "visibility": {
+          "enum": [
+            "public",
+            "private"
+          ]
+        },
+        "members": {
+          "type": "array",
+          "maxItems": 1000000,
+          "items": {
+            "$ref": "#/$defs/assembly-member"
+          }
+        },
+        "origin": {
+          "$ref": "#/$defs/source-origin"
+        }
+      }
+    },
+    "top-level-declaration": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/definition"
+        },
+        {
+          "$ref": "#/$defs/application-assembly"
+        },
+        {
+          "$ref": "#/$defs/unsupported-marker"
+        }
+      ]
+    },
+    "compilation-unit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "unit_identity",
+        "source_identity_components",
+        "source_length_bytes",
+        "language_version",
+        "language_version_origin",
+        "namespace",
+        "imports",
+        "declarations"
+      ],
+      "properties": {
+        "unit_identity": {
+          "$ref": "#/$defs/compilation-unit-identity"
+        },
+        "source_identity_components": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "source_length_bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "language_version": {
+          "const": "0.1"
+        },
+        "language_version_origin": {
+          "$ref": "#/$defs/source-origin"
+        },
+        "namespace": {
+          "$ref": "#/$defs/namespace"
+        },
+        "imports": {
+          "type": "array",
+          "maxItems": 65536,
+          "items": {
+            "$ref": "#/$defs/import"
+          }
+        },
+        "declarations": {
+          "type": "array",
+          "maxItems": 1000000,
+          "items": {
+            "$ref": "#/$defs/top-level-declaration"
+          }
+        }
+      }
+    }
+  }
+}
